@@ -1,0 +1,8 @@
+node_modules/
+.next/
+static/fonts/lane/
+static/fonts/lato/
+static/fonts/lato2/
+static/fonts/manifesto/
+.data/*
+!.data/.gitkeep

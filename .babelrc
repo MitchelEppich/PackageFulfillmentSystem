@@ -1,0 +1,23 @@
+{
+  "plugins": [
+    "graphql-tag",
+    [
+      "module-resolver",
+      {
+        "root": ["."],
+        "alias": {
+          "styles": "scss/"
+        },
+        "cwd": "babelrc"
+      }
+    ],
+    [
+      "wrap-in-js",
+      {
+        "extensions": ["css$", "scss$"]
+      }
+    ]
+  ],
+  "presets": ["next/babel"],
+  "ignore": []
+}
