@@ -27,7 +27,7 @@ const Main = props => {
               company: company,
               user: props.user.currentUser
             });
-          }}
+          }}          
           className={`${
             props.nav.focusCompany != null &&
             props.nav.focusCompany.id == company.id
@@ -52,7 +52,7 @@ const Main = props => {
       for (let order of orders) {
         arr.push(
           <div
-            className="inline-flex w-full p-2 items-center  bg-grey-lighter mt-8"
+            className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"
             key={order.invoice_id}
           >
             <div className="w-1/5 pl-2">{index}</div>
@@ -79,8 +79,8 @@ const Main = props => {
       return arr;
     } else {
       return (
-        <div className="inline-flex w-full p-2 items-center  bg-grey-lighter mt-8">
-          <h2>Please select your company tab . . .</h2>
+        <div className="inline-flex w-full p-2 text-center bg-grey-lighter mt-8">
+          <h3 className="text-center w-full">Please select your Company tab...</h3>
         </div>
       );
     }
@@ -96,6 +96,15 @@ const Main = props => {
           </div>
           <div className="w-1/4 mt-6 text-right mr-12">
             <a
+              onClick={() => {                
+                props.toggleRegisterScreen();
+              }}
+              className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+            >
+              Register New User
+            </a>
+
+            <a
               onClick={() => {
                 props.releaseCredentials();
                 props.toggleLoginScreen();
@@ -104,6 +113,7 @@ const Main = props => {
             >
               Logout
             </a>
+
           </div>
         </div>
       </div>
@@ -121,8 +131,8 @@ const Main = props => {
       >
         <div
           style={{
-            borderTopLeftRadius: "10px",
-            borderTopRightRadius: "10px"
+            // borderTopLeftRadius: "10px",
+            // borderTopRightRadius: "10px"
           }}
           className="inline-flex w-full bg-blue-new justify-between"
         >
@@ -135,6 +145,7 @@ const Main = props => {
             <div className="w-3/5 pl-2">Order Number</div>
             <div className="w-1/5 text-center mr-4">Action</div>
           </div>
+          <div className="mt-6"></div>
           {showOrders()}
         </div>
       </div>

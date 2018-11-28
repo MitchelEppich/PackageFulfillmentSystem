@@ -22,14 +22,24 @@ const Screen = props => {
         className="inline-flex flex bg-white items-center w-full mx-auto my-2 p-1"
         key={item.name}
       >
-        <div className="w-1/2">
-          <p className="text-lg ml-24">{item.description}</p>
+        <div
+          style={{
+            width: "50%"
+          }}
+          className=""
+        >
+          <p className="text-lg ml-12">{item.description}</p>
         </div>
-        <div className="w-1/2 inline-flex flex items-center">
-          <div className="w-40">
+        <div
+          style={{
+            width: "35%"
+          }}
+          className="inline-flex ml-4 flex items-center"
+        >
+          <div style={{ width: "180px" }}>
             <label className="mr-2">Complete here:</label>
           </div>
-          <div className="w-full">
+          <div className="w-32">
             <p className="">
               {props.nav.focusCompany.id}04
               <input
@@ -46,6 +56,14 @@ const Screen = props => {
             </p>
           </div>
         </div>
+        <div
+          style={{
+            width: "15%"
+          }}
+          className=""
+        >
+          <p className="flex items-center">{item.quantity} Package</p>
+        </div>
       </div>
     );
   };
@@ -58,14 +76,14 @@ const Screen = props => {
         className="bg-semi-transparent w-full flex items-center mt-1 h-12 inline-flex"
         key={`${name}${number + 1}`}
       >
-        <div className="w-1/2 pl-24">
+        <div className="w-1/2 pl-16">
           <p>Package #{number + 1}</p>
         </div>
-        <div className="w-1/2 inline-flex flex items-center">
-          <div className="w-40">
+        <div className="w-1/2 inline-flex flex pl-2 items-center">
+          <div style={{ width: "180px" }}>
             <label className="mr-2">Complete here:</label>
           </div>
-          <div className="w-full">
+          <div className="w-32">
             <p className="">
               {props.nav.focusCompany.id}04
               <input
@@ -121,9 +139,12 @@ const Screen = props => {
         className="bg-white items-center w-full mx-auto my-2 p-1"
         key={item.name}
       >
-        <div className="inline-flex w-full">
+        <div className="inline-flex w-full flex items-center">
           <div
-            className="w-1/2 flex items-center cursor-pointer hover:opacity-50"
+            style={{
+              width: "50%"
+            }}
+            className="flex items-center cursor-pointer hover:opacity-50"
             onClick={() => {
               props.expandItem({
                 item: item.name,
@@ -131,16 +152,21 @@ const Screen = props => {
               });
             }}
           >
-            <p className="text-lg ml-24 flex items-center">
+            <p className="text-lg ml-10 flex items-center">
               <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" />
               {item.description}
             </p>
           </div>
-          <div className="w-1/2 flex items-center inline-flex">
-            <div style={{ width: "200px" }}>
+          <div
+            style={{
+              width: "35%"
+            }}
+            className="ml-4 flex items-center inline-flex"
+          >
+            <div style={{ width: "180px" }}>
               <label className="mr-2">Insert Base Value:</label>
             </div>
-            <div className="w-full">
+            <div className="w-32">
               <p className="">
                 {props.nav.focusCompany.id}04
                 <input
@@ -167,6 +193,14 @@ const Screen = props => {
               </p>
             </div>
           </div>
+          <div
+            style={{
+              width: "15%"
+            }}
+            className=""
+          >
+            <p className="flex items-center">{item.quantity} Packages</p>
+          </div>
         </div>
         {props.item.expandItems.includes(item.name) ? (
           <div className="w-full overflow-y-auto mt-2 mx-0 bg-grey-light ">
@@ -179,7 +213,6 @@ const Screen = props => {
 
   let populateItems = items => {
     let arr = [];
-
     for (let item of items) {
       arr.push(
         item.quantity == 1 ? generateSingleItem(item) : generateMultiItem(item)
@@ -201,10 +234,7 @@ const Screen = props => {
             }}
             className="w-1/3 h-10 inline-flex"
           >
-            <h4
-              id="cheese"
-              className="p-2 text-white uppercase text-lg flex items-center hover:bg-semi-transparent cursor-pointer"
-            >
+            <h4 className="p-2 text-white uppercase text-lg bg-red flex items-center hover:bg-semi-transparent cursor-pointer">
               <FontAwesomeIcon icon={faAngleLeft} className="fa-2x mr-4" />
               Back
             </h4>

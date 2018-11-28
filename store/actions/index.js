@@ -24,7 +24,8 @@ const imports = {
 
 const actionTypes = {
   TOGGLE_SCREEN: "TOGGLE_SCREEN",
-  TOGGLE_LOGIN_SCREEN: "TOGGLE_LOGIN_SCREEN"
+  TOGGLE_LOGIN_SCREEN: "TOGGLE_LOGIN_SCREEN",
+  TOGGLE_SHOW_REGISTER_SCREEN: "TOGGLE_SHOW_REGISTER_SCREEN"
 };
 
 const actions = {
@@ -36,6 +37,11 @@ const actions = {
   toggleLoginScreen: () => {
     return {
       type: actionTypes.TOGGLE_LOGIN_SCREEN
+    };
+  },
+  toggleRegisterScreen: () => {
+    return {
+      type: actionTypes.TOGGLE_SHOW_REGISTER_SCREEN
     };
   }
 };
