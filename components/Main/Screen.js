@@ -24,15 +24,23 @@ const Screen = props => {
       >
         <div
           style={{
-            width: "50%"
+            width: "40%"
           }}
           className=""
         >
-          <p className="text-lg ml-12">{item.description}</p>
+          <p className="text-lg ml-6">{item.description}</p>
         </div>
         <div
           style={{
-            width: "40%"
+            width: "20%"
+          }}
+          className=""
+        >
+          <p className="text-lg ml-12">{item.name}</p>
+        </div>
+        <div
+          style={{
+            width: "30%"
           }}
           className="inline-flex ml-4 flex items-center"
         >
@@ -76,7 +84,7 @@ const Screen = props => {
         className="bg-semi-transparent w-full flex items-center mt-1 h-12 inline-flex"
         key={`${name}${number + 1}`}
       >
-        <div className="w-1/2 pl-16">
+        <div style={{width: "73%"}} className="ml-1 pl-16">
           <p>Package #{number + 1}</p>
         </div>
         <div className="w-1/2 inline-flex flex pl-2 items-center">
@@ -142,7 +150,7 @@ const Screen = props => {
         <div className="inline-flex w-full flex items-center">
           <div
             style={{
-              width: "50%"
+              width: "40%"
             }}
             className="flex items-center cursor-pointer hover:opacity-50"
             onClick={() => {
@@ -152,14 +160,23 @@ const Screen = props => {
               });
             }}
           >
-            <p className="text-lg ml-10 flex items-center">
+            <p className="text-lg ml-5 flex items-center">
               <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" />
               {item.description}
             </p>
           </div>
           <div
+          style={{
+            width: "20%"
+          }}
+          className=""
+        >
+          <p className="text-lg ml-12">{item.name}</p>
+        </div>
+          
+          <div
             style={{
-              width: "40%"
+              width: "30%"
             }}
             className="ml-4 flex items-center inline-flex"
           >
@@ -250,8 +267,18 @@ const Screen = props => {
         </div>
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
           <div className="inline-flex w-full absolute pin-l pin-t p-1 mt-10 bg-grey-darker uppercase text-white text-sm">
-            <div className="w-1/2 pl-24">Strain Name</div>
-            <div className="w-1/2">STT Number</div>
+            <div 
+            style={{width:"40%"}}
+            className="w-1/4 pl-24">Description</div>
+            <div 
+            style={{width:"20%"}}
+            className="w-1/4 pl-10">Strain Code</div>
+            <div 
+            style={{width:"30%"}}
+            className="w-1/4 pl-24">STT Number</div>
+            <div 
+            style={{width:"10%"}}
+            className="w-1/4">Quantity</div>
           </div>
           {populateItems(order.item_list)}
         </div>
@@ -286,7 +313,7 @@ const Screen = props => {
       </div>
       <div
         className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue"        
-      >  <p>Total Packages: {props.nav.focusOrder.total_items}</p>       
+      >  <p>Total Packages: {props.nav.focusOrder != null ? props.nav.focusOrder.total_items : ""}</p>       
         
       </div>
     </div>

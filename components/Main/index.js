@@ -50,14 +50,16 @@ const Main = props => {
       let arr = [];
       let index = 1;
       for (let order of orders) {
+        console.log(order.date)
         arr.push(
           <div
             className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"
             key={order.invoice_id}
           >
-            <div className="w-1/5 pl-2">{index}</div>
-            <div className="w-3/5 pl-2">Order #{order.invoice_number}</div>
-            <div className="w-1/5 pl-2">
+            <div className="w-1/4 pl-8">{index}</div>
+            <div className="w-1/4">Order #{order.invoice_number}</div>
+            <div className="w-1/4">{order.date}</div>
+            <div className="w-1/4 pl-2">
               <div
                 onClick={() => {
                   props.fetchOrder({
@@ -150,9 +152,10 @@ const Main = props => {
 
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
           <div className="inline-flex w-full p-1 bg-grey-darker uppercase text-white text-sm absolute">
-            <div className="w-1/5 pl-2">Number</div>
-            <div className="w-3/5 pl-2">Order Number</div>
-            <div className="w-1/5 text-center mr-4">Action</div>
+            <div className="w-1/4 pl-2">Number</div>
+            <div className="w-1/4 pl-4">Order Number</div>
+            <div className="w-1/4 pl-4">Date</div>
+            <div className="w-1/4 text-center mr-4">Action</div>
           </div>
           <div className="mt-6"></div>
           {showOrders()}
