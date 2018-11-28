@@ -89,12 +89,21 @@ const Main = props => {
   return (
     <div className="w-full bg-grey-light overflow-x-hidden">
       <div className="bg-blue w-full mx-auto inline-flex justify-center text-white">
-        <div className="w-newScreen inline-flex ml-6 mt-4 justify-center mb-2">
-          <div className="w-3/4 mt-2">
+        <div className="w-newScreen inline-flex ml-6 mt-4 flex justify-between mb-2">
+          <div className="w-2/4 mt-2 pin-l text-left">
             <h2 className="text-white p-2">Package Fulfillment System</h2>
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
-          <div className="w-1/4 mt-6 text-right mr-12">
+          <div className="w-2/4 mt-6 text-right mr-12">
+
+            <a
+              onClick={() => {                
+                props.toggleShowLog();
+              }}
+              className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+            >
+              Logs
+            </a>
             <a
               onClick={() => {                
                 props.toggleRegisterScreen();

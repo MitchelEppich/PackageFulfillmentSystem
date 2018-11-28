@@ -25,7 +25,8 @@ const imports = {
 const actionTypes = {
   TOGGLE_SCREEN: "TOGGLE_SCREEN",
   TOGGLE_LOGIN_SCREEN: "TOGGLE_LOGIN_SCREEN",
-  TOGGLE_SHOW_REGISTER_SCREEN: "TOGGLE_SHOW_REGISTER_SCREEN"
+  TOGGLE_SHOW_REGISTER_SCREEN: "TOGGLE_SHOW_REGISTER_SCREEN",
+  TOGGLE_SHOW_LOG: "TOGGLE_SHOW_LOG"
 };
 
 const actions = {
@@ -43,7 +44,12 @@ const actions = {
     return {
       type: actionTypes.TOGGLE_SHOW_REGISTER_SCREEN
     };
-  }
+  },
+  toggleShowLog: () => {
+    return {
+      type: actionTypes.TOGGLE_SHOW_LOG
+    };
+  },
 };
 
 const query = {};

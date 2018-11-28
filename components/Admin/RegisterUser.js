@@ -6,6 +6,13 @@ import { faTimes, faInfo, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 const RegisterUser = props => {
     return (
         <div
+      className="bg-blue-new h-full w-full relative overflow-x-hidden overflow-y-hidden"
+      style={{
+        position: "fixed",        
+        zIndex: "100"
+      }}
+    >
+        <div
         style={{
             borderRadius: "10px",                
             background: "whitesmoke",     
@@ -73,7 +80,7 @@ const RegisterUser = props => {
           </div>
         </form>
                 
-
+        </div>
         </div>
     )
 }

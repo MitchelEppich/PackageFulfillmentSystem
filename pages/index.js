@@ -11,6 +11,7 @@ import Login from "../components/Login";
 import Main from "../components/Main";
 import Screen from "../components/Main/Screen";
 import RegisterUser from "../components/Admin/RegisterUser";
+import Logs from "../components/Admin/Logs";
 
 class Index extends Component {
   componentDidMount() {
@@ -33,7 +34,7 @@ class Index extends Component {
     return (
       <Layout>
         {/* {console.log(this.props)} */}
-        {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
+        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}
@@ -41,8 +42,16 @@ class Index extends Component {
           toggleShowMoreMultipleFields={this.props.toggleShowMoreMultipleFields}
           showRegisterScreen={this.props.misc.showRegisterScreen}
           toggleRegisterScreen={this.props.toggleRegisterScreen}
+          showLogScreen={this.props.misc.showLogScreen}
+          toggleShowLog={this.props.toggleShowLog}
           {...this.props}
         />
+        {this.props.misc.showLogScreen ? 
+        <Logs 
+          showLogScreen={this.props.misc.showLogScreen}
+          toggleShowLog={this.props.toggleShowLog}
+          {...this.props}
+        /> : null }
         {this.props.misc.showRegisterScreen ? (
           <RegisterUser
             showRegisterScreen={this.props.misc.showRegisterScreen}
@@ -69,6 +78,7 @@ const mapDispatchToProps = dispatch => {
     toggleLoginScreen: () => dispatch(actions.toggleLoginScreen()),
     toggleScreen: () => dispatch(actions.toggleScreen()),
     toggleRegisterScreen: () => dispatch(actions.toggleRegisterScreen()),
+    toggleShowLog: () => dispatch(actions.toggleShowLog()),
     releaseCredentials: () => dispatch(actions.releaseCredentials()),
     expandItem: input => dispatch(actions.expandItem(input)),
     focusCompany: input => dispatch(actions.focusCompany(input)),

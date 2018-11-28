@@ -32,14 +32,14 @@ const Screen = props => {
         </div>
         <div
           style={{
-            width: "35%"
+            width: "40%"
           }}
           className="inline-flex ml-4 flex items-center"
         >
           <div style={{ width: "180px" }}>
             <label className="mr-2">Complete here:</label>
           </div>
-          <div className="w-32">
+          <div>
             <p className="">
               {props.nav.focusCompany.id}04
               <input
@@ -51,14 +51,14 @@ const Screen = props => {
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
-                className="ml-2 p-3 px-1"
+                className="ml-2 p-3 px-1 w-16"
               />
             </p>
           </div>
         </div>
         <div
           style={{
-            width: "15%"
+            width: "10%"
           }}
           className=""
         >
@@ -83,7 +83,7 @@ const Screen = props => {
           <div style={{ width: "180px" }}>
             <label className="mr-2">Complete here:</label>
           </div>
-          <div className="w-32">
+          <div>
             <p className="">
               {props.nav.focusCompany.id}04
               <input
@@ -110,7 +110,7 @@ const Screen = props => {
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
-                className="ml-2 p-3 px-1"
+                className="ml-2 p-3 px-1 w-16"
               />
             </p>
           </div>
@@ -159,14 +159,14 @@ const Screen = props => {
           </div>
           <div
             style={{
-              width: "35%"
+              width: "40%"
             }}
             className="ml-4 flex items-center inline-flex"
           >
             <div style={{ width: "180px" }}>
               <label className="mr-2">Insert Base Value:</label>
             </div>
-            <div className="w-32">
+            <div>
               <p className="">
                 {props.nav.focusCompany.id}04
                 <input
@@ -184,18 +184,18 @@ const Screen = props => {
                       item: item
                     });
                   }}
-                  size="3"
+                  size="30"
                   name="rangeMin"
                   placeholder="XXXX"
                   maxLength="4"
-                  className="p-3 ml-2 px-1 mr-5"
+                  className="p-3 ml-2 px-1 mr-5 w-16"
                 />
               </p>
             </div>
           </div>
           <div
             style={{
-              width: "15%"
+              width: "10%"
             }}
             className=""
           >
@@ -259,6 +259,7 @@ const Screen = props => {
     );
   };
 
+
   return (
     <div
       style={{
@@ -278,10 +279,15 @@ const Screen = props => {
             order: props.nav.focusOrder
           });
         }}
-      >
+      >       
         <p className="uppercase p-2 text-center text-white font-bold">
           Finalize
         </p>
+      </div>
+      <div
+        className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue"        
+      >  <p>Total Packages: {props.nav.focusOrder.total_items}</p>       
+        
       </div>
     </div>
   );
