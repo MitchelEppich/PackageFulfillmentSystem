@@ -22,24 +22,17 @@ const Screen = props => {
         className="inline-flex flex bg-white items-center w-full mx-auto my-2 p-1"
         key={item.name}
       >
-        <div
-          style={{
-            width: "50%"
-          }}
-          className=""
-        >
+        <div style={{ width: "50%" }} className="">
           <p className="text-lg ml-12">{item.description}</p>
         </div>
         <div
-          style={{
-            width: "35%"
-          }}
+          style={{ width: "35%" }}
           className="inline-flex ml-4 flex items-center"
         >
           <div style={{ width: "180px" }}>
             <label className="mr-2">Complete here:</label>
           </div>
-          <div className="w-32">
+          <div>
             <p className="">
               {props.nav.focusCompany.id}04
               <input
@@ -51,17 +44,14 @@ const Screen = props => {
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
-                className="ml-2 p-3 px-1"
+                className={`ml-2 p-3 px-1 ${
+                  props.item.missedItems.includes(item.name) ? "bg-red" : ""
+                }`}
               />
             </p>
           </div>
         </div>
-        <div
-          style={{
-            width: "15%"
-          }}
-          className=""
-        >
+        <div style={{ width: "15%" }} className="">
           <p className="flex items-center">{item.quantity} Package</p>
         </div>
       </div>
@@ -83,7 +73,7 @@ const Screen = props => {
           <div style={{ width: "180px" }}>
             <label className="mr-2">Complete here:</label>
           </div>
-          <div className="w-32">
+          <div>
             <p className="">
               {props.nav.focusCompany.id}04
               <input
@@ -110,7 +100,11 @@ const Screen = props => {
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
-                className="ml-2 p-3 px-1"
+                className={`ml-2 p-3 px-1 ${
+                  props.item.missedItems.includes(`${name}-${number}`)
+                    ? "bg-red"
+                    : ""
+                }`}
               />
             </p>
           </div>
@@ -141,9 +135,7 @@ const Screen = props => {
       >
         <div className="inline-flex w-full flex items-center">
           <div
-            style={{
-              width: "50%"
-            }}
+            style={{ width: "50%" }}
             className="flex items-center cursor-pointer hover:opacity-50"
             onClick={() => {
               props.expandItem({
@@ -158,15 +150,13 @@ const Screen = props => {
             </p>
           </div>
           <div
-            style={{
-              width: "35%"
-            }}
+            style={{ width: "35%" }}
             className="ml-4 flex items-center inline-flex"
           >
             <div style={{ width: "180px" }}>
               <label className="mr-2">Insert Base Value:</label>
             </div>
-            <div className="w-32">
+            <div>
               <p className="">
                 {props.nav.focusCompany.id}04
                 <input
@@ -188,17 +178,16 @@ const Screen = props => {
                   name="rangeMin"
                   placeholder="XXXX"
                   maxLength="4"
-                  className="p-3 ml-2 px-1 mr-5"
+                  className={`p-3 ml-2 px-1 mr-5 ${
+                    props.item.missedItems.includes(`${item.name}-0`)
+                      ? "bg-orange"
+                      : ""
+                  }`}
                 />
               </p>
             </div>
           </div>
-          <div
-            style={{
-              width: "15%"
-            }}
-            className=""
-          >
+          <div style={{ width: "15%" }} className="">
             <p className="flex items-center">{item.quantity} Packages</p>
           </div>
         </div>

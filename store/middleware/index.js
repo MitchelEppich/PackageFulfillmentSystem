@@ -5,7 +5,7 @@ import { makePromise, execute } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
 import fetch from "node-fetch";
 
-const uri = "http://localhost:3000/graphql";
+const uri = "http://192.168.0.15:3000/graphql";
 
 const imports = [];
 

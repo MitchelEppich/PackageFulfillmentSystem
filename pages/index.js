@@ -33,7 +33,7 @@ class Index extends Component {
     return (
       <Layout>
         {/* {console.log(this.props)} */}
-        {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
+        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}

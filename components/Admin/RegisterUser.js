@@ -1,34 +1,43 @@
-import React from "react"
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faInfo, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
-
 const RegisterUser = props => {
-    return (
-        <div
+  return (
+    <div
+      className="bg-blue-new h-full w-full relative overflow-x-hidden overflow-y-hidden"
+      style={{
+        position: "fixed",
+        zIndex: "100"
+      }}
+    >
+      <div
         style={{
-            borderRadius: "10px",                
-            background: "whitesmoke",     
-            zIndex: "60"           
+          borderRadius: "10px",
+          background: "whitesmoke",
+          zIndex: "60"
         }}
         className="w-450 h-450 bg-white mt-32 align-absolute text-center"
-        >
-            <div>
-                <FontAwesomeIcon
-                icon={faUserPlus}
-                className="fa-7x mt-12 mb-6 text-almost-transparent" />
-            
-                <h1 className="mt-2 p-2">Register New User</h1>
-                <div 
-                onClick={()=>{
-                    props.toggleRegisterScreen()
-                }}
-                className="absolute pin-t pin-r p-2 mt-2 mr-2 cursor-pointer hover:bg-blue hover:text-white">
-                    <FontAwesomeIcon icon={faTimes} className="fa-2x" /></div>
-            </div>
-            <p className="p-2">Please, insert the information below:</p>
-          
-            <form
+      >
+        <div>
+          <FontAwesomeIcon
+            icon={faUserPlus}
+            className="fa-7x mt-12 mb-6 text-almost-transparent"
+          />
+
+          <h1 className="mt-2 p-2">Register New User</h1>
+          <div
+            onClick={() => {
+              props.toggleRegisterScreen();
+            }}
+            className="absolute pin-t pin-r p-2 mt-2 mr-2 cursor-pointer hover:bg-blue hover:text-white"
+          >
+            <FontAwesomeIcon icon={faTimes} className="fa-2x" />
+          </div>
+        </div>
+        <p className="p-2">Please, insert the information below:</p>
+
+        <form
         //   onSubmit={e => {
         //     e.preventDefault();
         //     const form = e.target;
@@ -44,7 +53,7 @@ const RegisterUser = props => {
         //     });
         //   }}
         >
-          <div className="text-center mt-6">            
+          <div className="text-center mt-6">
             <div className="p-2">
               <input
                 type="text"
@@ -53,16 +62,16 @@ const RegisterUser = props => {
                 placeholder="Name"
                 className="p-2 w-2/3"
               />
-            </div>            
-            <div className="p-2 w-full text-left ml-20">              
-                  <input
-                    type="checkbox"
-                    name="admin"
-                    id="admin"
-                    value="admin"                    
-                    className="p-2"
-                /><label className="p-2">Is the user Administrator?</label>
-              
+            </div>
+            <div className="p-2 w-full text-left ml-20">
+              <input
+                type="checkbox"
+                name="admin"
+                id="admin"
+                value="admin"
+                className="p-2"
+              />
+              <label className="p-2">Is the user Administrator?</label>
             </div>
             <button
               type="submit"
@@ -72,11 +81,9 @@ const RegisterUser = props => {
             </button>
           </div>
         </form>
-                
+      </div>
+    </div>
+  );
+};
 
-        </div>
-    )
-}
-
-
-export default RegisterUser
+export default RegisterUser;
