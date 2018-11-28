@@ -581,6 +581,7 @@ module.exports = {
     "380": "380px",
     "400": "400px",
     "450": "450px",
+    "550": "550px",
     "650": "650px",
     imgCard: "90px",
     halfscreen: "940px",

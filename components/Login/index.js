@@ -8,11 +8,15 @@ const Login = props => {
     <div
       className="bg-blue-new h-full w-full relative overflow-x-hidden overflow-y-hidden"
       style={{
-        position: "fixed",
+        position: "fixed",        
         zIndex: "100"
       }}
     >
-      <div className="align-absolute bg-white w-450 h-450 mt-64">
+      <div 
+        style={{
+          borderRadius: "10px",  
+        }}
+      className="align-absolute bg-white w-450 h-450 mt-64">
         <div className="text-center p-2">
           <FontAwesomeIcon
             icon={faUserLock}

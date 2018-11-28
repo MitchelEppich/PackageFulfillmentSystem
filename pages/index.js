@@ -10,6 +10,7 @@ import Layout from "../HOC/Layout";
 import Login from "../components/Login";
 import Main from "../components/Main";
 import Screen from "../components/Main/Screen";
+import RegisterUser from "../components/Admin/RegisterUser"
 
 class Index extends Component {
   componentDidMount() {
@@ -31,14 +32,22 @@ class Index extends Component {
   render() {
     return (
       <Layout>
+        {console.log(this.props)}
         {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}
           showMoreMultipleFields={this.props.misc.showMoreMultipleFields}
           toggleShowMoreMultipleFields={this.props.toggleShowMoreMultipleFields}
+          showRegisterScreen={this.props.misc.showRegisterScreen}
+          toggleRegisterScreen={this.props.toggleRegisterScreen}
           {...this.props}
         />
+        {this.props.misc.showRegisterScreen ? 
+        <RegisterUser 
+        showRegisterScreen={this.props.misc.showRegisterScreen}
+        toggleRegisterScreen={this.props.toggleRegisterScreen}
+         /> : null }
 
         {this.props.misc.showScreen ? (
           <Screen
@@ -62,6 +71,7 @@ const mapDispatchToProps = dispatch => {
     verifyCredentials: input => dispatch(actions.verifyCredentials(input)),
     toggleLoginScreen: () => dispatch(actions.toggleLoginScreen()),
     toggleScreen: () => dispatch(actions.toggleScreen()),
+    toggleRegisterScreen: () => dispatch(actions.toggleRegisterScreen()),
     releaseCredentials: () => dispatch(actions.releaseCredentials()),
     toggleShowMoreMultipleFields: input =>
       dispatch(actions.toggleShowMoreMultipleFields(input)),
