@@ -57,7 +57,13 @@ const getActions = uri => {
           let _new = JSON.parse(data.data.fetchOrder);
           dispatch({
             type: actionTypes.FETCH_ORDER,
-            order: { ...input.order, item_list: _new }
+            order: {
+              ...input.order,
+              item_list: _new.itemList,
+              total_items: _new.totalItems
+            },
+            user: input.user,
+            company: input.company
           });
           return Promise.resolve(_new);
         });

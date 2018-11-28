@@ -31,12 +31,10 @@ class Index extends Component {
   render() {
     return (
       <Layout>
-        {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
+        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}
-          showMoreMultipleFields={this.props.misc.showMoreMultipleFields}
-          toggleShowMoreMultipleFields={this.props.toggleShowMoreMultipleFields}
           {...this.props}
         />
 
@@ -44,10 +42,6 @@ class Index extends Component {
           <Screen
             showScreen={this.props.misc.showScreen}
             toggleScreen={this.props.toggleScreen}
-            showMoreMultipleFields={this.props.misc.showMoreMultipleFields}
-            toggleShowMoreMultipleFields={
-              this.props.toggleShowMoreMultipleFields
-            }
             {...this.props}
           />
         ) : null}
@@ -63,10 +57,13 @@ const mapDispatchToProps = dispatch => {
     toggleLoginScreen: () => dispatch(actions.toggleLoginScreen()),
     toggleScreen: () => dispatch(actions.toggleScreen()),
     releaseCredentials: () => dispatch(actions.releaseCredentials()),
-    toggleShowMoreMultipleFields: input =>
-      dispatch(actions.toggleShowMoreMultipleFields(input)),
+    expandItem: input => dispatch(actions.expandItem(input)),
     focusCompany: input => dispatch(actions.focusCompany(input)),
-    fetchOrder: input => dispatch(actions.fetchOrder(input))
+    fetchOrder: input => dispatch(actions.fetchOrder(input)),
+    setMultiItemBase: input => dispatch(actions.setMutliItemBase(input)),
+    setItemValue: input => dispatch(actions.setItemValue(input)),
+    verifyItemList: input => dispatch(actions.verifyItemList(input)),
+    clearItem: () => dispatch(actions.clearItem())
   };
 };
 

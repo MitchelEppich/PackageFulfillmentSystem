@@ -11,11 +11,11 @@ import { updateObject } from "../utility";
 
 import userReducer from "./user";
 import navReducer from "./navigation";
+import itemReducer from "./itemHandler";
 
 const initialState = {
   showScreen: false,
   showLoginScreen: true,
-  showMoreMultipleFields: false,
   companies: [
     // {
     //   short: "",
@@ -83,10 +83,8 @@ const initialState = {
 const indexReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.TOGGLE_SCREEN:
-      return updateObject(state, { showScreen: !state.showScreen });
-    case actionTypes.TOGGLE_SHOW_MORE:
       return updateObject(state, {
-        showMoreMultipleFields: action.input
+        showScreen: !state.showScreen
       });
     case actionTypes.TOGGLE_LOGIN_SCREEN:
       return updateObject(state, {
@@ -102,5 +100,6 @@ const indexReducer = (state = initialState, action) => {
 export default combineReducers({
   misc: indexReducer,
   user: userReducer,
-  nav: navReducer
+  nav: navReducer,
+  item: itemReducer
 });

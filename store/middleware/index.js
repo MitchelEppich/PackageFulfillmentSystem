@@ -20,7 +20,7 @@ const middleware = [
         // if (true) return result;
 
         let who, task;
-        // console.log(action);
+        console.log(action);
         switch (action.type) {
           case actions.VERIFY_CREDENTIALS:
             if (action.user == null) break;
@@ -30,6 +30,15 @@ const middleware = [
           case actions.FOCUS_COMPANY:
             if (action.user == null) break;
             task = `Switched to ${action.name}`;
+            who = action.user.username;
+            break;
+          case actions.FETCH_ORDER:
+            console.log(action);
+            if (action.user == null) break;
+            if (action.company == null) break;
+            task = `Claimed order #${action.order.invoice_number} in ${
+              action.company.short
+            }`;
             who = action.user.username;
             break;
         }
@@ -42,7 +51,7 @@ const middleware = [
         // Create Action Record
         if (task != null && who != null) {
           makePromise(execute(link, operation)).then(data => {
-            // console.log(data);
+            console.log(data);
           });
         }
 

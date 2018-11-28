@@ -35,6 +35,7 @@ const resolvers = {
       });
     },
     fetchOrder: (_, { input }) => {
+      let totalItems = 0;
       return axios({
         method: "GET",
         url: `http://invoice.zoho.com/api/v3/invoices/${input.invoice_id}`,
@@ -46,15 +47,17 @@ const resolvers = {
           "X-com-zoho-invoice-organizationid": "59999705"
         }
       }).then(res => {
-        return JSON.stringify(
-          res.data.invoice.line_items.map(a => {
+        return JSON.stringify({
+          itemList: res.data.invoice.line_items.map(a => {
+            totalItems += a.quantity;
             return {
               name: a.name,
               description: a.description,
               quantity: a.quantity
             };
-          })
-        );
+          }),
+          totalItems
+        });
       });
     }
   },

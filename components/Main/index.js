@@ -60,7 +60,11 @@ const Main = props => {
             <div className="w-1/5 pl-2">
               <div
                 onClick={() => {
-                  props.fetchOrder({ order });
+                  props.fetchOrder({
+                    order: order,
+                    user: props.user.currentUser,
+                    company: props.nav.focusCompany
+                  });
                   props.toggleScreen();
                 }}
                 className="uppercase bg-blue-new text-white text-center px-3 py-2 cursor-pointer hover:bg-blue"
