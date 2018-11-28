@@ -26,7 +26,9 @@ const Screen = props => {
           <p className="text-lg ml-12">{item.description}</p>
         </div>
         <div
-          style={{ width: "35%" }}
+          style={{
+            width: "40%"
+          }}
           className="inline-flex ml-4 flex items-center"
         >
           <div style={{ width: "180px" }}>
@@ -44,14 +46,19 @@ const Screen = props => {
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
-                className={`ml-2 p-3 px-1 ${
+                className={`ml-2 p-3 px-1 w-16 ${
                   props.item.missedItems.includes(item.name) ? "bg-red" : ""
                 }`}
               />
             </p>
           </div>
         </div>
-        <div style={{ width: "15%" }} className="">
+        <div
+          style={{
+            width: "10%"
+          }}
+          className=""
+        >
           <p className="flex items-center">{item.quantity} Package</p>
         </div>
       </div>
@@ -100,7 +107,7 @@ const Screen = props => {
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
-                className={`ml-2 p-3 px-1 ${
+                className={`ml-2 p-3 px-1 w-16 ${
                   props.item.missedItems.includes(`${name}-${number}`)
                     ? "bg-red"
                     : ""
@@ -150,7 +157,9 @@ const Screen = props => {
             </p>
           </div>
           <div
-            style={{ width: "35%" }}
+            style={{
+              width: "40%"
+            }}
             className="ml-4 flex items-center inline-flex"
           >
             <div style={{ width: "180px" }}>
@@ -174,11 +183,11 @@ const Screen = props => {
                       item: item
                     });
                   }}
-                  size="3"
+                  size="30"
                   name="rangeMin"
                   placeholder="XXXX"
                   maxLength="4"
-                  className={`p-3 ml-2 px-1 mr-5 ${
+                  className={`p-3 ml-2 px-1 mr-5  w-16 ${
                     props.item.missedItems.includes(`${item.name}-0`)
                       ? "bg-orange"
                       : ""
@@ -187,7 +196,12 @@ const Screen = props => {
               </p>
             </div>
           </div>
-          <div style={{ width: "15%" }} className="">
+          <div
+            style={{
+              width: "10%"
+            }}
+            className=""
+          >
             <p className="flex items-center">{item.quantity} Packages</p>
           </div>
         </div>
@@ -271,6 +285,10 @@ const Screen = props => {
         <p className="uppercase p-2 text-center text-white font-bold">
           Finalize
         </p>
+      </div>
+      <div className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue">
+        {" "}
+        <p>Total Packages: {props.nav.focusOrder.total_items}</p>
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ const initialState = {
   showScreen: false,
   showLoginScreen: true,
   showRegisterScreen: false,
+  showLogScreen: false,
   companies: [
     // {
     //   short: "",
@@ -94,6 +95,10 @@ const indexReducer = (state = initialState, action) => {
     case actionTypes.TOGGLE_SHOW_REGISTER_SCREEN:
       return updateObject(state, {
         showRegisterScreen: !state.showRegisterScreen
+      });
+    case actionTypes.TOGGLE_SHOW_LOG:
+      return updateObject(state, {
+        showLogScreen: !state.showLogScreen
       });
 
     default:
