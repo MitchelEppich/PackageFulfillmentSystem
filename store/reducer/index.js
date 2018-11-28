@@ -9,77 +9,98 @@ import actionTypes from "../actions";
 import { combineReducers } from "redux";
 import { updateObject } from "../utility";
 
+import userReducer from "./user";
+import navReducer from "./navigation";
+
 const initialState = {
   showScreen: false,
+  showLoginScreen: true,
   showMoreMultipleFields: false,
-  companies: [    
+  companies: [
+    // {
+    //   short: "",
+    //   name: "",
+    //   number: 0,
+    //   orders: []
+    // },
     {
-      nick: "cks",
+      short: "mjsc.com",
+      name: "Mary Jane Seeds COM",
+      id: 1,
+      orders: []
+    },
+    {
+      short: "mjsc.ca",
+      name: "Mary Jane Seeds CA",
+      id: 3,
+      orders: []
+    },
+    {
+      short: "mjg",
+      name: "Mary Janes Garden",
+      id: 4,
+      orders: []
+    },
+    {
+      short: "swg",
+      name: "Sunwest Genetics",
+      id: 5,
+      orders: []
+    },
+    {
+      short: "cks",
       name: "Crop King Seeds",
-      number: "704",
-      orders: "64"
+      id: 6,
+      orders: []
     },
     {
-      nick: "snm",
-      name: "Sonoma Seeds",
-      number: "304",
-      orders: "39"
-    },
-    {
-      nick: "sw",
-      name: "SunWest Genetics",
-      number: "104",
-      orders: "32"
-    },
-    {
-      nick: "bv",
+      short: "bs",
       name: "Beaver Seeds",
-      number: "504",
-      orders: "5"
+      id: 7,
+      orders: []
     },
-     {
-      nick: "mjg",
-      name: "Crop King Seeds",
-      number: "604",
-      orders: "11"
+    {
+      short: "sns",
+      name: "Sonoma Seeds",
+      id: 8,
+      orders: []
     },
-     {
-      nick: "mjsc",
-      name: "Crop King Seeds",
-      number: "904",
-      orders: "14"
+    {
+      short: "sfs",
+      name: "Star Flower Seeds",
+      id: 9,
+      orders: []
     },
-     {
-      nick: "stf",
-      name: "Crop King Seeds",
-      number: "204",
-      orders: "34"
-    },
-     {
-      nick: "other",
-      name: "Crop King Seeds",
-      number: "404",
-      orders: "34"
-    },
-    ]
-}
+    {
+      short: "wholesale",
+      name: "wholesale",
+      id: 0,
+      orders: []
+    }
+  ]
+};
 
 const indexReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.TOGGLE_SCREEN:    
+    case actionTypes.TOGGLE_SCREEN:
+      return updateObject(state, { showScreen: !state.showScreen });
+    case actionTypes.TOGGLE_SHOW_MORE:
       return updateObject(state, {
-        showScreen: !state.showScreen
+        showMoreMultipleFields: action.input
       });
-    case actionTypes.TOGGLE_SHOW_MORE:    
+    case actionTypes.TOGGLE_LOGIN_SCREEN:
       return updateObject(state, {
-        showMoreMultipleFields: !state.showMoreMultipleFields
+        showLoginScreen: !state.showLoginScreen
       });
-   
+
     default:
       return state;
   }
 };
 
-export default indexReducer
-// export default combineReducers({
-// });
+// export default indexReducer;
+export default combineReducers({
+  misc: indexReducer,
+  user: userReducer,
+  nav: navReducer
+});

@@ -10,26 +10,39 @@ import { makePromise, execute } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
 import fetch from "node-fetch";
 
+import User from "./user";
+import Nav from "./navigation";
+
 const uri = "http://localhost:3000/graphql";
 
-const imports = {};
+const imports = {
+  ...User(uri),
+  ...Nav(uri)
+};
 
 const actionTypes = {
   TOGGLE_SCREEN: "TOGGLE_SCREEN",
   TOGGLE_SHOW_MORE: "TOGGLE_SHOW_MORE",
+  TOGGLE_LOGIN_SCREEN: "TOGGLE_LOGIN_SCREEN"
 };
 
 const actions = {
-  toggleScreen: () => {    
+  toggleScreen: () => {
     return {
-      type: actionTypes.TOGGLE_SCREEN,      
-    }  
+      type: actionTypes.TOGGLE_SCREEN
+    };
   },
-  toggleShowMoreMultipleFields: () => {    
+  toggleShowMoreMultipleFields: input => {
     return {
-      type: actionTypes.TOGGLE_SHOW_MORE,      
-    }  
+      type: actionTypes.TOGGLE_SHOW_MORE,
+      input: input
+    };
   },
+  toggleLoginScreen: () => {
+    return {
+      type: actionTypes.TOGGLE_LOGIN_SCREEN
+    };
+  }
 };
 
 const query = {};
