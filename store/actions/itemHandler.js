@@ -12,7 +12,9 @@ const actionTypes = {
   SET_MULTI_ITEM_BASE: "SET_MULTI_ITEM_BASE",
   SET_ITEM_VALUE: "SET_ITEM_VALUE",
   CLEAR_ITEM: "CLEAR_ITEM",
-  EXPAND_ITEM: "EXPAND_ITEM"
+  EXPAND_ITEM: "EXPAND_ITEM",
+  VERIFY_ITEM_LIST: "VERIFY_ITEM_LIST",
+  REMOVE_ITEM_MISSED: "REMOVE_ITEM_MISSED"
 };
 
 const getActions = uri => {
@@ -31,14 +33,15 @@ const getActions = uri => {
         let skipped = 0;
         for (let item = 0; item < input.item.quantity; item++) {
           let key = `${input.item.name}-${item}`;
-          if (input.itemValues[key] == null || !input.itemValues[key].user)
+          if (input.itemValues[key] == null || !input.itemValues[key].user) {
             input.itemValues[key] = {
               value: (parseInt(input.value) + item - skipped)
                 .toString()
                 .padStart(4, "0"),
               user: false
             };
-          else skipped++;
+            objects.removeItemMissed({ item: key });
+          } else skipped++;
         }
       }
 
@@ -53,6 +56,8 @@ const getActions = uri => {
         value: input.value,
         user: input.value != ""
       };
+
+      objects.removeItemMissed({ item: input.key });
 
       return {
         type: actionTypes.SET_ITEM_VALUE,
@@ -71,8 +76,37 @@ const getActions = uri => {
         input: input.expandItems
       };
     },
+    removeItemMissed: input => {
+      return {
+        type: actionTypes.REMOVE_ITEM_MISSED,
+        item: input.item
+      };
+    },
     verifyItemList: input => {
-      console.log(input);
+      let itemList = input.order.item_list.map(a => {
+        return { name: a.name, quantity: a.quantity };
+      });
+      let itemMissed = [];
+      let keyList = Object.keys(input.itemList);
+
+      for (let item of itemList) {
+        if (item.quantity == 1) {
+          if (!keyList.includes(item.name)) {
+            itemMissed.push(item.name);
+          }
+        } else {
+          for (let i = 0; i < item.quantity; i++) {
+            let itemName = `${item.name}-${i}`;
+            if (!keyList.includes(itemName)) {
+              itemMissed.push(itemName);
+            }
+          }
+        }
+      }
+      return {
+        type: actionTypes.VERIFY_ITEM_LIST,
+        input: itemMissed
+      };
     }
   };
 

@@ -9,7 +9,7 @@ const resolvers = {
     },
     allLogs: (_, { filter }) => {
       let query = filter ? { $or: logFilters(filter) } : {};
-      return Log.find(query);
+      return Log.find(query).sort({ createdAt: -1 });
     }
   },
   Log: {},

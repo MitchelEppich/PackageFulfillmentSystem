@@ -6,7 +6,9 @@ import {
   faMinus,
   faInfo,
   faAngleLeft,
-  faAngleDown
+  faAngleDown,
+  faAngleUp,
+  faAngleRight
 } from "@fortawesome/free-solid-svg-icons";
 import { onError } from "../../node_modules/apollo-link-error";
 
@@ -59,7 +61,9 @@ const Screen = props => {
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
-                className="ml-2 p-3 px-1 w-16"
+                className={`ml-2 p-3 px-1 w-16 ${
+                  props.item.missedItems.includes(item.name) ? "bg-red" : ""
+                }`}
               />
             </p>
           </div>
@@ -77,7 +81,7 @@ const Screen = props => {
   };
 
   let generateSubItem = (itemRef, number, name, value) => {
-    console.log(value);
+    // console.log(value);
     let _used = false;
     let item = (
       <div
@@ -118,7 +122,11 @@ const Screen = props => {
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
-                className="ml-2 p-3 px-1 w-16"
+                className={`ml-2 p-3 px-1 w-16 ${
+                  props.item.missedItems.includes(`${name}-${number}`)
+                    ? "bg-red"
+                    : ""
+                }`}
               />
             </p>
           </div>
@@ -205,7 +213,11 @@ const Screen = props => {
                   name="rangeMin"
                   placeholder="XXXX"
                   maxLength="4"
-                  className="p-3 ml-2 px-1 mr-5 w-16"
+                  className={`p-3 ml-2 px-1 mr-5  w-16 ${
+                    props.item.missedItems.includes(`${item.name}-0`)
+                      ? "bg-orange"
+                      : ""
+                  }`}
                 />
               </p>
             </div>
@@ -228,14 +240,80 @@ const Screen = props => {
     );
   };
 
-  let populateItems = items => {
-    let arr = [];
-    for (let item of items) {
-      arr.push(
-        item.quantity == 1 ? generateSingleItem(item) : generateMultiItem(item)
+  let populateItems = itemList => {
+    let companies = [];
+    for (let company in itemList) {
+      let quantities = [];
+      for (let quantity in itemList[company]) {
+        let items = [];
+        for (let item of Object.values(itemList[company][quantity])) {        
+          items.push(
+            <div>
+              {item.quantity == 1
+                ? generateSingleItem(item)
+                : generateMultiItem(item)}
+            </div>
+          );
+        }
+        let key = `${company}-${quantity}`;  
+        
+        let len = Object.keys(props.nav.focusOrder.item_list[company][quantity])
+        let qty = len.length       
+        // console.log("teste", props.item.expandItems)
+       
+        quantities.push(
+          <div>
+            <div
+              className="w-full cursor-pointer mt-2 p-2 pl-6 text-lg mx-0 bg-grey-light hover:bg-grey-lighter"
+              onClick={() => {                
+                props.expandItem({
+                  item: key,
+                  expandItems: props.item.expandItems                  
+                });               
+              }}
+            >
+              <span>
+              {props.item.expandItems.includes(key) 
+                ?
+                  <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
+                :
+                  <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
+                }
+                {quantity} Packs</span> 
+              
+              <span className="text-right text-grey-dark pin-r"> - ({qty} {qty == 1 ? "Item" : "Items" })</span> 
+
+            </div>
+            {props.item.expandItems.includes(key) ? items : null}
+          </div>
+        );
+      }
+      let key = company;
+      companies.push(
+        <div>
+          <div
+            className="w-full cursor-pointer mt-2 p-2 pl-6 text-lg mx-0 bg-blue-new text-white hover:bg-grey-dark"
+            onClick={() => {              
+              props.expandItem({
+                item: key,
+                expandItems: props.item.expandItems                
+              });            
+            }}
+          >
+          {props.item.expandItems.includes(key) 
+            ? 
+              <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
+            : 
+              <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
+            }
+            {company}
+          </div>
+          {props.item.expandItems.includes(key) ? quantities : null}
+        </div>
       );
     }
-    return arr;
+
+    return companies;
   };
 
   let showOrder = () => {
@@ -251,7 +329,7 @@ const Screen = props => {
             }}
             className="w-1/3 h-10 inline-flex"
           >
-            <h4 className="p-2 text-white uppercase text-lg bg-red flex items-center hover:bg-semi-transparent cursor-pointer">
+            <h4 className="p-2 text-white px-4  uppercase text-lg bg-red flex items-center hover:bg-semi-transparent cursor-pointer">
               <FontAwesomeIcon icon={faAngleLeft} className="fa-2x mr-4" />
               Back
             </h4>
@@ -286,11 +364,11 @@ const Screen = props => {
     );
   };
 
-
   return (
+   
     <div
       style={{
-        borderRadius: "10px",
+        // borderRadius: "10px",
         overflow: "hidden",
         background: "whitesmoke",
         boxShadow: "0px 0px 10px #cecece"
@@ -306,7 +384,7 @@ const Screen = props => {
             order: props.nav.focusOrder
           });
         }}
-      >       
+      >
         <p className="uppercase p-2 text-center text-white font-bold">
           Finalize
         </p>
@@ -315,7 +393,7 @@ const Screen = props => {
         className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue"        
       >  <p>Total Packages: {props.nav.focusOrder != null ? props.nav.focusOrder.total_items : ""}</p>       
         
-      </div>
+      </div> {console.log(props)}
     </div>
   );
 };

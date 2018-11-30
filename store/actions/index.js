@@ -49,7 +49,7 @@ const actions = {
     return {
       type: actionTypes.TOGGLE_SHOW_LOG
     };
-  },
+  }
 };
 
 const query = {};
