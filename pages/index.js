@@ -46,16 +46,18 @@ class Index extends Component {
           toggleShowLog={this.props.toggleShowLog}
           {...this.props}
         />
-        {this.props.misc.showLogScreen ? 
-        <Logs 
-          showLogScreen={this.props.misc.showLogScreen}
-          toggleShowLog={this.props.toggleShowLog}
-          {...this.props}
-        /> : null }
+        {this.props.misc.showLogScreen ? (
+          <Logs
+            showLogScreen={this.props.misc.showLogScreen}
+            toggleShowLog={this.props.toggleShowLog}
+            {...this.props}
+          />
+        ) : null}
         {this.props.misc.showRegisterScreen ? (
           <RegisterUser
             showRegisterScreen={this.props.misc.showRegisterScreen}
             toggleRegisterScreen={this.props.toggleRegisterScreen}
+            {...this.props}
           />
         ) : null}
 
@@ -75,6 +77,7 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchCredentials: () => dispatch(actions.fetchCredentials()),
     verifyCredentials: input => dispatch(actions.verifyCredentials(input)),
+    registerCredentials: input => dispatch(actions.registerCredentials(input)),
     toggleLoginScreen: () => dispatch(actions.toggleLoginScreen()),
     toggleScreen: () => dispatch(actions.toggleScreen()),
     toggleRegisterScreen: () => dispatch(actions.toggleRegisterScreen()),
@@ -86,6 +89,7 @@ const mapDispatchToProps = dispatch => {
     setMultiItemBase: input => dispatch(actions.setMutliItemBase(input)),
     setItemValue: input => dispatch(actions.setItemValue(input)),
     verifyItemList: input => dispatch(actions.verifyItemList(input)),
+    fetchLogs: input => dispatch(actions.fetchLogs(input)),
     clearItem: () => dispatch(actions.clearItem())
   };
 };

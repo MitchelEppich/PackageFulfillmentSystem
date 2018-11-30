@@ -27,7 +27,7 @@ const Main = props => {
               company: company,
               user: props.user.currentUser
             });
-          }}          
+          }}
           className={`${
             props.nav.focusCompany != null &&
             props.nav.focusCompany.id == company.id
@@ -80,7 +80,9 @@ const Main = props => {
     } else {
       return (
         <div className="inline-flex w-full p-2 text-center bg-grey-lighter mt-8">
-          <h3 className="text-center w-full">Please select your Company tab...</h3>
+          <h3 className="text-center w-full">
+            Please select your Company tab...
+          </h3>
         </div>
       );
     }
@@ -95,17 +97,17 @@ const Main = props => {
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
           <div className="w-2/4 mt-6 text-right mr-12">
-
             <a
-              onClick={() => {                
+              onClick={() => {
                 props.toggleShowLog();
+                props.fetchLogs();
               }}
               className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
             >
               Logs
             </a>
             <a
-              onClick={() => {                
+              onClick={() => {
                 props.toggleRegisterScreen();
               }}
               className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
@@ -122,7 +124,6 @@ const Main = props => {
             >
               Logout
             </a>
-
           </div>
         </div>
       </div>
@@ -139,10 +140,12 @@ const Main = props => {
         className="w-newScreen h-halfscreen text-white mt-16"
       >
         <div
-          style={{
-            // borderTopLeftRadius: "10px",
-            // borderTopRightRadius: "10px"
-          }}
+          style={
+            {
+              // borderTopLeftRadius: "10px",
+              // borderTopRightRadius: "10px"
+            }
+          }
           className="inline-flex w-full bg-blue-new justify-between"
         >
           {showCompanies()}
@@ -154,7 +157,7 @@ const Main = props => {
             <div className="w-3/5 pl-2">Order Number</div>
             <div className="w-1/5 text-center mr-4">Action</div>
           </div>
-          <div className="mt-6"></div>
+          <div className="mt-6" />
           {showOrders()}
         </div>
       </div>

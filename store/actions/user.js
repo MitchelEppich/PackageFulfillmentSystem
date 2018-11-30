@@ -11,7 +11,8 @@ import fetch from "node-fetch";
 const actionTypes = {
   VERIFY_CREDENTIALS: "VERIFY_CREDENTIALS",
   FETCH_CREDENTIALS: "FETCH_CREDENTIALS",
-  RELEASE_CREDENTIALS: "RELEASE_CREDENTIALS"
+  RELEASE_CREDENTIALS: "RELEASE_CREDENTIALS",
+  REGISTER_CREDENTIALS: "REGISTER_CREDENTIALS"
 };
 
 const getActions = uri => {
@@ -62,6 +63,29 @@ const getActions = uri => {
           sessionStorage.setItem("token", user.token);
           dispatch({
             type: actionTypes.VERIFY_CREDENTIALS,
+            user: user
+          });
+          return Promise.resolve(user);
+        });
+      };
+    },
+    registerCredentials: input => {
+      return dispatch => {
+        const link = new HttpLink({
+          uri,
+          fetch: fetch
+        });
+        const operation = {
+          query: mutation.registerCredentials,
+          variables: {
+            name: input.name,
+            admin: input.admin
+          }
+        };
+        return makePromise(execute(link, operation)).then(data => {
+          let user = data.data.registerCredentials;
+          dispatch({
+            type: actionTypes.REGISTER_CREDENTIALS,
             user: user
           });
           return Promise.resolve(user);

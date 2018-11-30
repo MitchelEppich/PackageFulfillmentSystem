@@ -214,14 +214,59 @@ const Screen = props => {
     );
   };
 
-  let populateItems = items => {
-    let arr = [];
-    for (let item of items) {
-      arr.push(
-        item.quantity == 1 ? generateSingleItem(item) : generateMultiItem(item)
+  let populateItems = itemList => {
+    let companies = [];
+    for (let company in itemList) {
+      let quantities = [];
+      for (let quantity in itemList[company]) {
+        let items = [];
+        for (let item of Object.values(itemList[company][quantity])) {
+          items.push(
+            <div>
+              {item.quantity == 1
+                ? generateSingleItem(item)
+                : generateMultiItem(item)}
+            </div>
+          );
+        }
+        let key = `${company}-${quantity}`;
+        quantities.push(
+          <div>
+            <div
+              className="w-full mt-2 mx-0 bg-grey-light"
+              onClick={() => {
+                props.expandItem({
+                  item: key,
+                  expandItems: props.item.expandItems
+                });
+              }}
+            >
+              {quantity}
+            </div>
+            {props.item.expandItems.includes(key) ? items : null}
+          </div>
+        );
+      }
+      let key = company;
+      companies.push(
+        <div>
+          <div
+            className="w-full mt-2 mx-0 bg-grey-light"
+            onClick={() => {
+              props.expandItem({
+                item: key,
+                expandItems: props.item.expandItems
+              });
+            }}
+          >
+            {company}
+          </div>
+          {props.item.expandItems.includes(key) ? quantities : null}
+        </div>
       );
     }
-    return arr;
+
+    return companies;
   };
 
   let showOrder = () => {
@@ -288,7 +333,10 @@ const Screen = props => {
       </div>
       <div className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue">
         {" "}
-        <p>Total Packages: {props.nav.focusOrder.total_items}</p>
+        <p>
+          Total Packages:{" "}
+          {props.nav.focusOrder != null ? props.nav.focusOrder.total_items : ""}
+        </p>
       </div>
     </div>
   );

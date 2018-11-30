@@ -2,7 +2,8 @@ import actionTypes from "../actions";
 import { updateObject } from "../utility";
 
 const initialState = {
-  currentUser: null
+  currentUser: null,
+  registerUser: null
 };
 
 export default (state = initialState, action) => {
@@ -13,6 +14,8 @@ export default (state = initialState, action) => {
       return updateObject(state, { currentUser: action.user });
     case actionTypes.RELEASE_CREDENTIALS:
       return updateObject(state, { currentUser: null });
+    case actionTypes.REGISTER_CREDENTIALS:
+      return updateObject(state, { registerUser: action.user });
     default:
       return state;
   }

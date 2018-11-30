@@ -7,12 +7,17 @@ type Query {
   allUsers(filter: UserFilter): [User]!
   log(input: LogInput!): Log
   allLogs(filter: LogFilter): [Log]!
-  fetchOrderList: String
+  fetchOrderList(input: OrderListInput): String
   fetchOrder(input: OrderInput): String
 }
 
 input OrderInput {
   invoice_id: String
+}
+
+input OrderListInput {
+  headers: String
+  url: String
 }
 
 input UserFilter {

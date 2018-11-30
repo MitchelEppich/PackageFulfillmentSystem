@@ -3,6 +3,70 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faInfo, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
 const RegisterUser = props => {
+  let showRegisterForm = () => {
+    return (
+      <div>
+        <p className="p-2">Please, insert the information below:</p>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new window.FormData(form);
+
+            let name = formData.get("name");
+            let admin = formData.get("admin");
+
+            // Verify login credentials
+            props.registerCredentials({ name, admin });
+          }}
+        >
+          <div className="text-center mt-6">
+            <div className="p-2">
+              <input
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Name"
+                className="p-2 w-2/3"
+              />
+            </div>
+            <div className="p-2 w-full text-left ml-20">
+              <input
+                type="checkbox"
+                name="admin"
+                id="admin"
+                value="admin"
+                className="p-2"
+              />
+              <label className="p-2">Is the user Administrator?</label>
+            </div>
+            <button
+              type="submit"
+              className="bg-blue-new text-white mt-6 p-2 text-center mx-auto w-2/3 justify-center cursor-pointer hover:bg-blue"
+            >
+              Register
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  };
+
+  let showCompletion = () => {
+    if (props.user.registerUser == null) return;
+    let _new = props.user.registerUser;
+    return (
+      <div>
+        <p>Success!</p>
+        <div>
+          <p>{_new.name.toUpperCase()} has been created.</p>
+          <p>Username : {_new.username}</p>
+          <p>Badge : {_new.badge}</p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       className="bg-blue-new h-full w-full relative overflow-x-hidden overflow-y-hidden"
@@ -35,52 +99,9 @@ const RegisterUser = props => {
             <FontAwesomeIcon icon={faTimes} className="fa-2x" />
           </div>
         </div>
-        <p className="p-2">Please, insert the information below:</p>
-
-        <form
-        //   onSubmit={e => {
-        //     e.preventDefault();
-        //     const form = e.target;
-        //     const formData = new window.FormData(form);
-
-        //     let username = formData.get("username");
-        //     let badge = formData.get("badge");
-
-        //     // Verify login credentials
-        //     props.verifyCredentials({ username, badge }).then(res => {
-        //       if (res == null) return;
-        //       props.toggleLoginScreen();
-        //     });
-        //   }}
-        >
-          <div className="text-center mt-6">
-            <div className="p-2">
-              <input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Name"
-                className="p-2 w-2/3"
-              />
-            </div>
-            <div className="p-2 w-full text-left ml-20">
-              <input
-                type="checkbox"
-                name="admin"
-                id="admin"
-                value="admin"
-                className="p-2"
-              />
-              <label className="p-2">Is the user Administrator?</label>
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-new text-white mt-6 p-2 text-center mx-auto w-2/3 justify-center cursor-pointer hover:bg-blue"
-            >
-              Register
-            </button>
-          </div>
-        </form>
+        {props.user.registerUser == null
+          ? showRegisterForm()
+          : showCompletion()}
       </div>
     </div>
   );
