@@ -11,7 +11,6 @@ const resolvers = {
     ...UserResolvers.Query,
     ...LogResolvers.Query,
     fetchOrderList: (_, { input }) => {
-      console.log(input);
       return axios({
         method: "GET",
         url: input.url,
@@ -23,19 +22,43 @@ const resolvers = {
           "X-com-zoho-invoice-organizationid": "59999705"
         }
       }).then(res => {
-        console.log("hello");
         let data = res.data;
+        let invoices = [];
         // Parse XML if xml
         if (JSON.stringify(data).includes("xml")) {
           let _break = data
-            .substring(data.indexOf("<br/><br/>") + 10, data.indexOf("<?xml?>"))
+            .substring(
+              data.indexOf("<br/><br/>") + 10,
+              data.indexOf("<br/><br/><?xml?>")
+            )
             .split("<br/><br/>");
           for (let order of _break) {
             let _object = parseXml(order);
-            console.log(_object);
+
+            invoices.push({
+              invoice_id: _object.UniqueID,
+              customer_name: `${_object.ShipFirstName} ${_object.ShipLastName}`,
+              invoice_number: _object.OrderNumber,
+              date: _object.ApprovedDate,
+              item_list: _object.item_list.map(a => {
+                let _break = a.Productname.split("-");
+                let _company = _object.OrderNumber.split("-")[2];
+                let _prodName = _break[1];
+                let _quantity = parseInt(a.ProductQty.replace("QTY"));
+                let _shortId = _break[0];
+                return {
+                  name: `${_shortId}-${_quantity
+                    .toString()
+                    .padStart(2, "0")}-${_company}`,
+                  description: `${_company} - ${_prodName}`,
+                  quantity: _quantity,
+                  type: 0
+                };
+              })
+            });
           }
         } else {
-          let invoices = data.invoices
+          invoices = data.invoices
             .filter(a => {
               if (a.status == "draft") return true;
               return false;
@@ -49,8 +72,8 @@ const resolvers = {
                 date: a.date
               };
             });
-          return JSON.stringify(invoices);
         }
+        return JSON.stringify(invoices);
       });
     },
     fetchOrder: (_, { input }) => {
@@ -133,29 +156,22 @@ let categorizeOrder = order => {
 
 let parseXml = (order, _itemizing = false) => {
   let _new = {};
-  // let regex = new RegExp("<br/>", "g");
-  // order = order.replace(regex, "");
-
   while (order.length != 0) {
+    if (order.indexOf("<br/>") == 0) {
+      if (!_itemizing) {
+        if (_new["item_list"] == null) _new["item_list"] = [];
+        order = order.substring(5, order.length);
+        _new["item_list"].push(parseXml(order, true));
+      } else break;
+    }
+
     _res = acquireAttribute(order);
     _new[_res.key] = _res.value;
     order = _res.string;
-    // if (order.indexOf("<br/>") == 0) {
-    //   if (!_itemizing) {
-    //     _new["item_list"] = parseXml(
-    //       order.substring(5, order.indexOf("<br/><br/>")),
-    //       true
-    //     );
-    //   } else {
-    //     // Add new items to _new when found
-    //   }
-    // }
   }
 
   return _new;
 };
-
-let buildAttribute = string => {};
 
 let acquireAttribute = string => {
   let key = string.indexOf("<") + 1;
