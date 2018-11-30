@@ -26,6 +26,7 @@ const Main = props => {
           onClick={() => {
             props.focusCompany({
               company: company,
+              orderCache: props.nav.orderCache,
               user: props.user.currentUser
             });
           }}
@@ -61,6 +62,7 @@ const Main = props => {
             <div className="w-1/4">Order #{order.invoice_number}</div>
             <div className="w-1/4">{order.date}</div>
             <div className="w-1/4 pl-2">
+            {console.log(order, "teste", props.nav.focusCompany)}
               <div
                 onClick={() => {
                   props.fetchOrder({

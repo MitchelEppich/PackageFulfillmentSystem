@@ -86,6 +86,7 @@ const mapDispatchToProps = dispatch => {
     expandItem: input => dispatch(actions.expandItem(input)),
     focusCompany: input => dispatch(actions.focusCompany(input)),
     fetchOrder: input => dispatch(actions.fetchOrder(input)),
+    fetchOrderList: input => dispatch(actions.fetchOrderList(input)),
     setMultiItemBase: input => dispatch(actions.setMutliItemBase(input)),
     setItemValue: input => dispatch(actions.setItemValue(input)),
     verifyItemList: input => dispatch(actions.verifyItemList(input)),
