@@ -6,7 +6,9 @@ import {
   faMinus,
   faInfo,
   faAngleLeft,
-  faAngleDown
+  faAngleDown,
+  faAngleUp,
+  faAngleRight
 } from "@fortawesome/free-solid-svg-icons";
 import { onError } from "../../node_modules/apollo-link-error";
 
@@ -22,12 +24,25 @@ const Screen = props => {
         className="inline-flex flex bg-white items-center w-full mx-auto my-2 p-1"
         key={item.name}
       >
-        <div style={{ width: "50%" }} className="">
-          <p className="text-lg ml-12">{item.description}</p>
-        </div>
         <div
           style={{
             width: "40%"
+          }}
+          className=""
+        >
+          <p className="text-lg ml-6">{item.description}</p>
+        </div>
+        <div
+          style={{
+            width: "20%"
+          }}
+          className=""
+        >
+          <p className="text-lg ml-12">{item.name}</p>
+        </div>
+        <div
+          style={{
+            width: "30%"
           }}
           className="inline-flex ml-4 flex items-center"
         >
@@ -66,14 +81,14 @@ const Screen = props => {
   };
 
   let generateSubItem = (itemRef, number, name, value) => {
-    console.log(value);
+    // console.log(value);
     let _used = false;
     let item = (
       <div
         className="bg-semi-transparent w-full flex items-center mt-1 h-12 inline-flex"
         key={`${name}${number + 1}`}
       >
-        <div className="w-1/2 pl-16">
+        <div style={{width: "73%"}} className="ml-1 pl-16">
           <p>Package #{number + 1}</p>
         </div>
         <div className="w-1/2 inline-flex flex pl-2 items-center">
@@ -142,7 +157,9 @@ const Screen = props => {
       >
         <div className="inline-flex w-full flex items-center">
           <div
-            style={{ width: "50%" }}
+            style={{
+              width: "40%"
+            }}
             className="flex items-center cursor-pointer hover:opacity-50"
             onClick={() => {
               props.expandItem({
@@ -151,14 +168,23 @@ const Screen = props => {
               });
             }}
           >
-            <p className="text-lg ml-10 flex items-center">
+            <p className="text-lg ml-5 flex items-center">
               <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" />
               {item.description}
             </p>
           </div>
           <div
+          style={{
+            width: "20%"
+          }}
+          className=""
+        >
+          <p className="text-lg ml-12">{item.name}</p>
+        </div>
+          
+          <div
             style={{
-              width: "40%"
+              width: "30%"
             }}
             className="ml-4 flex items-center inline-flex"
           >
@@ -220,7 +246,7 @@ const Screen = props => {
       let quantities = [];
       for (let quantity in itemList[company]) {
         let items = [];
-        for (let item of Object.values(itemList[company][quantity])) {
+        for (let item of Object.values(itemList[company][quantity])) {        
           items.push(
             <div>
               {item.quantity == 1
@@ -229,19 +255,34 @@ const Screen = props => {
             </div>
           );
         }
-        let key = `${company}-${quantity}`;
+        let key = `${company}-${quantity}`;  
+        
+        let len = Object.keys(props.nav.focusOrder.item_list[company][quantity])
+        let qty = len.length       
+        // console.log("teste", props.item.expandItems)
+       
         quantities.push(
           <div>
             <div
-              className="w-full mt-2 mx-0 bg-grey-light"
-              onClick={() => {
+              className="w-full cursor-pointer mt-2 p-2 pl-6 text-lg mx-0 bg-grey-light hover:bg-grey-lighter"
+              onClick={() => {                
                 props.expandItem({
                   item: key,
-                  expandItems: props.item.expandItems
-                });
+                  expandItems: props.item.expandItems                  
+                });               
               }}
             >
-              {quantity}
+              <span>
+              {props.item.expandItems.includes(key) 
+                ?
+                  <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
+                :
+                  <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
+                }
+                {quantity} Packs</span> 
+              
+              <span className="text-right text-grey-dark pin-r"> - ({qty} {qty == 1 ? "Item" : "Items" })</span> 
+
             </div>
             {props.item.expandItems.includes(key) ? items : null}
           </div>
@@ -251,14 +292,20 @@ const Screen = props => {
       companies.push(
         <div>
           <div
-            className="w-full mt-2 mx-0 bg-grey-light"
-            onClick={() => {
+            className="w-full cursor-pointer mt-2 p-2 pl-6 text-lg mx-0 bg-blue-new text-white hover:bg-grey-dark"
+            onClick={() => {              
               props.expandItem({
                 item: key,
-                expandItems: props.item.expandItems
-              });
+                expandItems: props.item.expandItems                
+              });            
             }}
           >
+          {props.item.expandItems.includes(key) 
+            ? 
+              <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
+            : 
+              <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
+            }
             {company}
           </div>
           {props.item.expandItems.includes(key) ? quantities : null}
@@ -282,7 +329,7 @@ const Screen = props => {
             }}
             className="w-1/3 h-10 inline-flex"
           >
-            <h4 className="p-2 text-white uppercase text-lg bg-red flex items-center hover:bg-semi-transparent cursor-pointer">
+            <h4 className="p-2 text-white px-4  uppercase text-lg bg-red flex items-center hover:bg-semi-transparent cursor-pointer">
               <FontAwesomeIcon icon={faAngleLeft} className="fa-2x mr-4" />
               Back
             </h4>
@@ -298,8 +345,18 @@ const Screen = props => {
         </div>
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
           <div className="inline-flex w-full absolute pin-l pin-t p-1 mt-10 bg-grey-darker uppercase text-white text-sm">
-            <div className="w-1/2 pl-24">Strain Name</div>
-            <div className="w-1/2">STT Number</div>
+            <div 
+            style={{width:"40%"}}
+            className="w-1/4 pl-24">Description</div>
+            <div 
+            style={{width:"20%"}}
+            className="w-1/4 pl-10">Strain Code</div>
+            <div 
+            style={{width:"30%"}}
+            className="w-1/4 pl-24">STT Number</div>
+            <div 
+            style={{width:"10%"}}
+            className="w-1/4">Quantity</div>
           </div>
           {populateItems(order.item_list)}
         </div>
@@ -308,9 +365,10 @@ const Screen = props => {
   };
 
   return (
+   
     <div
       style={{
-        borderRadius: "10px",
+        // borderRadius: "10px",
         overflow: "hidden",
         background: "whitesmoke",
         boxShadow: "0px 0px 10px #cecece"
@@ -331,13 +389,11 @@ const Screen = props => {
           Finalize
         </p>
       </div>
-      <div className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue">
-        {" "}
-        <p>
-          Total Packages:{" "}
-          {props.nav.focusOrder != null ? props.nav.focusOrder.total_items : ""}
-        </p>
-      </div>
+      <div
+        className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue"        
+      >  <p>Total Packages: {props.nav.focusOrder != null ? props.nav.focusOrder.total_items : ""}</p>       
+        
+      </div> {console.log(props)}
     </div>
   );
 };

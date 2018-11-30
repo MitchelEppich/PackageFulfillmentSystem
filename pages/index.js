@@ -27,7 +27,7 @@ class Index extends Component {
         if (res == null) return;
         this.props.toggleLoginScreen();
       });
-    }
+    }   
   }
 
   render() {

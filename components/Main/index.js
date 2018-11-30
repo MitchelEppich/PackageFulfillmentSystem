@@ -6,7 +6,8 @@ import {
   faPlus,
   faMinus,
   faInfo,
-  faInfoCircle
+  faInfoCircle,
+  faSyncAlt
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faPlus, faMinus, faInfo);
@@ -50,14 +51,16 @@ const Main = props => {
       let arr = [];
       let index = 1;
       for (let order of orders) {
+        // console.log(order.date)
         arr.push(
           <div
             className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"
             key={order.invoice_id}
           >
-            <div className="w-1/5 pl-2">{index}</div>
-            <div className="w-3/5 pl-2">Order #{order.invoice_number}</div>
-            <div className="w-1/5 pl-2">
+            <div className="w-1/4 pl-8">{index}</div>
+            <div className="w-1/4">Order #{order.invoice_number}</div>
+            <div className="w-1/4">{order.date}</div>
+            <div className="w-1/4 pl-2">
               <div
                 onClick={() => {
                   props.fetchOrder({
@@ -97,7 +100,7 @@ const Main = props => {
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
           <div className="w-2/4 mt-6 text-right mr-12">
-            <a
+            {!props.showScreen ? <a
               onClick={() => {
                 props.toggleShowLog();
                 props.fetchLogs();
@@ -105,7 +108,15 @@ const Main = props => {
               className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
             >
               Logs
-            </a>
+            </a> 
+            : 
+            <a
+              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+            >
+              Logs
+            </a> }
+
+            {!props.showScreen ?
             <a
               onClick={() => {
                 props.toggleRegisterScreen();
@@ -114,7 +125,14 @@ const Main = props => {
             >
               Register New User
             </a>
-
+            :
+            <a              
+              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+            >
+              Register New User
+            </a> }
+            
+            {!props.showScreen ?
             <a
               onClick={() => {
                 props.releaseCredentials();
@@ -124,6 +142,12 @@ const Main = props => {
             >
               Logout
             </a>
+            :
+            <a              
+              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
+            >
+              Logout
+            </a> }
           </div>
         </div>
       </div>
@@ -139,6 +163,14 @@ const Main = props => {
         }}
         className="w-newScreen h-halfscreen text-white mt-16"
       >
+      <div 
+        onClick={()=>{
+          console.log("Test")
+        }}
+        className="p-2 text-right text-blue-new hover:text-blue cursor-pointer mb-2">
+
+          <span className="mr-24 text-sm text-blue-new w-full text-right">Last update: 2018-11-30 at 09:10:22</span>
+          <span className="font-bold uppercase text-lg mr-1">Update</span> <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" /></div>
         <div
           style={
             {
@@ -153,13 +185,15 @@ const Main = props => {
 
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
           <div className="inline-flex w-full p-1 bg-grey-darker uppercase text-white text-sm absolute">
-            <div className="w-1/5 pl-2">Number</div>
-            <div className="w-3/5 pl-2">Order Number</div>
-            <div className="w-1/5 text-center mr-4">Action</div>
+            <div className="w-1/4 pl-3">Number</div>
+            <div className="w-1/4 pl-5">Order Number</div>
+            <div className="w-1/4 pl-8">Date</div>
+            <div className="w-1/4 text-center mr-4 pl-4">Action</div>
           </div>
           <div className="mt-6" />
           {showOrders()}
         </div>
+        
       </div>
     </div>
   );
