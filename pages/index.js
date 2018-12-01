@@ -17,8 +17,9 @@ class Index extends Component {
   componentDidMount() {
     this.props.fetchCredentials().then(res => {
       if (res == null) return;
-      this.props.toggleLoginScreen();
+      this.props.toggleLoginScreen();      
     });
+    
   }
 
   componentDidUpdate(prevProps) {
@@ -33,7 +34,7 @@ class Index extends Component {
   render() {
     return (
       <Layout>
-        {/* {console.log(this.props)} */}
+        {console.log(this.props.nav.orderCache)}
         {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
@@ -86,6 +87,7 @@ const mapDispatchToProps = dispatch => {
     expandItem: input => dispatch(actions.expandItem(input)),
     focusCompany: input => dispatch(actions.focusCompany(input)),
     fetchOrder: input => dispatch(actions.fetchOrder(input)),
+    fetchOrderList: input => dispatch(actions.fetchOrderList(input)),
     setMultiItemBase: input => dispatch(actions.setMutliItemBase(input)),
     setItemValue: input => dispatch(actions.setItemValue(input)),
     verifyItemList: input => dispatch(actions.verifyItemList(input)),

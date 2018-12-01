@@ -12,19 +12,21 @@ const actionTypes = {
   FOCUS_COMPANY: "FOCUS_COMPANY",
   FETCH_ORDER_LIST: "FETCH_ORDER_LIST",
   FETCH_ORDER: "FETCH_ORDER",
-  FETCH_LOGS: "FETCH_LOGS"
+  FETCH_LOGS: "FETCH_LOGS",
+  ORDER_CACHE: "ORDER_CACHE"
 };
 
 const getActions = uri => {
   const objects = {
-    focusCompany: input => {
+    focusCompany: (input, orders) => {
       return dispatch => {
         let company = input.company;
         dispatch(
           objects.fetchOrderList({
             url: company.url,
-            headers:
-              company.headers != null ? JSON.stringify(company.headers) : ""
+            company: company,
+            orderCache: input.orderCache,
+            orders: orders
           })
         ).then(orders => {
           dispatch({
@@ -47,8 +49,19 @@ const getActions = uri => {
 
         return makePromise(execute(link, operation)).then(data => {
           let _order = JSON.parse(data.data.fetchOrderList);
+          // 0 - Create 'orderCache'
+          // 1 - Ensure that 'orderCache' is being passed into input
+          // 2 - Ensure that 'focusCompany' is being passed into input
+          // 3 - Objective -> Replace the current order list of said 'focusCompany' with the new order list which is passed in through input (you will have to use a -- for(let company of orderCache) --)
+          // 4 - Call all order lists when user logs in
+          // 5 - Visually show that an order list is CURRENTLY in the process of being fetched on the tabs and also on the 'update' button/icon/'last updated' text
+          input.orderCache[input.company.short] = {
+            order: _order,
+            updatedAt: new Date()
+          };
           dispatch({
-            type: actionTypes.FETCH_ORDER_LIST
+            type: actionTypes.FETCH_ORDER_LIST,
+            input: input.orderCache
           });
           return Promise.resolve(_order);
         });

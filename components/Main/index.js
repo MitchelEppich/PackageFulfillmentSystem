@@ -10,10 +10,13 @@ import {
   faSyncAlt
 } from "@fortawesome/free-solid-svg-icons";
 
+import moment from "moment"
+
 library.add(faPlus, faMinus, faInfo);
 
 const Main = props => {
-  let companies = props.misc.companies;
+  let companies = props.misc.companies;  
+  let orderCache = props.nav.orderCache
   let _name =
     props.user.currentUser != null ? props.user.currentUser.name : "NO NAME";
 
@@ -26,6 +29,7 @@ const Main = props => {
           onClick={() => {
             props.focusCompany({
               company: company,
+              orderCache: props.nav.orderCache,
               user: props.user.currentUser
             });
           }}
@@ -36,14 +40,16 @@ const Main = props => {
               : "hover:bg-semi-transparent"
           } w-1/8 p-2 justify-center border-semi-transparent h-10 flex items-center border-r-2 font-bold cursor-pointer leading-normal leading-normal uppercase`}
         >
-          {" "}
+                  {" "}
           {company.short}{" "}
-          <span className="qtd-tag"> {company.orders.length}</span>
+          <span className="qtd-tag"> {props.nav.orderCache[company.short.toLowerCase()] != null && props.nav.orderCache[company.short.toLowerCase()].order != null ? props.nav.orderCache[company.short.toLowerCase()].order.length : -1}</span>
         </div>
       );
     }
     return arr;
   };
+
+ 
 
   let showOrders = () => {
     if (props.nav.focusCompany != null) {
@@ -60,7 +66,7 @@ const Main = props => {
             <div className="w-1/4 pl-8">{index}</div>
             <div className="w-1/4">Order #{order.invoice_number}</div>
             <div className="w-1/4">{order.date}</div>
-            <div className="w-1/4 pl-2">
+            <div className="w-1/4 pl-2">            
               <div
                 onClick={() => {
                   props.fetchOrder({
@@ -169,7 +175,7 @@ const Main = props => {
         }}
         className="p-2 text-right text-blue-new hover:text-blue cursor-pointer mb-2">
 
-          <span className="mr-24 text-sm text-blue-new w-full text-right">Last update: 2018-11-30 at 09:10:22</span>
+          <span className="mr-24 text-sm text-blue-new w-full text-right">Last update: {moment(props.nav.orderCache[props.nav.focusCompany.short.toLowerCase()].updatedAt).format("hh:mm:ss DD:MM:YYYY")}</span>
           <span className="font-bold uppercase text-lg mr-1">Update</span> <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" /></div>
         <div
           style={
