@@ -10,13 +10,13 @@ import {
   faSyncAlt
 } from "@fortawesome/free-solid-svg-icons";
 
-import moment from "moment"
+import moment from "moment";
 
 library.add(faPlus, faMinus, faInfo);
 
 const Main = props => {
-  let companies = props.misc.companies;  
-  let orderCache = props.nav.orderCache
+  let companies = props.misc.companies;
+  let orderCache = props.nav.orderCache;
   let _name =
     props.user.currentUser != null ? props.user.currentUser.name : "NO NAME";
 
@@ -40,16 +40,20 @@ const Main = props => {
               : "hover:bg-semi-transparent"
           } w-1/8 p-2 justify-center border-semi-transparent h-10 flex items-center border-r-2 font-bold cursor-pointer leading-normal leading-normal uppercase`}
         >
-                  {" "}
+          {" "}
           {company.short}{" "}
-          <span className="qtd-tag"> {props.nav.orderCache[company.short.toLowerCase()] != null && props.nav.orderCache[company.short.toLowerCase()].order != null ? props.nav.orderCache[company.short.toLowerCase()].order.length : -1}</span>
+          <span className="qtd-tag">
+            {" "}
+            {props.nav.orderCache[company.short.toLowerCase()] != null &&
+            props.nav.orderCache[company.short.toLowerCase()].order != null
+              ? props.nav.orderCache[company.short.toLowerCase()].order.length
+              : -1}
+          </span>
         </div>
       );
     }
     return arr;
   };
-
- 
 
   let showOrders = () => {
     if (props.nav.focusCompany != null) {
@@ -66,7 +70,7 @@ const Main = props => {
             <div className="w-1/4 pl-8">{index}</div>
             <div className="w-1/4">Order #{order.invoice_number}</div>
             <div className="w-1/4">{order.date}</div>
-            <div className="w-1/4 pl-2">            
+            <div className="w-1/4 pl-2">
               <div
                 onClick={() => {
                   props.fetchOrder({
@@ -106,54 +110,52 @@ const Main = props => {
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
           <div className="w-2/4 mt-6 text-right mr-12">
-            {!props.showScreen ? <a
-              onClick={() => {
-                props.toggleShowLog();
-                props.fetchLogs();
-              }}
-              className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
-            >
-              Logs
-            </a> 
-            : 
-            <a
-              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
-            >
-              Logs
-            </a> }
+            {!props.showScreen ? (
+              <a
+                onClick={() => {
+                  props.toggleShowLog();
+                  props.fetchLogs();
+                }}
+                className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+              >
+                Logs
+              </a>
+            ) : (
+              <a className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2">
+                Logs
+              </a>
+            )}
 
-            {!props.showScreen ?
-            <a
-              onClick={() => {
-                props.toggleRegisterScreen();
-              }}
-              className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
-            >
-              Register New User
-            </a>
-            :
-            <a              
-              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
-            >
-              Register New User
-            </a> }
-            
-            {!props.showScreen ?
-            <a
-              onClick={() => {
-                props.releaseCredentials();
-                props.toggleLoginScreen();
-              }}
-              className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
-            >
-              Logout
-            </a>
-            :
-            <a              
-              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
-            >
-              Logout
-            </a> }
+            {!props.showScreen ? (
+              <a
+                onClick={() => {
+                  props.toggleRegisterScreen();
+                }}
+                className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+              >
+                Register New User
+              </a>
+            ) : (
+              <a className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2">
+                Register New User
+              </a>
+            )}
+
+            {!props.showScreen ? (
+              <a
+                onClick={() => {
+                  props.releaseCredentials();
+                  props.toggleLoginScreen();
+                }}
+                className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
+              >
+                Logout
+              </a>
+            ) : (
+              <a className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4">
+                Logout
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -169,21 +171,30 @@ const Main = props => {
         }}
         className="w-newScreen h-halfscreen text-white mt-16"
       >
-      <div 
-        onClick={()=>{
-          console.log("Test")
-        }}
-        className="p-2 text-right text-blue-new hover:text-blue cursor-pointer mb-2">
-
-          <span className="mr-24 text-sm text-blue-new w-full text-right">Last update: {moment(props.nav.orderCache[props.nav.focusCompany.short.toLowerCase()].updatedAt).format("hh:mm:ss DD:MM:YYYY")}</span>
-          <span className="font-bold uppercase text-lg mr-1">Update</span> <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" /></div>
         <div
-          style={
-            {
-              // borderTopLeftRadius: "10px",
-              // borderTopRightRadius: "10px"
-            }
-          }
+          onClick={() => {
+            console.log("Test");
+          }}
+          className="p-2 text-right text-blue-new hover:text-blue cursor-pointer mb-2"
+        >
+          <span className="mr-24 text-sm text-blue-new w-full text-right">
+            Last update:{" "}
+            {props.nav.focusCompany != null
+              ? moment(
+                  props.nav.orderCache[
+                    props.nav.focusCompany.short.toLowerCase()
+                  ].updatedAt
+                ).format("hh:mm:ss DD:MM:YYYY")
+              : "LOADING . . ."}
+          </span>
+          <span className="font-bold uppercase text-lg mr-1">Update</span>{" "}
+          <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" />
+        </div>
+        <div
+          style={{
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px"
+          }}
           className="inline-flex w-full bg-blue-new justify-between"
         >
           {showCompanies()}
@@ -199,7 +210,6 @@ const Main = props => {
           <div className="mt-6" />
           {showOrders()}
         </div>
-        
       </div>
     </div>
   );

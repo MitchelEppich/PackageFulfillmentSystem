@@ -71,7 +71,7 @@ const initialState = {
       url: "https://www.cksoti.com/getalldispatchorderdetail/beaverseeds.ca"
     },
     {
-      short: "sns",
+      short: "snm",
       name: "Sonoma Seeds",
       id: 8,
       orders: [],

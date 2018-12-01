@@ -25,8 +25,7 @@ const getActions = uri => {
           objects.fetchOrderList({
             url: company.url,
             company: company,
-            orderCache: input.orderCache,
-            orders: orders
+            orderCache: input.orderCache
           })
         ).then(orders => {
           dispatch({

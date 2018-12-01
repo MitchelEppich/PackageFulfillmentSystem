@@ -17,9 +17,18 @@ class Index extends Component {
   componentDidMount() {
     this.props.fetchCredentials().then(res => {
       if (res == null) return;
-      this.props.toggleLoginScreen();      
+      this.props.toggleLoginScreen();
     });
-    
+
+    for (let company of this.props.misc.companies) {
+      console.log(company);
+      this.props.fetchOrderList({
+        url: company.url,
+        company: company,
+        orderCache: this.props.nav.orderCache,
+        user: null
+      });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -28,7 +37,7 @@ class Index extends Component {
         if (res == null) return;
         this.props.toggleLoginScreen();
       });
-    }   
+    }
   }
 
   render() {

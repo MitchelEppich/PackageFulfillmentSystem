@@ -44,6 +44,7 @@ const resolvers = {
                 _object.item_list != null
                   ? categorizeOrder(
                       _object.item_list.map(a => {
+                        console.log(a.Productname);
                         let _break = a.Productname.split("-");
                         let _company = _object.OrderNumber.split("-")[2].trim();
                         let _prodName = _break[1].trim();
