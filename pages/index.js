@@ -17,8 +17,9 @@ class Index extends Component {
   componentDidMount() {
     this.props.fetchCredentials().then(res => {
       if (res == null) return;
-      this.props.toggleLoginScreen();
+      this.props.toggleLoginScreen();      
     });
+    
   }
 
   componentDidUpdate(prevProps) {
@@ -33,7 +34,7 @@ class Index extends Component {
   render() {
     return (
       <Layout>
-        {/* {console.log(this.props)} */}
+        {console.log(this.props.nav.orderCache)}
         {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
