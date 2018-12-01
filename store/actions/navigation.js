@@ -46,36 +46,46 @@ const getActions = uri => {
         };
 
         return makePromise(execute(link, operation)).then(data => {
+          let _order = JSON.parse(data.data.fetchOrderList);
           dispatch({
             type: actionTypes.FETCH_ORDER_LIST
           });
-          return Promise.resolve(JSON.parse(data.data.fetchOrderList));
+          return Promise.resolve(_order);
         });
       };
     },
     fetchOrder: input => {
       return dispatch => {
-        const link = new HttpLink({ uri, fetch: fetch });
+        if (input.company.short == "wholesale") {
+          const link = new HttpLink({ uri, fetch: fetch });
 
-        const operation = {
-          query: query.fetchOrder,
-          variables: { invoice_id: input.order.invoice_id }
-        };
+          const operation = {
+            query: query.fetchOrder,
+            variables: { invoice_id: input.order.invoice_id }
+          };
 
-        return makePromise(execute(link, operation)).then(data => {
-          let _new = JSON.parse(data.data.fetchOrder);
+          return makePromise(execute(link, operation)).then(data => {
+            let _new = JSON.parse(data.data.fetchOrder);
+            dispatch({
+              type: actionTypes.FETCH_ORDER,
+              order: {
+                ...input.order,
+                item_list: _new.itemList,
+                total_items: _new.totalItems
+              },
+              user: input.user,
+              company: input.company
+            });
+            return Promise.resolve(_new);
+          });
+        } else {
           dispatch({
             type: actionTypes.FETCH_ORDER,
-            order: {
-              ...input.order,
-              item_list: _new.itemList,
-              total_items: _new.totalItems
-            },
+            order: input.order,
             user: input.user,
             company: input.company
           });
-          return Promise.resolve(_new);
-        });
+        }
       };
     },
     fetchLogs: input => {

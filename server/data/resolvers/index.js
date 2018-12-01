@@ -34,27 +34,36 @@ const resolvers = {
             .split("<br/><br/>");
           for (let order of _break) {
             let _object = parseXml(order);
-
+            let total_items = 0;
             invoices.push({
               invoice_id: _object.UniqueID,
               customer_name: `${_object.ShipFirstName} ${_object.ShipLastName}`,
               invoice_number: _object.OrderNumber,
               date: _object.ApprovedDate,
-              item_list: _object.item_list.map(a => {
-                let _break = a.Productname.split("-");
-                let _company = _object.OrderNumber.split("-")[2];
-                let _prodName = _break[1];
-                let _quantity = parseInt(a.ProductQty.replace("QTY"));
-                let _shortId = _break[0];
-                return {
-                  name: `${_shortId}-${_quantity
-                    .toString()
-                    .padStart(2, "0")}-${_company}`,
-                  description: `${_company} - ${_prodName}`,
-                  quantity: _quantity,
-                  type: 0
-                };
-              })
+              item_list:
+                _object.item_list != null
+                  ? categorizeOrder(
+                      _object.item_list.map(a => {
+                        let _break = a.Productname.split("-");
+                        let _company = _object.OrderNumber.split("-")[2].trim();
+                        let _prodName = _break[1].trim();
+                        let _quantity = parseInt(a.ProductQty.replace("QTY"));
+                        let _breakId = _break[0].split(/([0-9]+)/);
+                        let _shortId = _breakId[0].trim();
+                        let _amount = parseInt(_breakId[1]);
+                        total_items += _quantity;
+                        return {
+                          name: `${_shortId}-${_amount
+                            .toString()
+                            .padStart(2, "0")}-${_company}`,
+                          description: _prodName,
+                          quantity: _quantity,
+                          type: inferType(_prodName.split("-")[0])
+                        };
+                      })
+                    )
+                  : [],
+              total_items
             });
           }
         } else {
@@ -93,25 +102,11 @@ const resolvers = {
           res.data.invoice.line_items.map(a => {
             totalItems += a.quantity;
 
-            /*
-             0 - Autoflower
-             1 - Feminized
-             2 - Regular
-             3 - CBD
-             4 - Low
-            */
-            let description = a.description;
-            let type = 0;
-            // if (!description.includes("auto")) type = 0;
-            // else if (!description.includes("fem")) type = 1;
-            // else if (!description.includes("reg")) type = 2;
-            // else if (!description.includes("reg")) type = 2;
-
             return {
               name: a.name,
-              description: description,
+              description: a.description.split("-")[1].trim(),
               quantity: a.quantity,
-              type: type
+              type: inferType(a.name.split("-")[0])
             };
           })
         );
@@ -129,6 +124,24 @@ const resolvers = {
     ...UserResolvers.Mutation,
     ...LogResolvers.Mutation
   }
+};
+
+let inferType = input => {
+  /*
+    0 - Autoflower
+    1 - Feminized
+    2 - Regular
+    3 - CBD
+    4 - Low
+    5 - ERROR
+  */
+  input = input.toUpperCase();
+  if (input.slice(-1) == "A" || input == "AFM") return 0;
+  if (input.slice(-1) == "F" || input == "FMM") return 1;
+  if (input.slice(-1) == "R") return 2;
+  if (input.slice(0, 2) == "CB") return 3;
+  if (input == "DWA") return 4;
+  return 5;
 };
 
 let categorizeOrder = order => {

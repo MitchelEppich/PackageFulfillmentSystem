@@ -13,7 +13,7 @@ import {
 import { onError } from "../../node_modules/apollo-link-error";
 
 const Screen = props => {
-  let generateSingleItem = item => {
+  let generateSingleItem = (item, company) => {
     return (
       <div
         style={{
@@ -21,7 +21,9 @@ const Screen = props => {
           justifyContent: " center",
           alignItems: " center"
         }}
-        className="inline-flex flex bg-white items-center w-full mx-auto my-2 p-1"
+        className={`bg-${
+          props.misc.geneColors[item.type]
+        } inline-flex flex items-center w-full mx-auto my-2 p-1`}
         key={item.name}
       >
         <div
@@ -51,7 +53,7 @@ const Screen = props => {
           </div>
           <div>
             <p className="">
-              {props.nav.focusCompany.id}04
+              {company}04
               <input
                 type="number"
                 onChange={e => {
@@ -88,7 +90,7 @@ const Screen = props => {
         className="bg-semi-transparent w-full flex items-center mt-1 h-12 inline-flex"
         key={`${name}${number + 1}`}
       >
-        <div style={{width: "73%"}} className="ml-1 pl-16">
+        <div style={{ width: "73%" }} className="ml-1 pl-16">
           <p>Package #{number + 1}</p>
         </div>
         <div className="w-1/2 inline-flex flex pl-2 items-center">
@@ -136,7 +138,7 @@ const Screen = props => {
     return { item, used: _used };
   };
 
-  let generateMultiItem = item => {
+  let generateMultiItem = (item, company) => {
     let arr = [];
     for (let i = 0; i < item.quantity; i++) {
       let valueEntry = props.item.itemValues[`${item.name}-${i}`];
@@ -149,10 +151,11 @@ const Screen = props => {
       if (_sub.used) values.shift();
       arr.push(_sub.item);
     }
-
     return (
       <div
-        className="bg-white items-center w-full mx-auto my-2 p-1"
+        className={`bg-${
+          props.misc.geneColors[item.type]
+        } items-center w-full mx-auto my-2 p-1`}
         key={item.name}
       >
         <div className="inline-flex w-full flex items-center">
@@ -174,14 +177,14 @@ const Screen = props => {
             </p>
           </div>
           <div
-          style={{
-            width: "20%"
-          }}
-          className=""
-        >
-          <p className="text-lg ml-12">{item.name}</p>
-        </div>
-          
+            style={{
+              width: "20%"
+            }}
+            className=""
+          >
+            <p className="text-lg ml-12">{item.name}</p>
+          </div>
+
           <div
             style={{
               width: "30%"
@@ -193,7 +196,7 @@ const Screen = props => {
             </div>
             <div>
               <p className="">
-                {props.nav.focusCompany.id}04
+                {company}04
                 <input
                   type="number"
                   value={props.item.itemBaseList[item.name]}
@@ -244,45 +247,58 @@ const Screen = props => {
     let companies = [];
     for (let company in itemList) {
       let quantities = [];
+
+      let _companyId;
+      for (let _company of props.misc.companies) {
+        if (_company.short == company.toLowerCase()) {
+          _companyId = _company.id;
+          break;
+        }
+      }
+
       for (let quantity in itemList[company]) {
         let items = [];
-        for (let item of Object.values(itemList[company][quantity])) {        
+        for (let item of Object.values(itemList[company][quantity])) {
           items.push(
             <div>
               {item.quantity == 1
-                ? generateSingleItem(item)
-                : generateMultiItem(item)}
+                ? generateSingleItem(item, _companyId)
+                : generateMultiItem(item, _companyId)}
             </div>
           );
         }
-        let key = `${company}-${quantity}`;  
-        
-        let len = Object.keys(props.nav.focusOrder.item_list[company][quantity])
-        let qty = len.length       
+        let key = `${company}-${quantity}`;
+
+        let len = Object.keys(
+          props.nav.focusOrder.item_list[company][quantity]
+        );
+        let qty = len.length;
         // console.log("teste", props.item.expandItems)
-       
+
         quantities.push(
           <div>
             <div
               className="w-full cursor-pointer mt-2 p-2 pl-6 text-lg mx-0 bg-grey-light hover:bg-grey-lighter"
-              onClick={() => {                
+              onClick={() => {
                 props.expandItem({
                   item: key,
-                  expandItems: props.item.expandItems                  
-                });               
+                  expandItems: props.item.expandItems
+                });
               }}
             >
               <span>
-              {props.item.expandItems.includes(key) 
-                ?
-                  <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
-                :
-                  <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
-                }
-                {quantity} Packs</span> 
-              
-              <span className="text-right text-grey-dark pin-r"> - ({qty} {qty == 1 ? "Item" : "Items" })</span> 
+                {props.item.expandItems.includes(key) ? (
+                  <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" />
+                ) : (
+                  <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" />
+                )}
+                {quantity} Packs
+              </span>
 
+              <span className="text-right text-grey-dark pin-r">
+                {" "}
+                - ({qty} {qty == 1 ? "Item" : "Items"})
+              </span>
             </div>
             {props.item.expandItems.includes(key) ? items : null}
           </div>
@@ -293,19 +309,18 @@ const Screen = props => {
         <div>
           <div
             className="w-full cursor-pointer mt-2 p-2 pl-6 text-lg mx-0 bg-blue-new text-white hover:bg-grey-dark"
-            onClick={() => {              
+            onClick={() => {
               props.expandItem({
                 item: key,
-                expandItems: props.item.expandItems                
-              });            
+                expandItems: props.item.expandItems
+              });
             }}
           >
-          {props.item.expandItems.includes(key) 
-            ? 
-              <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
-            : 
-              <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
-            }
+            {props.item.expandItems.includes(key) ? (
+              <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" />
+            ) : (
+              <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" />
+            )}
             {company}
           </div>
           {props.item.expandItems.includes(key) ? quantities : null}
@@ -345,18 +360,18 @@ const Screen = props => {
         </div>
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
           <div className="inline-flex w-full absolute pin-l pin-t p-1 mt-10 bg-grey-darker uppercase text-white text-sm">
-            <div 
-            style={{width:"40%"}}
-            className="w-1/4 pl-24">Description</div>
-            <div 
-            style={{width:"20%"}}
-            className="w-1/4 pl-10">Strain Code</div>
-            <div 
-            style={{width:"30%"}}
-            className="w-1/4 pl-24">STT Number</div>
-            <div 
-            style={{width:"10%"}}
-            className="w-1/4">Quantity</div>
+            <div style={{ width: "40%" }} className="w-1/4 pl-24">
+              Description
+            </div>
+            <div style={{ width: "20%" }} className="w-1/4 pl-10">
+              Strain Code
+            </div>
+            <div style={{ width: "30%" }} className="w-1/4 pl-24">
+              STT Number
+            </div>
+            <div style={{ width: "10%" }} className="w-1/4">
+              Quantity
+            </div>
           </div>
           {populateItems(order.item_list)}
         </div>
@@ -365,7 +380,6 @@ const Screen = props => {
   };
 
   return (
-   
     <div
       style={{
         // borderRadius: "10px",
@@ -389,11 +403,14 @@ const Screen = props => {
           Finalize
         </p>
       </div>
-      <div
-        className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue"        
-      >  <p>Total Packages: {props.nav.focusOrder != null ? props.nav.focusOrder.total_items : ""}</p>       
-        
-      </div> {console.log(props)}
+      <div className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue">
+        {" "}
+        <p>
+          Total Packages:{" "}
+          {props.nav.focusOrder != null ? props.nav.focusOrder.total_items : ""}
+        </p>
+      </div>{" "}
+      {console.log(props)}
     </div>
   );
 };

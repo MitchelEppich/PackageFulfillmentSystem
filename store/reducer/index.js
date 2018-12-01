@@ -18,6 +18,7 @@ const initialState = {
   showLoginScreen: true,
   showRegisterScreen: false,
   showLogScreen: false,
+  geneColors: ["purple", "red", "yellow", "white", "blue", "green"],
   companies: [
     // {
     //   short: "",
@@ -26,14 +27,14 @@ const initialState = {
     //   orders: []
     // },
     {
-      short: "mjsc.com",
+      short: "mjsc",
       name: "Mary Jane Seeds COM",
       id: 1,
       orders: [],
       url: "https://www.cksoti.com/getalldispatchorderdetail/mjseedscanada.com"
     },
     {
-      short: "mjsc.ca",
+      short: "mjscc",
       name: "Mary Jane Seeds CA",
       id: 3,
       orders: [],
