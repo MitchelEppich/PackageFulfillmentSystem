@@ -7,10 +7,12 @@ import {
   faMinus,
   faInfo,
   faInfoCircle,
-  faSyncAlt
+  faSyncAlt,
+  faDownload
 } from "@fortawesome/free-solid-svg-icons";
 
 import moment from "moment";
+
 
 library.add(faPlus, faMinus, faInfo);
 
@@ -41,8 +43,8 @@ const Main = props => {
           } w-1/8 p-2 justify-center border-semi-transparent h-10 flex items-center border-r-2 font-bold cursor-pointer leading-normal leading-normal uppercase`}
         >
           {" "}
-          {company.short}{" "}
-          <span className="qtd-tag">
+          <p className="pr-2">{company.short}</p>{" "}
+          <span className="qtd-tag flex justify-center">
             {" "}
             {props.nav.orderCache[company.short.toLowerCase()] != null &&
             props.nav.orderCache[company.short.toLowerCase()].order != null
@@ -67,9 +69,10 @@ const Main = props => {
             className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"
             key={order.invoice_id}
           >
-            <div className="w-1/4 pl-8">{index}</div>
+            <div className="w-32 pl-8">{index}</div>
             <div className="w-1/4">Order #{order.invoice_number}</div>
             <div className="w-1/4">{order.date}</div>
+            <div className="w-1/4">{props.misc.showScreen ? "In progress by Karl" : null }</div>
             <div className="w-1/4 pl-2">
               <div
                 onClick={() => {
@@ -92,8 +95,8 @@ const Main = props => {
       return arr;
     } else {
       return (
-        <div className="inline-flex w-full p-2 text-center bg-grey-lighter mt-8">
-          <h3 className="text-center w-full">
+        <div className="inline-flex w-full p-2 text-center bg-grey-lighter mt-2">
+          <h3 className="text-center w-full text-almost-transparent">
             Please select your Company tab...
           </h3>
         </div>
@@ -102,16 +105,37 @@ const Main = props => {
   };
 
   return (
+    
     <div className="w-full bg-grey-light overflow-x-hidden">
-      <div className="bg-blue w-full mx-auto inline-flex justify-center text-white">
+      <div className="bg-blue-new w-full mx-auto inline-flex justify-center text-white">
         <div className="w-newScreen inline-flex ml-6 mt-4 flex justify-between mb-2">
           <div className="w-2/4 mt-2 pin-l text-left">
-            <h2 className="text-white uppercase p-2">
+            <a href="./"><h2 className="text-white uppercase p-2">
               Package Fulfillment System
-            </h2>
+            </h2></a>
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
-          <div className="w-2/4 mt-6 text-right mr-12">
+          <div className="w-2/4 mt-6 text-right mr-4">
+            {!props.showScreen ? (
+              <a
+                onClick={() => {
+                  props.toggleShowLog();
+                  props.fetchLogs();
+                }}
+                className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+              >
+                Users
+              </a>
+            ) : (
+              <a
+                onClick={e => {
+                  e.preventDefault();
+                }}
+                className="opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+              >
+                Users
+              </a>
+            )}
             {!props.showScreen ? (
               <a
                 onClick={() => {
@@ -176,7 +200,7 @@ const Main = props => {
           </div>
         </div>
       </div>
-
+{console.log("call", props)}
       <div
         style={{
           position: "absolute",
@@ -192,25 +216,30 @@ const Main = props => {
           onClick={() => {
             console.log("Test");
           }}
-          className="p-2 text-right text-blue-new hover:text-blue cursor-pointer mb-2"
-        >
-          <span className="mr-24 text-sm text-blue-new w-full text-right">
-            Last update:{" "}
-            {props.nav.focusCompany != null
-              ? moment(
-                  props.nav.orderCache[
-                    props.nav.focusCompany.short.toLowerCase()
-                  ].updatedAt
-                ).format("hh:mm:ss DD:MM:YYYY")
-              : "LOADING . . ."}
-          </span>
-          <span className="font-bold uppercase text-lg mr-1">Update</span>{" "}
-          <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" />
+          className="p-2 justify-end w-full text-blue-new hover:text-blue cursor-pointer mb-2"
+        > 
+            <div className="font-bold uppercase w-full text-right mr-1 items-center ">
+                <div className="inline-flex items-center mr-2">
+                {props.nav.focusCompany !== null ?
+                  <span className="mr-6 text-sm text-blue-new text-right font-normal">
+                    Last Updated:{" "}
+                    {moment(
+                          props.nav.orderCache[
+                            props.nav.focusCompany.short.toLowerCase()
+                          ].updatedAt
+                        ).format("hh:mm:ss - DD/MM/YYYY")}
+                      
+                  </span> : null }   
+                      <p className="text-lg mr-2">Update</p>
+                      <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" /> 
+                </div>
+            </div> 
         </div>
         <div
           style={{
             borderTopLeftRadius: "10px",
-            borderTopRightRadius: "10px"
+            borderTopRightRadius: "10px",
+            overflow: "hidden",
           }}
           className="inline-flex w-full bg-blue-new justify-between"
         >
@@ -219,10 +248,11 @@ const Main = props => {
 
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
           <div className="inline-flex w-full p-1 bg-grey-darker uppercase text-white text-sm absolute">
-            <div className="w-1/4 pl-3">Number</div>
-            <div className="w-1/4 pl-5">Order Number</div>
+            <div className="w-32 pl-4">Number</div>
+            <div className="w-1/4 pl-4">Order Number</div>
             <div className="w-1/4 pl-8">Date</div>
-            <div className="w-1/4 text-center mr-4 pl-4">Action</div>
+            <div className="w-1/4 pl-16">Status</div>
+            <div className="w-1/4 pl-32 mr-4">Action</div>
           </div>
           <div className="mt-6" />
           {showOrders()}

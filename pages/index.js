@@ -12,6 +12,7 @@ import Main from "../components/Main";
 import Screen from "../components/Main/Screen";
 import RegisterUser from "../components/Admin/RegisterUser";
 import Logs from "../components/Admin/Logs";
+import Users from "../components/Admin/Users"
 
 
 class Index extends Component {
@@ -44,8 +45,11 @@ class Index extends Component {
   render() {
     return (
       <Layout>
+        {/* <Users 
+        {...this.props}
+        /> */}
         {console.log(this.props.nav.orderCache)}
-        {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
+        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}

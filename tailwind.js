@@ -585,7 +585,7 @@ module.exports = {
     "650": "650px",
     imgCard: "90px",
     halfscreen: "940px",
-    newScreen: "80%",
+    newScreen: "770px",
     full: "100%",
     screen: "100vh",
     uploader: "400px",
