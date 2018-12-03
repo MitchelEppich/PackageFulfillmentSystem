@@ -83,7 +83,6 @@ const Screen = props => {
   };
 
   let generateSubItem = (itemRef, number, name, value) => {
-    // console.log(value);
     let _used = false;
     let item = (
       <div
@@ -343,6 +342,12 @@ const Screen = props => {
         <div className="w-full bg-blue-new h-10 mb-6 inline-flex flex items-center">
           <div
             onClick={() => {
+              props.updateOrder({
+                content: JSON.stringify(order),
+                status: "awaiting completion",
+                claimed: false,
+                invoiceId: order.invoice_number
+              });
               props.toggleScreen();
               props.clearItem();
             }}

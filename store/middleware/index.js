@@ -1,5 +1,7 @@
 import actions from "../actions";
 
+import OrderHandler from "../actions/orderHandler";
+
 import gql from "graphql-tag";
 import { makePromise, execute } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
@@ -33,13 +35,30 @@ const middleware = [
             who = action.user.username;
             break;
           case actions.FETCH_ORDER:
-            console.log(action);
+            // console.log(action.order);
             if (action.user == null) break;
             if (action.company == null) break;
             task = `Claimed order #${action.order.invoice_number} in ${
               action.company.short
             }`;
             who = action.user.username;
+
+            let _order = action.order;
+            let _status = "in progress";
+            let _who = action.user.username;
+            let _claimed = true;
+            let _invoiceId = action.order.invoice_number;
+
+            let orderHandlerActions = OrderHandler(uri);
+            store.dispatch(
+              orderHandlerActions.cacheOrder({
+                content: JSON.stringify(_order),
+                status: _status,
+                who: _who,
+                claimed: _claimed,
+                invoiceId: _invoiceId
+              })
+            );
             break;
         }
 

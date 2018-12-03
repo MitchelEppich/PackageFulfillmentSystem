@@ -13,6 +13,8 @@ import Screen from "../components/Main/Screen";
 import RegisterUser from "../components/Admin/RegisterUser";
 import Logs from "../components/Admin/Logs";
 
+import { Subscription } from "react-apollo";
+import gql from "graphql-tag";
 
 class Index extends Component {
   componentDidMount() {
@@ -21,15 +23,15 @@ class Index extends Component {
       this.props.toggleLoginScreen();
     });
 
-    for (let company of this.props.misc.companies) {
-      console.log(company);
-      this.props.fetchOrderList({
-        url: company.url,
-        company: company,
-        orderCache: this.props.nav.orderCache,
-        user: null
-      });
-    }
+    // for (let company of this.props.misc.companies) {
+    //   console.log(company);
+    //   this.props.fetchOrderList({
+    //     url: company.url,
+    //     company: company,
+    //     orderCache: this.props.nav.orderCache,
+    //     user: null
+    //   });
+    // }
   }
 
   componentDidUpdate(prevProps) {
@@ -45,7 +47,7 @@ class Index extends Component {
     return (
       <Layout>
         {console.log(this.props.nav.orderCache)}
-        {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
+        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}
@@ -79,6 +81,35 @@ class Index extends Component {
             {...this.props}
           />
         ) : null}
+        <Subscription subscription={subscription.orderUpdate}>
+          {({ data }) => {
+            if (data != null) {
+              let _claimedOrders = this.props.order.claimedOrders;
+              let _order = data.orderUpdate;
+              _order = {
+                ..._order,
+                ...JSON.parse(_order.content)
+              };
+
+              let _shouldAppend =
+                _order.claimed &&
+                !_claimedOrders.includes(_order.invoice_number);
+              let _shouldRemove =
+                !_order.claimed &&
+                _claimedOrders.includes(_order.invoice_number);
+
+              console.log(_order, _claimedOrders, _shouldRemove);
+
+              if (_shouldAppend | _shouldRemove)
+                this.props.modifyClaims({
+                  order: _order,
+                  claimedOrders: _claimedOrders,
+                  append: _shouldAppend
+                });
+            }
+            return <div />;
+          }}
+        </Subscription>
       </Layout>
     );
   }
@@ -102,8 +133,24 @@ const mapDispatchToProps = dispatch => {
     setItemValue: input => dispatch(actions.setItemValue(input)),
     verifyItemList: input => dispatch(actions.verifyItemList(input)),
     fetchLogs: input => dispatch(actions.fetchLogs(input)),
-    clearItem: () => dispatch(actions.clearItem())
+    clearItem: () => dispatch(actions.clearItem()),
+    modifyClaims: input => dispatch(actions.modifyClaims(input)),
+    updateOrder: input => dispatch(actions.updateOrder(input))
   };
+};
+
+const subscription = {
+  orderUpdate: gql`
+    subscription($orderId: String) {
+      orderUpdate(orderId: $orderId) {
+        _id
+        content
+        lastUpdate
+        status
+        claimed
+      }
+    }
+  `
 };
 
 export default connect(

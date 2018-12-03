@@ -12,6 +12,7 @@ import { updateObject } from "../utility";
 import userReducer from "./user";
 import navReducer from "./navigation";
 import itemReducer from "./itemHandler";
+import orderReducer from "./orderHandler";
 
 const initialState = {
   showScreen: false,
@@ -131,5 +132,6 @@ export default combineReducers({
   misc: indexReducer,
   user: userReducer,
   nav: navReducer,
-  item: itemReducer
+  item: itemReducer,
+  order: orderReducer
 });

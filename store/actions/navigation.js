@@ -43,7 +43,7 @@ const getActions = uri => {
 
         const operation = {
           query: query.fetchOrderList,
-          variables: { headers: JSON.stringify(input.headers), url: input.url }
+          variables: { url: input.url }
         };
 
         return makePromise(execute(link, operation)).then(data => {
@@ -125,8 +125,8 @@ const getActions = uri => {
 };
 const query = {
   fetchOrderList: gql`
-    query($headers: String, $url: String) {
-      fetchOrderList(input: { headers: $headers, url: $url })
+    query($url: String) {
+      fetchOrderList(input: { url: $url })
     }
   `,
   fetchOrder: gql`

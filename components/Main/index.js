@@ -61,7 +61,7 @@ const Main = props => {
       let arr = [];
       let index = 1;
       for (let order of orders) {
-        // console.log(order.date)
+        if (props.order.claimedOrders.includes(order.invoice_number)) continue;
         arr.push(
           <div
             className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"

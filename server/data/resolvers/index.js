@@ -1,8 +1,10 @@
 const UserResolvers = require("./User");
 const LogResolvers = require("./Log");
+const OrderResolvers = require("./Order");
 
 const User = UserResolvers.User;
 const Log = LogResolvers.Log;
+const Order = OrderResolvers.Order;
 
 const axios = require("axios");
 
@@ -10,6 +12,7 @@ const resolvers = {
   Query: {
     ...UserResolvers.Query,
     ...LogResolvers.Query,
+    ...OrderResolvers.Query,
     fetchOrderList: (_, { input }) => {
       return axios({
         method: "GET",
@@ -90,7 +93,7 @@ const resolvers = {
       let totalItems = 0;
       return axios({
         method: "GET",
-        url: `http://invoice.zoho.com/api/v3/invoices/${input.invoice_id}`,
+        url: `http://invoice.zoho.com/api/v3/invoices/${input.invoiceId}`,
         headers: {
           "Postman-Token": "1f99d336-97d3-49c0-aef9-c529ba54c8ce",
           "cache-control": "no-cache",
@@ -121,9 +124,14 @@ const resolvers = {
   },
   ...User,
   ...Log,
+  ...Order,
+  Subscription: {
+    ...OrderResolvers.Subscription
+  },
   Mutation: {
     ...UserResolvers.Mutation,
-    ...LogResolvers.Mutation
+    ...LogResolvers.Mutation,
+    ...OrderResolvers.Mutation
   }
 };
 
@@ -137,11 +145,11 @@ let inferType = input => {
     5 - ERROR
   */
   input = input.toUpperCase();
+  if (input == "DWA" || input == "DLF") return 4;
   if (input.slice(-1) == "A" || input == "AFM") return 0;
   if (input.slice(-1) == "F" || input == "FMM") return 1;
   if (input.slice(-1) == "R") return 2;
   if (input.slice(0, 2) == "CB") return 3;
-  if (input == "DWA") return 4;
   return 5;
 };
 

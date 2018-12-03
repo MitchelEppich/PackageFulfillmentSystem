@@ -11,12 +11,7 @@ type Query {
   fetchOrder(input: OrderInput): String
 }
 
-input OrderInput {
-  invoice_id: String
-}
-
 input OrderListInput {
-  headers: String
   url: String
 }
 
@@ -62,9 +57,33 @@ input LogInput {
   createdAt: String
 }
 
+type Order {
+  _id: String
+  content: String
+  lastUpdate: String
+  status: String
+  editBy: [String]
+  claimed: Boolean
+}
+
+input OrderInput {
+  content: String
+  status: String
+  who: String
+  claimed: Boolean
+  invoiceId: String
+}
+
+type Subscription {
+  orderUpdate(orderId: String): Order
+}
+
 type Mutation {
   verifyCredentials(input: UserInput!): User
   registerCredentials(input: UserInput!): User
+
+  updateOrder(input: OrderInput!): Order
+  cacheOrder(input: OrderInput!): Order
 
   createActionLog(input: LogInput!): Log
 }
