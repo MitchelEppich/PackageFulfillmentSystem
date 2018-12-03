@@ -13,6 +13,7 @@ import Screen from "../components/Main/Screen";
 import RegisterUser from "../components/Admin/RegisterUser";
 import Logs from "../components/Admin/Logs";
 
+
 class Index extends Component {
   componentDidMount() {
     this.props.fetchCredentials().then(res => {
@@ -35,7 +36,7 @@ class Index extends Component {
     return (
       <Layout>
         {console.log(this.props.nav.orderCache)}
-        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
+        {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}

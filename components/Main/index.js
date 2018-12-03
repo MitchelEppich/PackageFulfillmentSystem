@@ -10,6 +10,7 @@ import {
   faSyncAlt
 } from "@fortawesome/free-solid-svg-icons";
 
+
 import moment from "moment"
 
 library.add(faPlus, faMinus, faInfo);
@@ -42,7 +43,7 @@ const Main = props => {
         >
                   {" "}
           {company.short}{" "}
-          <span className="qtd-tag"> {props.nav.orderCache[company.short.toLowerCase()] != null && props.nav.orderCache[company.short.toLowerCase()].order != null ? props.nav.orderCache[company.short.toLowerCase()].order.length : -1}</span>
+          {/* <span className="qtd-tag"> {props.nav.orderCache[company.short.toLowerCase()] != null && props.nav.orderCache[company.short.toLowerCase()].order != null ? props.nav.orderCache[company.short.toLowerCase()].order.length : -1}</span> */}
         </div>
       );
     }
@@ -102,7 +103,7 @@ const Main = props => {
       <div className="bg-blue w-full mx-auto inline-flex justify-center text-white">
         <div className="w-newScreen inline-flex ml-6 mt-4 flex justify-between mb-2">
           <div className="w-2/4 mt-2 pin-l text-left">
-            <h2 className="text-white p-2">Package Fulfillment System</h2>
+            <h2 className="text-white uppercase p-2">Package Fulfillment System</h2>
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
           <div className="w-2/4 mt-6 text-right mr-12">
@@ -116,8 +117,10 @@ const Main = props => {
               Logs
             </a> 
             : 
-            <a
-              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+            <a onClick={e=>{
+              e.preventDefault()
+            }}
+              className="opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
             >
               Logs
             </a> }
@@ -132,8 +135,10 @@ const Main = props => {
               Register New User
             </a>
             :
-            <a              
-              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+            <a onClick={e=>{
+              e.preventDefault()
+            }}             
+              className="opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
             >
               Register New User
             </a> }
@@ -149,8 +154,10 @@ const Main = props => {
               Logout
             </a>
             :
-            <a              
-              className="opacity-25 text-white p-2 bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
+            <a onClick={e=>{
+              e.preventDefault()
+            }}              
+              className="opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
             >
               Logout
             </a> }
@@ -175,7 +182,7 @@ const Main = props => {
         }}
         className="p-2 text-right text-blue-new hover:text-blue cursor-pointer mb-2">
 
-          <span className="mr-24 text-sm text-blue-new w-full text-right">Last update: {moment(props.nav.orderCache[props.nav.focusCompany.short.toLowerCase()].updatedAt).format("hh:mm:ss DD:MM:YYYY")}</span>
+          {/* <span className="mr-24 text-sm text-blue-new w-full text-right">Last update: {moment(props.nav.orderCache[props.nav.focusCompany.short.toLowerCase()].updatedAt).format("hh:mm:ss DD:MM:YYYY")}</span> */}
           <span className="font-bold uppercase text-lg mr-1">Update</span> <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" /></div>
         <div
           style={

@@ -10,6 +10,7 @@ import React, { Component } from "react";
 import DevTools from "../store/DevTools";
 import { connect } from "react-redux";
 import actions from "../store/actions";
+import '@fortawesome/fontawesome-svg-core/styles.css'
 
 class Layout extends Component {
   componentDidMount() {}

@@ -21,7 +21,7 @@ const Screen = props => {
           justifyContent: " center",
           alignItems: " center"
         }}
-        className="inline-flex flex bg-white items-center w-full mx-auto my-2 p-1"
+        className="inline-flex flex bg-white items-center w-full mx-auto my-2 p-1 pl-12"
         key={item.name}
       >
         <div
@@ -152,7 +152,7 @@ const Screen = props => {
 
     return (
       <div
-        className="bg-white items-center w-full mx-auto my-2 p-1"
+        className="bg-white items-center w-full mx-auto my-2 p-1 pl-12"
         key={item.name}
       >
         <div className="inline-flex w-full flex items-center">
@@ -169,7 +169,12 @@ const Screen = props => {
             }}
           >
             <p className="text-lg ml-5 flex items-center">
-              <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" />
+            {props.item.expandItems.includes(item.name) 
+            ? 
+              <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
+            : 
+              <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
+            }            
               {item.description}
             </p>
           </div>
@@ -264,7 +269,7 @@ const Screen = props => {
         quantities.push(
           <div>
             <div
-              className="w-full cursor-pointer mt-2 p-2 pl-6 text-lg mx-0 bg-grey-light hover:bg-grey-lighter"
+              className="w-full cursor-pointer mt-2 p-2 pl-10 text-lg mx-0 bg-grey-light hover:bg-grey-lighter"
               onClick={() => {                
                 props.expandItem({
                   item: key,
@@ -275,9 +280,9 @@ const Screen = props => {
               <span>
               {props.item.expandItems.includes(key) 
                 ?
-                  <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
-                :
                   <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
+                :
+                  <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
                 }
                 {quantity} Packs</span> 
               
@@ -302,9 +307,9 @@ const Screen = props => {
           >
           {props.item.expandItems.includes(key) 
             ? 
-              <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
-            : 
               <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" /> 
+            : 
+              <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" /> 
             }
             {company}
           </div>
