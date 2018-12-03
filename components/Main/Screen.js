@@ -23,7 +23,7 @@ const Screen = props => {
         }}
         className={`bg-${
           props.misc.geneColors[item.type]
-        } inline-flex flex items-center w-full mx-auto my-2 p-1`}
+        } inline-flex flex items-center pl-12 w-full mx-auto my-2 p-1`}
         key={item.name}
       >
         <div
@@ -155,7 +155,7 @@ const Screen = props => {
       <div
         className={`bg-${
           props.misc.geneColors[item.type]
-        } items-center w-full mx-auto my-2 p-1`}
+        } items-center w-full mx-auto pl-12 my-2 p-1`}
         key={item.name}
       >
         <div className="inline-flex w-full flex items-center">
