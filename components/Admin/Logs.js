@@ -30,12 +30,13 @@ const Logs = props => {
   return (
     <div
       style={{
-        // borderRadius: "10px",
+        borderTopLeftRadius: "10px",
+        borderTopRightRadius: "10px",
         overflow: "hidden",
         background: "whitesmoke",
         boxShadow: "0px 0px 10px #cecece"
       }}
-      className="w-newScreen h-newScreen bg-white z-60 mt-6 align-absolute"
+      className="w-newScreen h-newScreen bg-white z-60 mt-16 align-absolute"
     >
       <div className="w-full inline-flex flex items-center bg-blue-new relative">
         <div

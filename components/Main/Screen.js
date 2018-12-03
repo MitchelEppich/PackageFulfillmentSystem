@@ -7,6 +7,7 @@ import {
   faInfo,
   faAngleLeft,
   faAngleDown,
+  faUser,
   faAngleUp,
   faAngleRight
 } from "@fortawesome/free-solid-svg-icons";
@@ -21,9 +22,7 @@ const Screen = props => {
           justifyContent: " center",
           alignItems: " center"
         }}
-        className={`bg-${
-          props.misc.geneColors[item.type]
-        } inline-flex flex items-center pl-12 w-full mx-auto my-2 p-1`}
+        className={`inline-flex flex items-center pl-12 w-full mx-auto my-2 p-1`}
         key={item.name}
       >
         <div
@@ -34,9 +33,22 @@ const Screen = props => {
         >
           <p className="text-lg ml-6">{item.description}</p>
         </div>
+        <div 
+            style={{
+              width: "80px", 
+              height: "30px",
+              border: "1px solid #020202",
+              // CIRCLE:
+              // width: "40px",
+              // height: "40px",
+              // borderRadius: "50%",
+              // border: "1px solid rgba(66, 66, 66, 0.39)",            
+            }} 
+            className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}>
+        </div>
         <div
           style={{
-            width: "20%"
+            width: "15%"
           }}
           className=""
         >
@@ -48,7 +60,7 @@ const Screen = props => {
           }}
           className="inline-flex ml-4 flex items-center"
         >
-          <div style={{ width: "180px" }}>
+          <div style={{ width: "140px" }}>
             <label className="mr-2">Complete here:</label>
           </div>
           <div>
@@ -72,11 +84,11 @@ const Screen = props => {
         </div>
         <div
           style={{
-            width: "10%"
+            width: "9%"
           }}
           className=""
         >
-          <p className="flex items-center">{item.quantity} Package</p>
+          <p className="flex items-center pl-4">{item.quantity} Package</p>
         </div>
       </div>
     );
@@ -92,8 +104,8 @@ const Screen = props => {
         <div style={{ width: "73%" }} className="ml-1 pl-16">
           <p>Package #{number + 1}</p>
         </div>
-        <div className="w-1/2 inline-flex flex pl-2 items-center">
-          <div style={{ width: "180px" }}>
+        <div className="w-1/2 inline-flex flex pl-6 ml-1 items-center">
+          <div style={{ width: "140px" }}>
             <label className="mr-2">Complete here:</label>
           </div>
           <div>
@@ -152,9 +164,7 @@ const Screen = props => {
     }
     return (
       <div
-        className={`bg-${
-          props.misc.geneColors[item.type]
-        } items-center w-full mx-auto pl-12 my-2 p-1`}
+        className="items-center w-full mx-auto pl-12 my-2 p-1"
         key={item.name}
       >
         <div className="inline-flex w-full flex items-center">
@@ -179,9 +189,22 @@ const Screen = props => {
               {item.description}
             </p>
           </div>
+          <div 
+            style={{
+              width: "80px", 
+              height: "30px",
+              border: "1px solid #020202"
+              // CIRCLE:
+              // width: "40px",
+              // height: "40px",
+              // borderRadius: "50%",
+              // border: "1px solid rgba(66, 66, 66, 0.39)",              
+            }}
+            className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}>
+          </div>
           <div
             style={{
-              width: "20%"
+              width: "15%"
             }}
             className=""
           >
@@ -194,7 +217,7 @@ const Screen = props => {
             }}
             className="ml-4 flex items-center inline-flex"
           >
-            <div style={{ width: "180px" }}>
+            <div style={{ width: "140px" }}>
               <label className="mr-2">Insert Base Value:</label>
             </div>
             <div>
@@ -230,11 +253,11 @@ const Screen = props => {
           </div>
           <div
             style={{
-              width: "10%"
+              width: "9%"
             }}
             className=""
           >
-            <p className="flex items-center">{item.quantity} Packages</p>
+            <p className="flex items-center float-right">{item.quantity} Packages</p>
           </div>
         </div>
         {props.item.expandItems.includes(item.name) ? (
@@ -361,10 +384,24 @@ const Screen = props => {
           <div className="w-1/3 text-center text-white font-bold text-lg">
             <p>{props.nav.focusCompany.name.toUpperCase()}</p>
           </div>
-          <div className="w-1/3 text-right mr-6">
-            <h4 className="p-2 text-white uppercase text-lg">
+          <div className="w-1/3 text-right mr-6 inline-flex">
+            <div className="text-right w-full">
+              <h4 className="p-2 text-white uppercase text-lg">
               #{order.invoice_number} order
             </h4>
+            </div>
+            <span style={{
+              borderRadius: "50%",
+              width: "30px",
+              height: "28px",
+              marginTop: "2px",
+              padding: "8px",
+              fontSize: "12px",
+              backgroundColor: "whitesmoke"
+            }}
+            className="flex justify-center cursor-pointer">
+              <FontAwesomeIcon icon={faUser} />   
+           </span>
           </div>
         </div>
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
@@ -372,13 +409,16 @@ const Screen = props => {
             <div style={{ width: "40%" }} className="w-1/4 pl-24">
               Description
             </div>
-            <div style={{ width: "20%" }} className="w-1/4 pl-10">
+            <div style={{ width: "5%" }} className="w-1/4 pl-6">
+              Color
+            </div>
+            <div style={{ width: "15%" }} className="w-1/4 pl-20">
               Strain Code
             </div>
             <div style={{ width: "30%" }} className="w-1/4 pl-24">
               STT Number
             </div>
-            <div style={{ width: "10%" }} className="w-1/4">
+            <div style={{ width: "10%" }} className="w-1/4 pl-8">
               Quantity
             </div>
           </div>
@@ -391,16 +431,18 @@ const Screen = props => {
   return (
     <div
       style={{
-        // borderRadius: "10px",
+        borderTopLeftRadius: "10px",
+        borderTopRightRadius: "10px",
+        overflow: "hidden",
         overflow: "hidden",
         background: "whitesmoke",
         boxShadow: "0px 0px 10px #cecece"
       }}
-      className="w-newScreen h-newScreen bg-white z-50 mt-6 align-absolute"
+      className="w-newScreen h-newScreen bg-white z-50 mt-16 align-absolute"
     >
       {showOrder()}
       <div
-        className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-8 mb-4 cursor-pointer hover:bg-blue"
+        className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-6 mb-3 mt-2 cursor-pointer hover:bg-blue"
         onClick={() => {
           props.verifyItemList({
             itemList: props.item.itemValues,
@@ -412,7 +454,7 @@ const Screen = props => {
           Finalize
         </p>
       </div>
-      <div className="w-40 p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4 cursor-pointer hover:bg-blue">
+      <div className="p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4">
         {" "}
         <p>
           Total Packages:{" "}

@@ -12,6 +12,7 @@ import Main from "../components/Main";
 import Screen from "../components/Main/Screen";
 import RegisterUser from "../components/Admin/RegisterUser";
 import Logs from "../components/Admin/Logs";
+import Users from "../components/Admin/Users"
 
 import { Subscription } from "react-apollo";
 import gql from "graphql-tag";
@@ -46,6 +47,9 @@ class Index extends Component {
   render() {
     return (
       <Layout>
+        {/* <Users 
+        {...this.props}
+        /> */}
         {console.log(this.props.nav.orderCache)}
         {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
