@@ -92,7 +92,7 @@ const RegisterUser = props => {
           <h1 className="mt-2 p-2">Register New User</h1>
           <div
             onClick={() => {
-              props.toggleRegisterScreen();
+              props.setVisibleScreen(null);
             }}
             className="absolute pin-t pin-r p-2 mt-2 mr-2 cursor-pointer hover:bg-blue hover:text-white"
           >

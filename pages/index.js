@@ -21,7 +21,7 @@ class Index extends Component {
   componentDidMount() {
     this.props.fetchCredentials().then(res => {
       if (res == null) return;
-      this.props.toggleLoginScreen();
+      this.props.setVisibleScreen("login");
     });
 
     for (let company of this.props.misc.companies) {
@@ -38,7 +38,7 @@ class Index extends Component {
     if (this.props.user.currentUser == null) {
       this.props.fetchCredentials().then(res => {
         if (res == null) return;
-        this.props.toggleLoginScreen();
+        this.props.setVisibleScreen("login");
       });
     }
   }
@@ -46,53 +46,28 @@ class Index extends Component {
   render() {
     return (
       <Layout>
-        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
-        <Main
-          showScreen={this.props.misc.showScreen}
-          toggleScreen={this.props.toggleScreen}
-          showMoreMultipleFields={this.props.misc.showMoreMultipleFields}
-          toggleShowMoreMultipleFields={this.props.toggleShowMoreMultipleFields}
-          showRegisterScreen={this.props.misc.showRegisterScreen}
-          toggleRegisterScreen={this.props.toggleRegisterScreen}
-          showLogScreen={this.props.misc.showLogScreen}
-          toggleShowLog={this.props.toggleShowLog}
-          showUsersScreen={this.props.misc.showUsersScreen}
-          toggleUsersScreen={this.props.toggleUsersScreen}
-          {...this.props}
-        />
+        {/* {this.props.misc.visibleScreen == "login" ? <Login {...this.props} /> : null} */}
+        <Main {...this.props} />
 
-        {this.props.misc.showUsersScreen ? <Users {...this.props} /> : null}
-        {this.props.misc.showLogScreen ? (
-          <Logs
-            showLogScreen={this.props.misc.showLogScreen}
-            toggleShowLog={this.props.toggleShowLog}
-            {...this.props}
-          />
+        {this.props.misc.visibleScreen == "users" ? (
+          <Users {...this.props} />
         ) : null}
-        {this.props.misc.showRegisterScreen ? (
-          <RegisterUser
-            showRegisterScreen={this.props.misc.showRegisterScreen}
-            toggleRegisterScreen={this.props.toggleRegisterScreen}
-            {...this.props}
-          />
+        {this.props.misc.visibleScreen == "logs" ? (
+          <Logs {...this.props} />
+        ) : null}
+        {this.props.misc.visibleScreen == "register" ? (
+          <RegisterUser {...this.props} />
         ) : null}
 
-        {this.props.misc.showScreen ? (
-          <Screen
-            showScreen={this.props.misc.showScreen}
-            toggleScreen={this.props.toggleScreen}
-            {...this.props}
-          />
+        {this.props.misc.visibleScreen == "itemized" ? (
+          <Screen {...this.props} />
         ) : null}
         <Subscription subscription={subscription.orderUpdate}>
           {({ data }) => {
             if (data != null) {
               let _claimedOrders = this.props.order.claimedOrders;
               let _order = data.orderUpdate;
-              _order = {
-                ..._order,
-                ...JSON.parse(_order.content)
-              };
+              _order = { ..._order, ...JSON.parse(_order.content) };
 
               let _shouldAppend =
                 _order.claimed &&
@@ -125,11 +100,6 @@ const mapDispatchToProps = dispatch => {
     fetchUsers: input => dispatch(actions.fetchUsers(input)),
     verifyCredentials: input => dispatch(actions.verifyCredentials(input)),
     registerCredentials: input => dispatch(actions.registerCredentials(input)),
-    toggleLoginScreen: () => dispatch(actions.toggleLoginScreen()),
-    toggleUsersScreen: () => dispatch(actions.toggleUsersScreen()),
-    toggleScreen: () => dispatch(actions.toggleScreen()),
-    toggleRegisterScreen: () => dispatch(actions.toggleRegisterScreen()),
-    toggleShowLog: () => dispatch(actions.toggleShowLog()),
     releaseCredentials: () => dispatch(actions.releaseCredentials()),
     expandItem: input => dispatch(actions.expandItem(input)),
     focusCompany: input => dispatch(actions.focusCompany(input)),
@@ -141,7 +111,8 @@ const mapDispatchToProps = dispatch => {
     fetchLogs: input => dispatch(actions.fetchLogs(input)),
     clearItem: () => dispatch(actions.clearItem()),
     modifyClaims: input => dispatch(actions.modifyClaims(input)),
-    updateOrder: input => dispatch(actions.updateOrder(input))
+    updateOrder: input => dispatch(actions.updateOrder(input)),
+    setVisibleScreen: input => dispatch(actions.setVisibleScreen(input))
   };
 };
 

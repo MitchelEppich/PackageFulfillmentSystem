@@ -41,7 +41,7 @@ const Logs = props => {
       <div className="w-full inline-flex flex items-center bg-blue-new relative">
         <div
           onClick={() => {
-            props.toggleShowLog();
+            props.setVisibleScreen(null);
             props.clearItem();
           }}
           className="w-1/3 h-10 inline-flex"

@@ -381,7 +381,7 @@ const Screen = props => {
                 invoiceId: order.invoice_number,
                 orderCache: props.order.orderCache
               });
-              props.toggleScreen();
+              props.setVisibleScreen(null);
               props.clearItem();
             }}
             className="w-1/3 h-10 inline-flex"

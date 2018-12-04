@@ -45,9 +45,27 @@ const Main = props => {
           <span className="qtd-tag flex justify-center">
             {" "}
             {props.order.orderCache[company.short.toLowerCase()] != null &&
-            props.order.orderCache[company.short.toLowerCase()].order != null
-              ? props.order.orderCache[company.short.toLowerCase()].order.length
-              : -1}
+            props.order.orderCache[company.short.toLowerCase()].order !=
+              null ? (
+              <p
+                style={{
+                  marginTop: "1px"
+                }}
+              >
+                {
+                  props.order.orderCache[company.short.toLowerCase()].order
+                    .length
+                }
+              </p>
+            ) : (
+              <FontAwesomeIcon
+                icon={faSyncAlt}
+                className="fa-lg loader-icon"
+                style={{
+                  marginTop: "2px"
+                }}
+              />
+            )}
           </span>
         </div>
       );
@@ -93,7 +111,7 @@ const Main = props => {
                     company: props.nav.focusCompany,
                     orderCache: props.order.orderCache
                   });
-                  props.toggleScreen();
+                  props.setVisibleScreen("itemized");
                 }}
                 className="uppercase bg-blue-new text-white text-center px-3 py-2 cursor-pointer hover:bg-blue"
               >
@@ -129,46 +147,68 @@ const Main = props => {
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
           <div className="w-2/4 mt-6 text-right mr-4">
-              <a
-                onClick={() => {
-                  props.toggleUsersScreen();
-                  props.fetchUsers();
-                }}
-                className={!props.showScreen ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2" : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"}
-              >
-                Users
-              </a>
-            
-              <a
-                onClick={() => {
-                  props.toggleShowLog();
-                  props.fetchLogs();
-                }}
-                className={!props.showScreen ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 " : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2" }
-              >
-                Logs
-              </a>            
+            <a
+              onClick={() => {
+                props.setVisibleScreen(
+                  props.misc.visibleScreen == "users" ? null : "users"
+                );
+                props.fetchUsers();
+              }}
+              className={
+                !props.showScreen
+                  ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+              }
+            >
+              Users
+            </a>
 
-            
-              <a
-                onClick={() => {
-                  props.toggleRegisterScreen();
-                }}
-                className={!props.showScreen ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2" : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2" }
-              >
-                Register New User
-              </a>            
+            <a
+              onClick={() => {
+                props.setVisibleScreen(
+                  props.misc.visibleScreen == "logs" ? null : "logs"
+                );
+                props.fetchLogs();
+              }}
+              className={
+                !props.showScreen
+                  ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 "
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+              }
+            >
+              Logs
+            </a>
 
-             
-              <a
-                onClick={() => {
-                  props.releaseCredentials();
-                  props.toggleLoginScreen();
-                }}
-                className={!props.showScreen ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue" : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4" }
-              >
-                Logout
-              </a>            
+            <a
+              onClick={() => {
+                props.setVisibleScreen(
+                  props.misc.visibleScreen == "register" ? null : "register"
+                );
+              }}
+              className={
+                !props.showScreen
+                  ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+              }
+            >
+              Register New User
+            </a>
+
+            <a
+              onClick={() => {
+                props.releaseCredentials();
+                props.setVisibleScreen(
+                  props.misc.visibleScreen == "login" ? null : "login"
+                );
+              }}
+              className={
+                !props.showScreen
+                  ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
+              }
+            >
+              Logout
+            </a>
           </div>
         </div>
       </div>
@@ -187,12 +227,18 @@ const Main = props => {
           onClick={() => {
             let company = props.nav.focusCompany;
             if (company == null) return;
-            props.fetchOrderList({
-              url: company.url,
-              company: company,
-              orderCache: props.order.orderCache,
-              user: null
-            });
+            let updateIcon = document.querySelector("#update-icon");
+            updateIcon.classList.add("loader-icon");
+            props
+              .fetchOrderList({
+                url: company.url,
+                company: company,
+                orderCache: props.order.orderCache,
+                user: null
+              })
+              .then(res => {
+                updateIcon.classList.remove("loader-icon");
+              });
           }}
           className="p-2 justify-end w-full text-blue-new hover:text-blue cursor-pointer mb-2"
         >
@@ -209,7 +255,11 @@ const Main = props => {
                 </span>
               ) : null}
               <p className="text-lg mr-2">Update</p>
-              <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" />
+              <FontAwesomeIcon
+                icon={faSyncAlt}
+                className="fa-lg"
+                id="update-icon"
+              />
             </div>
           </div>
         </div>

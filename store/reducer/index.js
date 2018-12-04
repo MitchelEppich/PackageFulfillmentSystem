@@ -15,11 +15,7 @@ import itemReducer from "./itemHandler";
 import orderReducer from "./orderHandler";
 
 const initialState = {
-  showScreen: false,
-  showLoginScreen: true,
-  showRegisterScreen: false,
-  showLogScreen: false,
-  showUsersScreen: false,
+  visibleScreen: null, // When null show main screen
   geneColors: ["purple", "red", "yellow", "white", "blue", "green"],
   companies: [
     // {
@@ -106,25 +102,9 @@ const initialState = {
 
 const indexReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.TOGGLE_SCREEN:
+    case actionTypes.SET_VISIBLE_SCREEN:
       return updateObject(state, {
-        showScreen: !state.showScreen
-      });
-    case actionTypes.TOGGLE_LOGIN_SCREEN:
-      return updateObject(state, {
-        showLoginScreen: !state.showLoginScreen
-      });
-    case actionTypes.TOGGLE_SHOW_REGISTER_SCREEN:
-      return updateObject(state, {
-        showRegisterScreen: !state.showRegisterScreen
-      });
-    case actionTypes.TOGGLE_SHOW_LOG:
-      return updateObject(state, {
-        showLogScreen: !state.showLogScreen
-      });
-    case actionTypes.TOGGLE_USERS_SCREEN:
-      return updateObject(state, {
-        showUsersScreen: !state.showUsersScreen
+        visibleScreen: action.input
       });
 
     default:
