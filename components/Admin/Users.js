@@ -1,30 +1,35 @@
-qaimport React from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import moment from "moment";
-
 const Users = props => {
-    
   let showUsers = () => {
     if (props.user.registeredUsers == null) return;
     let arr = [];
     for (let user of props.user.registeredUsers) {
       arr.push(
         <div className="w-full inline-flex p-2 mt-1 bg-white flex items-center">
-          <div className="w-24 pl-8 uppercase">{arr.length+1}</div>{console.log("here",)}
+          <div className="w-24 pl-8 uppercase">{arr.length + 1}</div>
+          {console.log("here")}
           <div className="w-2/8 pl-3 capitalize">{user.username}</div>
           <div className="w-1/8 pl-3 capitalize">{user.badge}</div>
-            <div className="w-1/8 pl-4 capitalize">{user.online ? "Online" : "Offline"}</div>
-            <div className="w-2/8 pl-4 capitalize">{user.lastAction || "No actions on record . . ."}</div>
-          <div className="w-1/8 pl-4 capitalize flex items-center">                      
+          <div className="w-1/8 pl-4 capitalize">
+            {user.online ? "Online" : "Offline"}
+          </div>
+          <div className="w-2/8 pl-4 capitalize">
+            {user.lastAction || "No actions on record . . ."}
+          </div>
+          <div className="w-1/8 pl-4 capitalize flex items-center">
             {user.locked ? "Locked" : "Unlocked"}
-        </div>
+          </div>
           <div className="w-1/8 pl-4 capitalize text-center">
             <div className="w-10 h-10 p-2 text-center justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
-                <FontAwesomeIcon icon={faTimes} className="fa-lg text-red text-center" />
+              <FontAwesomeIcon
+                icon={faTimes}
+                className="fa-lg text-red text-center"
+              />
             </div>
-        </div>
+          </div>
         </div>
       );
     }

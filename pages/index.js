@@ -46,22 +46,27 @@ class Index extends Component {
   render() {
     return (
       <Layout>
-        {this.props.misc.visibleScreen == "login" ? (
+        {this.props.misc.visibleScreen != null &&
+        this.props.misc.visibleScreen.includes("login") ? (
           <Login {...this.props} />
         ) : null}
         <Main {...this.props} />
 
-        {this.props.misc.visibleScreen == "users" ? (
+        {this.props.misc.visibleScreen != null &&
+        this.props.misc.visibleScreen.includes("users") ? (
           <Users {...this.props} />
         ) : null}
-        {this.props.misc.visibleScreen == "logs" ? (
+        {this.props.misc.visibleScreen != null &&
+        this.props.misc.visibleScreen.includes("logs") ? (
           <Logs {...this.props} />
         ) : null}
-        {this.props.misc.visibleScreen == "register" ? (
+        {this.props.misc.visibleScreen != null &&
+        this.props.misc.visibleScreen.includes("register") ? (
           <RegisterUser {...this.props} />
         ) : null}
 
-        {this.props.misc.visibleScreen == "itemized" ? (
+        {this.props.misc.visibleScreen != null &&
+        this.props.misc.visibleScreen.includes("itemized") ? (
           <Screen {...this.props} />
         ) : null}
         <Subscription subscription={subscription.orderUpdate}>

@@ -111,7 +111,7 @@ const Main = props => {
                     company: props.nav.focusCompany,
                     orderCache: props.order.orderCache
                   });
-                  props.setVisibleScreen("itemized");
+                  props.setVisibleScreen(["itemized"]);
                 }}
                 className="uppercase bg-blue-new text-white text-center px-3 py-2 cursor-pointer hover:bg-blue"
               >
@@ -149,13 +149,16 @@ const Main = props => {
           <div className="w-2/4 mt-6 text-right mr-4">
             <a
               onClick={() => {
-                props.setVisibleScreen(
-                  props.misc.visibleScreen == "users" ? null : "users"
-                );
+                props.setVisibleScreen([
+                  props.misc.visibleScreen != null &&
+                  props.misc.visibleScreen.includes("users")
+                    ? null
+                    : "users"
+                ]);
                 props.fetchUsers();
               }}
               className={
-                !props.showScreen
+                props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
               }
@@ -165,13 +168,16 @@ const Main = props => {
 
             <a
               onClick={() => {
-                props.setVisibleScreen(
-                  props.misc.visibleScreen == "logs" ? null : "logs"
-                );
+                props.setVisibleScreen([
+                  props.misc.visibleScreen != null &&
+                  props.misc.visibleScreen.includes("logs")
+                    ? null
+                    : "logs"
+                ]);
                 props.fetchLogs();
               }}
               className={
-                !props.showScreen
+                true //props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 "
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
               }
@@ -181,12 +187,15 @@ const Main = props => {
 
             <a
               onClick={() => {
-                props.setVisibleScreen(
-                  props.misc.visibleScreen == "register" ? null : "register"
-                );
+                props.setVisibleScreen([
+                  props.misc.visibleScreen != null &&
+                  props.misc.visibleScreen.includes("register")
+                    ? null
+                    : "register"
+                ]);
               }}
               className={
-                !props.showScreen
+                props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
               }
@@ -197,12 +206,15 @@ const Main = props => {
             <a
               onClick={() => {
                 props.releaseCredentials();
-                props.setVisibleScreen(
-                  props.misc.visibleScreen == "login" ? null : "login"
-                );
+                props.setVisibleScreen([
+                  props.misc.visibleScreen != null &&
+                  props.misc.visibleScreen.includes("login")
+                    ? null
+                    : "login"
+                ]);
               }}
               className={
-                !props.showScreen
+                props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
               }
@@ -243,8 +255,8 @@ const Main = props => {
           className="p-2 justify-end w-full text-blue-new hover:text-blue cursor-pointer mb-2"
         >
           <div className="font-bold uppercase w-full text-right mr-1 items-center ">
-          {props.nav.focusCompany !== null ? (
-              <div className="inline-flex items-center mr-2">              
+            {props.nav.focusCompany !== null ? (
+              <div className="inline-flex items-center mr-2">
                 <span className="mr-6 text-sm text-blue-new text-right font-normal">
                   Last Updated:{" "}
                   {moment(
@@ -252,15 +264,16 @@ const Main = props => {
                       props.nav.focusCompany.short.toLowerCase()
                     ].updatedAt
                   ).format("hh:mm:ss - DD/MM/YYYY")}
-                </span>             
-              <p className="text-lg mr-2">Update</p>
-              <FontAwesomeIcon
-                icon={faSyncAlt}
-                className="fa-lg"
-                id="update-icon"
-              />
-          </div> ) : null }
-          </div> 
+                </span>
+                <p className="text-lg mr-2">Update</p>
+                <FontAwesomeIcon
+                  icon={faSyncAlt}
+                  className="fa-lg"
+                  id="update-icon"
+                />
+              </div>
+            ) : null}
+          </div>
         </div>
         <div
           style={{
