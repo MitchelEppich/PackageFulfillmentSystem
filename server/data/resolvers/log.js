@@ -2,6 +2,10 @@ const { Log } = require("../../models");
 
 const { logFilters } = require("./functions");
 
+const { PubSub, withFilter } = require("graphql-subscriptions");
+
+const pubsub = new PubSub();
+
 const resolvers = {
   Query: {
     log: (_, { input }) => {
@@ -13,10 +17,25 @@ const resolvers = {
     }
   },
   Log: {},
+  Subscription: {
+    logUpdate: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("logUpdate"),
+        (payload, variables) => {
+          // console.log(payload, variables);
+          return true;
+        }
+      )
+    }
+  },
   Mutation: {
     createActionLog: (_, { input }) => {
       let log = new Log({
         ...input
+      });
+
+      pubsub.publish("logUpdate", {
+        logUpdate: { ...log.toObject() }
       });
 
       log.save();

@@ -147,7 +147,9 @@ const resolvers = {
   ...Log,
   // ...Order,
   Subscription: {
-    ...OrderResolvers.Subscription
+    ...OrderResolvers.Subscription,
+    ...UserResolvers.Subscription,
+    ...LogResolvers.Subscription
   },
   Mutation: {
     ...UserResolvers.Mutation,

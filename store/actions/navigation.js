@@ -13,7 +13,10 @@ import moment from "moment";
 const actionTypes = {
   FOCUS_COMPANY: "FOCUS_COMPANY",
   FETCH_ORDER: "FETCH_ORDER",
-  FETCH_LOGS: "FETCH_LOGS"
+  FETCH_LOGS: "FETCH_LOGS",
+  FETCH_USERS: "FETCH_USERS",
+  MODIFY_USER: "MODIFY_USER",
+  MODIFY_LOGS: "MODIFY_LOGS"
 };
 
 import OrderHandler from "./orderHandler";
@@ -58,6 +61,45 @@ const getActions = uri => {
             });
           });
         }
+      };
+    },
+    fetchUsers: () => {
+      return dispatch => {
+        const link = new HttpLink({ uri, fetch: fetch });
+
+        const operation = {
+          query: query.getUsers
+        };
+
+        return makePromise(execute(link, operation))
+          .then(data => {
+            let users = data.data.allUsers;
+            console.log(users);
+            dispatch({
+              type: actionTypes.FETCH_USERS,
+              users: users
+            });
+            return Promise.resolve(users);
+          })
+          .catch(error => console.log(error));
+      };
+    },
+    modifyUser: input => {
+      let _promptUsers = input.promptUsers;
+      let _user = input.user;
+
+      let _index = 0;
+      for (let _u of _promptUsers) {
+        if (_u.username == _user.username) {
+          _promptUsers[_index] = _user;
+          break;
+        }
+        _index++;
+      }
+
+      return {
+        type: actionTypes.MODIFY_USER,
+        input: _promptUsers
       };
     },
     fetchOrder: input => {
@@ -114,12 +156,33 @@ const getActions = uri => {
           return Promise.resolve(_new);
         });
       };
+    },
+    modifyLogs: input => {
+      let _promptLogs = input.promptLogs;
+      let _log = input.log;
+
+      return {
+        type: actionTypes.MODIFY_LOGS,
+        input: [_log, ..._promptLogs]
+      };
     }
   };
 
   return { ...objects };
 };
 const query = {
+  getUsers: gql`
+    query {
+      allUsers {
+        username
+        name
+        badge
+        locked
+        online
+        lastAction
+      }
+    }
+  `,
   fetchOrder: gql`
     query($invoiceId: String) {
       fetchOrder(input: { invoiceId: $invoiceId })

@@ -177,7 +177,7 @@ const Main = props => {
                 props.fetchLogs();
               }}
               className={
-                true //props.misc.visibleScreen == null
+                props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 "
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
               }
@@ -205,7 +205,9 @@ const Main = props => {
 
             <a
               onClick={() => {
-                props.releaseCredentials();
+                props.releaseCredentials({
+                  username: props.user.currentUser.username
+                });
                 props.setVisibleScreen([
                   props.misc.visibleScreen != null &&
                   props.misc.visibleScreen.includes("login")

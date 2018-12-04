@@ -2,15 +2,17 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faTimes } from "@fortawesome/free-solid-svg-icons";
 
+import { Subscription } from "react-apollo";
+import gql from "graphql-tag";
+
 const Users = props => {
   let showUsers = () => {
-    if (props.user.registeredUsers == null) return;
+    if (props.nav.promptUsers == null) return;
     let arr = [];
-    for (let user of props.user.registeredUsers) {
+    for (let user of props.nav.promptUsers) {
       arr.push(
         <div className="w-full inline-flex p-2 mt-1 bg-white flex items-center">
           <div className="w-24 pl-8 uppercase">{arr.length + 1}</div>
-          {console.log("here")}
           <div className="w-2/8 pl-3 capitalize">{user.username}</div>
           <div className="w-1/8 pl-3 capitalize">{user.badge}</div>
           <div className="w-1/8 pl-4 capitalize">
@@ -76,8 +78,39 @@ const Users = props => {
 
       <div className="mt-6" />
       <div className="w-full overflow-y-auto h-650">{showUsers()}</div>
+
+      <Subscription subscription={subscription.userUpdate}>
+        {({ data }) => {
+          if (data != null) {
+            let _user = data.userUpdate;
+            let _promptUsers = props.nav.promptUsers;
+            if (!JSON.stringify(_promptUsers).includes(JSON.stringify(_user))) {
+              props.modifyUser({
+                user: _user,
+                promptUsers: _promptUsers
+              });
+            }
+          }
+          return <div />;
+        }}
+      </Subscription>
     </div>
   );
+};
+
+const subscription = {
+  userUpdate: gql`
+    subscription {
+      userUpdate {
+        username
+        badge
+        locked
+        admin
+        online
+        lastAction
+      }
+    }
+  `
 };
 
 export default Users;

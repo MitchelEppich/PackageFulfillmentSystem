@@ -34,6 +34,7 @@ type User {
 }
 
 input UserInput {
+  id: String
   username: String
   name: String
   badge: String
@@ -41,6 +42,7 @@ input UserInput {
   token: String
   admin: Boolean
   online: Boolean
+  lastAction: String
 }
 
 input LogFilter {
@@ -79,11 +81,14 @@ input OrderInput {
 
 type Subscription {
   orderUpdate(orderId: String): Order
+  userUpdate: User
+  logUpdate: Log
 }
 
 type Mutation {
   verifyCredentials(input: UserInput!): User
   registerCredentials(input: UserInput!): User
+  updateUser(input: UserInput!): User
 
   updateOrder(input: OrderInput!): Order
   cacheOrder(input: OrderInput!): Order

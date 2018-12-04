@@ -11,16 +11,21 @@ import fetch from "node-fetch";
 const actionTypes = {
   VERIFY_CREDENTIALS: "VERIFY_CREDENTIALS",
   FETCH_CREDENTIALS: "FETCH_CREDENTIALS",
-  FETCH_USERS: "FETCH_USERS",
   RELEASE_CREDENTIALS: "RELEASE_CREDENTIALS",
-  REGISTER_CREDENTIALS: "REGISTER_CREDENTIALS"
+  REGISTER_CREDENTIALS: "REGISTER_CREDENTIALS",
+  UPDATE_USER: "UPDATE_USER"
 };
 
 const getActions = uri => {
   const objects = {
-    releaseCredentials: () => {
-      sessionStorage.setItem("token", "");
-      return { type: actionTypes.RELEASE_CREDENTIALS };
+    releaseCredentials: input => {
+      return dispatch => {
+        sessionStorage.setItem("token", "");
+        dispatch(
+          objects.updateUser({ username: input.username, online: false })
+        );
+        dispatch({ type: actionTypes.RELEASE_CREDENTIALS });
+      };
     },
     fetchCredentials: () => {
       return dispatch => {
@@ -40,27 +45,6 @@ const getActions = uri => {
               user: user
             });
             return Promise.resolve(user);
-          })
-          .catch(error => console.log(error));
-      };
-    },
-    fetchUsers: () => {
-      return dispatch => {
-        const link = new HttpLink({ uri, fetch: fetch });
-
-        const operation = {
-          query: query.getUsers
-        };
-
-        return makePromise(execute(link, operation))
-          .then(data => {
-            let users = data.data.allUsers;
-            console.log(users);
-            dispatch({
-              type: actionTypes.FETCH_USERS,
-              users: users
-            });
-            return Promise.resolve(users);
           })
           .catch(error => console.log(error));
       };
@@ -113,28 +97,41 @@ const getActions = uri => {
           return Promise.resolve(user);
         });
       };
+    },
+    updateUser: input => {
+      return dispatch => {
+        const link = new HttpLink({
+          uri,
+          fetch: fetch
+        });
+        const operation = {
+          query: mutation.updateUser,
+          variables: {
+            username: input.username,
+            locked: input.locked,
+            admin: input.admin,
+            lastAction: input.lastAction,
+            online: input.online
+          }
+        };
+        return makePromise(execute(link, operation)).then(data => {
+          let user = data.data.updateUser;
+          dispatch({
+            type: actionTypes.UPDATE_USER,
+            user: user
+          });
+          return Promise.resolve(user);
+        });
+      };
     }
   };
 
   return { ...objects };
 };
 const query = {
-  getUsers: gql`
-    query {
-      allUsers {
-        username
-        name
-        badge
-        locked
-        online
-        lastAction
-      }
-    }
-  `,
   getCredentials: gql`
     query($token: String) {
       user(input: { token: $token }) {
-        _id
         username
         name
         badge
@@ -152,7 +149,6 @@ const mutation = {
   verifyCredentials: gql`
     mutation($username: String, $badge: String) {
       verifyCredentials(input: { username: $username, badge: $badge }) {
-        _id
         username
         name
         badge
@@ -166,7 +162,6 @@ const mutation = {
   registerCredentials: gql`
     mutation($name: String, $admin: Boolean) {
       registerCredentials(input: { name: $name, admin: $admin }) {
-        _id
         username
         name
         badge
@@ -174,6 +169,33 @@ const mutation = {
         token
         admin
         createdAt
+      }
+    }
+  `,
+  updateUser: gql`
+    mutation(
+      $locked: Boolean
+      $admin: Boolean
+      $lastAction: String
+      $online: Boolean
+      $username: String
+    ) {
+      updateUser(
+        input: {
+          username: $username
+          locked: $locked
+          lastAction: $lastAction
+          admin: $admin
+          online: $online
+        }
+      ) {
+        username
+        name
+        badge
+        locked
+        admin
+        online
+        lastAction
       }
     }
   `

@@ -83,8 +83,6 @@ class Index extends Component {
                 !_order.claimed &&
                 _claimedOrders.includes(_order.invoice_number);
 
-              console.log(_order, _claimedOrders, _shouldRemove);
-
               if (_shouldAppend | _shouldRemove)
                 this.props.modifyClaims({
                   order: _order,
@@ -107,7 +105,7 @@ const mapDispatchToProps = dispatch => {
     fetchUsers: input => dispatch(actions.fetchUsers(input)),
     verifyCredentials: input => dispatch(actions.verifyCredentials(input)),
     registerCredentials: input => dispatch(actions.registerCredentials(input)),
-    releaseCredentials: () => dispatch(actions.releaseCredentials()),
+    releaseCredentials: input => dispatch(actions.releaseCredentials(input)),
     expandItem: input => dispatch(actions.expandItem(input)),
     focusCompany: input => dispatch(actions.focusCompany(input)),
     fetchOrder: input => dispatch(actions.fetchOrder(input)),
@@ -119,6 +117,8 @@ const mapDispatchToProps = dispatch => {
     clearItem: () => dispatch(actions.clearItem()),
     modifyClaims: input => dispatch(actions.modifyClaims(input)),
     updateOrder: input => dispatch(actions.updateOrder(input)),
+    modifyUser: input => dispatch(actions.modifyUser(input)),
+    modifyLogs: input => dispatch(actions.modifyLogs(input)),
     setVisibleScreen: input => dispatch(actions.setVisibleScreen(input))
   };
 };

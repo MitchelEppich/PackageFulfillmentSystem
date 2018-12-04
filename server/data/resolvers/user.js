@@ -2,6 +2,10 @@ const { User, Log } = require("../../models");
 
 const { userFilters } = require("./functions");
 
+const { PubSub, withFilter } = require("graphql-subscriptions");
+
+const pubsub = new PubSub();
+
 const resolvers = {
   Query: {
     user: async (_, { input }) => {
@@ -16,19 +20,30 @@ const resolvers = {
       let query = filter ? { $or: userFilters(filter) } : {};
       let users = await User.find(query);
 
-      let _index = 0;
-      for (let user of users) {
-        let _log = await Log.findOne({ who: user.username });
-        if (_log != null) {
-          user.lastAction = _log.task;
-          users[_index] = user;
-        }
-        _index++;
-      }
+      // let _index = 0;
+      // for (let user of users) {
+      //   let _log = await Log.findOne({ who: user.username });
+      //   if (_log != null) {
+      //     user.lastAction = _log.task;
+      //     users[_index] = user;
+      //   }
+      //   _index++;
+      // }
       return users;
     }
   },
   User: {},
+  Subscription: {
+    userUpdate: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("userUpdate"),
+        (payload, variables) => {
+          // console.log(payload, variables);
+          return true;
+        }
+      )
+    }
+  },
   Mutation: {
     verifyCredentials: async (_, { input }) => {
       let user = await User.findOne({
@@ -41,6 +56,11 @@ const resolvers = {
       user.token = user.createToken();
 
       user.online = true;
+      // user.lastAction = await Log.findOne({ who: user.username });
+
+      pubsub.publish("userUpdate", {
+        userUpdate: { ...user.toObject() }
+      });
 
       user.save();
 
@@ -71,6 +91,29 @@ const resolvers = {
       user.save();
 
       return user.toObject();
+    },
+    updateUser: async (_, { input }) => {
+      let user;
+      try {
+        let operation = {
+          $set: { ...input }
+        };
+
+        user = await User.findOneAndUpdate(
+          { $or: [{ username: input.username }] },
+          operation,
+          { new: true }
+        );
+
+        pubsub.publish("userUpdate", {
+          userUpdate: { ...user.toObject() }
+        });
+
+        return user.toObject();
+      } catch (error) {
+        console.log("No user was found -> ", input);
+        return null;
+      }
     }
   }
 };

@@ -4,6 +4,9 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 import moment from "moment";
 
+import { Subscription } from "react-apollo";
+import gql from "graphql-tag";
+
 const Logs = props => {
   let showLogs = () => {
     if (props.nav.promptLogs == null) return;
@@ -64,8 +67,35 @@ const Logs = props => {
       <div className="mt-6" />
 
       <div className="w-full overflow-y-auto h-650">{showLogs()}</div>
+      <Subscription subscription={subscription.logUpdate}>
+        {({ data }) => {
+          if (data != null) {
+            let _log = data.logUpdate;
+            let _promptLogs = props.nav.promptLogs;
+            if (!JSON.stringify(_promptLogs).includes(JSON.stringify(_log))) {
+              props.modifyLogs({
+                log: _log,
+                promptLogs: _promptLogs
+              });
+            }
+          }
+          return <div />;
+        }}
+      </Subscription>
     </div>
   );
+};
+
+const subscription = {
+  logUpdate: gql`
+    subscription {
+      logUpdate {
+        who
+        task
+        createdAt
+      }
+    }
+  `
 };
 
 export default Logs;

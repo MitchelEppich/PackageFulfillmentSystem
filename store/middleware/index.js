@@ -1,6 +1,7 @@
 import actions from "../actions";
 
 import OrderHandler from "../actions/orderHandler";
+import User from "../actions/user";
 
 import gql from "graphql-tag";
 import { makePromise, execute } from "apollo-link";
@@ -67,6 +68,16 @@ const middleware = [
           query: mutation.createActionLog,
           variables: { who: who, task: task }
         };
+
+        // Save to user as last action
+        let userActions = User(uri);
+        if (action.user != null && task != null)
+          store.dispatch(
+            userActions.updateUser({
+              username: action.user.username,
+              lastAction: task
+            })
+          );
 
         // Create Action Record
         if (task != null && who != null) {

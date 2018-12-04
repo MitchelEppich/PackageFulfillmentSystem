@@ -11,7 +11,8 @@ const UserSchema = Schema({
   token: String,
   admin: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
-  online: { type: Boolean, default: false }
+  online: { type: Boolean, default: false },
+  lastAction: String
 });
 
 UserSchema.methods.createToken = function() {
