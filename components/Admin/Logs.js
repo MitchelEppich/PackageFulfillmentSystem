@@ -57,9 +57,9 @@ const Logs = props => {
       </div>
 
       <div className="inline-flex w-full p-1 bg-grey-darker uppercase text-white text-sm absolute mt-10 pin-t pin-l">
-        <div className="w-1/5 pl-16 uppercase">Date:</div>
-        <div className="w-1/5 pl-3 uppercase">User:</div>
-        <div className="w-3/5 ml-4 uppercase">Actions:</div>
+        <div className="w-1/5 pl-16 uppercase">Date</div>
+        <div className="w-1/5 pl-3 uppercase">User</div>
+        <div className="w-3/5 ml-4 uppercase">Actions</div>
       </div>
       <div className="mt-6" />
 
