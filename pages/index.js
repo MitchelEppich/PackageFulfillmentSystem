@@ -13,6 +13,7 @@ import Screen from "../components/Main/Screen";
 import RegisterUser from "../components/Admin/RegisterUser";
 import Logs from "../components/Admin/Logs";
 import Users from "../components/Admin/Users";
+import Reports from "../components/Admin/Reports"
 
 import { Subscription } from "react-apollo";
 import gql from "graphql-tag";
@@ -52,6 +53,10 @@ class Index extends Component {
         ) : null}
         <Main {...this.props} />
 
+        {this.props.misc.visibleScreen != null &&
+        this.props.misc.visibleScreen.includes("reports") ? (
+          <Reports {...this.props} />
+        ) : null}
         {this.props.misc.visibleScreen != null &&
         this.props.misc.visibleScreen.includes("users") ? (
           <Users {...this.props} />

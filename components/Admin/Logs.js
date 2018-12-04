@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import moment from "moment";
 
@@ -12,7 +12,7 @@ const Logs = props => {
       arr.push(
         <div className="w-full inline-flex p-2 mt-1 bg-white">
           <div className="w-1/5 pl-10">
-            <p>{moment(log.createdAt).format("YYYY/MM/DD hh:mm:ss")}</p>
+            <p>{moment(log.createdAt).format("DD/MM/YYYY - hh:mm:ss")}</p>
           </div>
           <div className="w-1/5">
             <p>{log.who}</p>
@@ -51,13 +51,17 @@ const Logs = props => {
             Back
           </h4>
         </div>
-        <div className="bg-blue-new w-1/3 text-white p-2 text-center">
+        <div className="bg-blue-new w-1/3 text-white p-2 text-center uppercase">
           <h3>Logs</h3>
+        </div>
+        <div className="bg-blue-new w-1/3 text-white p-2 text-center uppercase">
+          {/* <label>Search for </label><input type="text" name="searchInput" id="searchInput" value="" placeholder="Type here" className="bg-transparent pl-2 p-1 text-white"></input> */}
+          <FontAwesomeIcon icon={faSearch} className="fa-2x mr-4" />
         </div>
       </div>
 
       <div className="inline-flex w-full p-1 bg-grey-darker uppercase text-white text-sm absolute mt-10 pin-t pin-l">
-        <div className="w-1/5 pl-16 uppercase">Date</div>
+        <div className="w-1/5 text-center uppercase">Date</div>
         <div className="w-1/5 pl-3 uppercase">User</div>
         <div className="w-3/5 ml-4 uppercase">Actions</div>
       </div>
