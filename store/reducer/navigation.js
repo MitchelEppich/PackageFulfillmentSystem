@@ -4,8 +4,6 @@ import { updateObject } from "../utility";
 const initialState = {
   focusCompany: null,
   focusOrder: null,
-  orderCache: {
-  },
   promptLogs: null
 };
 
@@ -17,8 +15,6 @@ export default (state = initialState, action) => {
       return updateObject(state, { focusOrder: action.order });
     case actionTypes.FETCH_LOGS:
       return updateObject(state, { promptLogs: action.logs });
-    case actionTypes.ORDER_CACHE:
-      return updateObject(state, { orderCache: action.input });
     default:
       return state;
   }

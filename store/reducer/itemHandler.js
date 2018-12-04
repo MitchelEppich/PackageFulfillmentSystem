@@ -27,6 +27,7 @@ export default (state = initialState, action) => {
         missedItems: []
       });
     case actionTypes.REMOVE_ITEM_MISSED:
+      console.log(action);
       let _new = state.missedItems.filter(key => {
         if (key == action.item) return false;
         return true;

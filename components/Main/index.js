@@ -13,12 +13,10 @@ import {
 
 import moment from "moment";
 
-
 library.add(faPlus, faMinus, faInfo);
 
 const Main = props => {
   let companies = props.misc.companies;
-  let orderCache = props.nav.orderCache;
   let _name =
     props.user.currentUser != null ? props.user.currentUser.name : "NO NAME";
 
@@ -31,7 +29,7 @@ const Main = props => {
           onClick={() => {
             props.focusCompany({
               company: company,
-              orderCache: props.nav.orderCache,
+              orderCache: props.order.orderCache,
               user: props.user.currentUser
             });
           }}
@@ -46,9 +44,9 @@ const Main = props => {
           <p className="pr-2">{company.short}</p>{" "}
           <span className="qtd-tag flex justify-center">
             {" "}
-            {props.nav.orderCache[company.short.toLowerCase()] != null &&
-            props.nav.orderCache[company.short.toLowerCase()].order != null
-              ? props.nav.orderCache[company.short.toLowerCase()].order.length
+            {props.order.orderCache[company.short.toLowerCase()] != null &&
+            props.order.orderCache[company.short.toLowerCase()].order != null
+              ? props.order.orderCache[company.short.toLowerCase()].order.length
               : -1}
           </span>
         </div>
@@ -58,12 +56,21 @@ const Main = props => {
   };
 
   let showOrders = () => {
-    if (props.nav.focusCompany != null) {
-      let orders = props.nav.focusCompany.orders;
+    if (props.nav.focusCompany != null && props.order.orderCache != null) {
+      let orders = props.order.orderCache[props.nav.focusCompany.short].order;
       let arr = [];
       let index = 1;
+
+      if (orders == null)
+        return (
+          <div className="inline-flex w-full p-2 text-center bg-grey-lighter mt-2">
+            <h3 className="text-center w-full text-almost-transparent">
+              Error loading orders . . .
+            </h3>
+          </div>
+        );
+
       for (let order of orders) {
-        if (props.order.claimedOrders.includes(order.invoice_number)) continue;
         arr.push(
           <div
             className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"
@@ -72,14 +79,19 @@ const Main = props => {
             <div className="w-32 pl-8">{index}</div>
             <div className="w-1/4">Order #{order.invoice_number}</div>
             <div className="w-1/4">{order.date}</div>
-            <div className="w-1/4">{props.misc.showScreen ? "In progress by Karl" : null }</div>
+            <div className="w-1/4">
+              {order.status != null && order.editBy != null
+                ? `${order.status} by ${order.editBy[order.editBy.length - 1]}`
+                : null}
+            </div>
             <div className="w-1/4 pl-2">
               <div
                 onClick={() => {
                   props.fetchOrder({
                     order: order,
                     user: props.user.currentUser,
-                    company: props.nav.focusCompany
+                    company: props.nav.focusCompany,
+                    orderCache: props.order.orderCache
                   });
                   props.toggleScreen();
                 }}
@@ -97,7 +109,7 @@ const Main = props => {
       return (
         <div className="inline-flex w-full p-2 text-center bg-grey-lighter mt-2">
           <h3 className="text-center w-full text-almost-transparent">
-            Please select your Company tab...
+            Please select your Company tab . . .
           </h3>
         </div>
       );
@@ -105,14 +117,15 @@ const Main = props => {
   };
 
   return (
-    
     <div className="w-full bg-grey-light overflow-x-hidden">
       <div className="bg-blue-new w-full mx-auto inline-flex justify-center text-white">
         <div className="w-newScreen inline-flex ml-6 mt-4 flex justify-between mb-2">
           <div className="w-2/4 mt-2 pin-l text-left">
-            <a href="./"><h2 className="text-white uppercase p-2">
-              Package Fulfillment System
-            </h2></a>
+            <a href="./">
+              <h2 className="text-white uppercase p-2">
+                Package Fulfillment System
+              </h2>
+            </a>
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
           <div className="w-2/4 mt-6 text-right mr-4">
@@ -200,7 +213,6 @@ const Main = props => {
           </div>
         </div>
       </div>
-{console.log("call", props)}
       <div
         style={{
           position: "absolute",
@@ -214,32 +226,39 @@ const Main = props => {
       >
         <div
           onClick={() => {
-            console.log("Test");
+            let company = props.nav.focusCompany;
+            if (company == null) return;
+            props.fetchOrderList({
+              url: company.url,
+              company: company,
+              orderCache: props.order.orderCache,
+              user: null
+            });
           }}
           className="p-2 justify-end w-full text-blue-new hover:text-blue cursor-pointer mb-2"
-        > 
-            <div className="font-bold uppercase w-full text-right mr-1 items-center ">
-                <div className="inline-flex items-center mr-2">
-                {props.nav.focusCompany !== null ?
-                  <span className="mr-6 text-sm text-blue-new text-right font-normal">
-                    Last Updated:{" "}
-                    {moment(
-                          props.nav.orderCache[
-                            props.nav.focusCompany.short.toLowerCase()
-                          ].updatedAt
-                        ).format("hh:mm:ss - DD/MM/YYYY")}
-                      
-                  </span> : null }   
-                      <p className="text-lg mr-2">Update</p>
-                      <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" /> 
-                </div>
-            </div> 
+        >
+          <div className="font-bold uppercase w-full text-right mr-1 items-center ">
+            <div className="inline-flex items-center mr-2">
+              {props.nav.focusCompany !== null ? (
+                <span className="mr-6 text-sm text-blue-new text-right font-normal">
+                  Last Updated:{" "}
+                  {moment(
+                    props.order.orderCache[
+                      props.nav.focusCompany.short.toLowerCase()
+                    ].updatedAt
+                  ).format("hh:mm:ss - DD/MM/YYYY")}
+                </span>
+              ) : null}
+              <p className="text-lg mr-2">Update</p>
+              <FontAwesomeIcon icon={faSyncAlt} className="fa-lg" />
+            </div>
+          </div>
         </div>
         <div
           style={{
             borderTopLeftRadius: "10px",
             borderTopRightRadius: "10px",
-            overflow: "hidden",
+            overflow: "hidden"
           }}
           className="inline-flex w-full bg-blue-new justify-between"
         >

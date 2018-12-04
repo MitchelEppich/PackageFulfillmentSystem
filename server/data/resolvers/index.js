@@ -1,10 +1,12 @@
+const { Order } = require("../../models");
+
 const UserResolvers = require("./User");
 const LogResolvers = require("./Log");
 const OrderResolvers = require("./Order");
 
 const User = UserResolvers.User;
 const Log = LogResolvers.Log;
-const Order = OrderResolvers.Order;
+// const Order = OrderResolvers.Order;
 
 const axios = require("axios");
 
@@ -24,7 +26,7 @@ const resolvers = {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
           "X-com-zoho-invoice-organizationid": "59999705"
         }
-      }).then(res => {
+      }).then(async res => {
         let data = res.data;
         let invoices = [];
         // Parse XML if xml
@@ -86,6 +88,25 @@ const resolvers = {
               };
             });
         }
+
+        // Check if saved in databse
+        let index = 0;
+        for (let invoice of invoices) {
+          let _order = await Order.findOne({
+            invoiceId: invoice.invoice_number
+          });
+          if (_order != null) {
+            invoices[index] = {
+              ...invoice,
+              status: _order.status,
+              lastUpdate: _order.lastUpdate,
+              claimed: _order.claimed,
+              editBy: _order.editBy
+            };
+          }
+          index++;
+        }
+
         return JSON.stringify(invoices);
       });
     },
@@ -124,7 +145,7 @@ const resolvers = {
   },
   ...User,
   ...Log,
-  ...Order,
+  // ...Order,
   Subscription: {
     ...OrderResolvers.Subscription
   },

@@ -33,19 +33,19 @@ const Screen = props => {
         >
           <p className="text-lg ml-6">{item.description}</p>
         </div>
-        <div 
-            style={{
-              width: "80px", 
-              height: "30px",
-              border: "1px solid #020202",
-              // CIRCLE:
-              // width: "40px",
-              // height: "40px",
-              // borderRadius: "50%",
-              // border: "1px solid rgba(66, 66, 66, 0.39)",            
-            }} 
-            className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}>
-        </div>
+        <div
+          style={{
+            width: "80px",
+            height: "30px",
+            border: "1px solid #020202"
+            // CIRCLE:
+            // width: "40px",
+            // height: "40px",
+            // borderRadius: "50%",
+            // border: "1px solid rgba(66, 66, 66, 0.39)",
+          }}
+          className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}
+        />
         <div
           style={{
             width: "15%"
@@ -71,6 +71,12 @@ const Screen = props => {
                 onChange={e => {
                   if (e.target.value.toString().length > 4)
                     e.target.value = e.target.value.substr(0, 4);
+
+                  props.setItemValue({
+                    itemValues: props.item.itemValues,
+                    key: `${item.name}`,
+                    value: e.target.value
+                  });
                 }}
                 size="3"
                 name="sttNumber"
@@ -117,6 +123,7 @@ const Screen = props => {
                 onChange={e => {
                   if (e.target.value.toString().length > 4)
                     e.target.value = e.target.value.substr(0, 4);
+
                   props.setItemValue({
                     itemValues: props.item.itemValues,
                     key: `${name}-${number}`,
@@ -189,19 +196,19 @@ const Screen = props => {
               {item.description}
             </p>
           </div>
-          <div 
+          <div
             style={{
-              width: "80px", 
+              width: "80px",
               height: "30px",
               border: "1px solid #020202"
               // CIRCLE:
               // width: "40px",
               // height: "40px",
               // borderRadius: "50%",
-              // border: "1px solid rgba(66, 66, 66, 0.39)",              
+              // border: "1px solid rgba(66, 66, 66, 0.39)",
             }}
-            className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}>
-          </div>
+            className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}
+          />
           <div
             style={{
               width: "15%"
@@ -257,7 +264,9 @@ const Screen = props => {
             }}
             className=""
           >
-            <p className="flex items-center float-right">{item.quantity} Packages</p>
+            <p className="flex items-center float-right">
+              {item.quantity} Packages
+            </p>
           </div>
         </div>
         {props.item.expandItems.includes(item.name) ? (
@@ -369,7 +378,8 @@ const Screen = props => {
                 content: JSON.stringify(order),
                 status: "awaiting completion",
                 claimed: false,
-                invoiceId: order.invoice_number
+                invoiceId: order.invoice_number,
+                orderCache: props.order.orderCache
               });
               props.toggleScreen();
               props.clearItem();
@@ -387,21 +397,23 @@ const Screen = props => {
           <div className="w-1/3 text-right mr-6 inline-flex">
             <div className="text-right w-full">
               <h4 className="p-2 text-white uppercase text-lg">
-              #{order.invoice_number} order
-            </h4>
+                #{order.invoice_number} order
+              </h4>
             </div>
-            <span style={{
-              borderRadius: "50%",
-              width: "30px",
-              height: "28px",
-              marginTop: "2px",
-              padding: "8px",
-              fontSize: "12px",
-              backgroundColor: "whitesmoke"
-            }}
-            className="flex justify-center cursor-pointer">
-              <FontAwesomeIcon icon={faUser} />   
-           </span>
+            <span
+              style={{
+                borderRadius: "50%",
+                width: "30px",
+                height: "28px",
+                marginTop: "2px",
+                padding: "8px",
+                fontSize: "12px",
+                backgroundColor: "whitesmoke"
+              }}
+              className="flex justify-center cursor-pointer"
+            >
+              <FontAwesomeIcon icon={faUser} />
+            </span>
           </div>
         </div>
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">

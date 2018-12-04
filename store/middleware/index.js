@@ -56,7 +56,8 @@ const middleware = [
                 status: _status,
                 who: _who,
                 claimed: _claimed,
-                invoiceId: _invoiceId
+                invoiceId: _invoiceId,
+                orderCache: action.orderCache
               })
             );
             break;

@@ -25,43 +25,47 @@ const getActions = uri => {
       };
     },
     setMutliItemBase: input => {
-      // Update Base Value
-      input.itemBaseList[input.key] = input.value;
+      return dispatch => {
+        // Update Base Value
+        input.itemBaseList[input.key] = input.value;
 
-      // Update item values
-      if (input.value.toString().length == 4) {
-        let skipped = 0;
-        for (let item = 0; item < input.item.quantity; item++) {
-          let key = `${input.item.name}-${item}`;
-          if (input.itemValues[key] == null || !input.itemValues[key].user) {
-            input.itemValues[key] = {
-              value: (parseInt(input.value) + item - skipped)
-                .toString()
-                .padStart(4, "0"),
-              user: false
-            };
-            objects.removeItemMissed({ item: key });
-          } else skipped++;
+        // Update item values
+        if (input.value.toString().length == 4) {
+          let skipped = 0;
+          for (let item = 0; item < input.item.quantity; item++) {
+            let key = `${input.item.name}-${item}`;
+            if (input.itemValues[key] == null || !input.itemValues[key].user) {
+              input.itemValues[key] = {
+                value: (parseInt(input.value) + item - skipped)
+                  .toString()
+                  .padStart(4, "0"),
+                user: false
+              };
+              dispatch(objects.removeItemMissed({ item: key }));
+            } else skipped++;
+          }
         }
-      }
 
-      return {
-        type: actionTypes.SET_MULTI_ITEM_BASE,
-        itemBaseList: input.itemBaseList,
-        itemValues: input.itemValues
+        dispatch({
+          type: actionTypes.SET_MULTI_ITEM_BASE,
+          itemBaseList: input.itemBaseList,
+          itemValues: input.itemValues
+        });
       };
     },
     setItemValue: input => {
-      input.itemValues[input.key] = {
-        value: input.value,
-        user: input.value != ""
-      };
+      return dispatch => {
+        input.itemValues[input.key] = {
+          value: input.value,
+          user: input.value != ""
+        };
 
-      objects.removeItemMissed({ item: input.key });
+        dispatch(objects.removeItemMissed({ item: input.key }));
 
-      return {
-        type: actionTypes.SET_ITEM_VALUE,
-        itemValues: input.itemValues
+        dispatch({
+          type: actionTypes.SET_ITEM_VALUE,
+          itemValues: input.itemValues
+        });
       };
     },
     expandItem: input => {
@@ -83,26 +87,35 @@ const getActions = uri => {
       };
     },
     verifyItemList: input => {
-      let itemList = input.order.item_list.map(a => {
-        return { name: a.name, quantity: a.quantity };
-      });
+      console.log(input);
       let itemMissed = [];
       let keyList = Object.keys(input.itemList);
 
-      for (let item of itemList) {
-        if (item.quantity == 1) {
-          if (!keyList.includes(item.name)) {
-            itemMissed.push(item.name);
-          }
-        } else {
-          for (let i = 0; i < item.quantity; i++) {
-            let itemName = `${item.name}-${i}`;
-            if (!keyList.includes(itemName)) {
-              itemMissed.push(itemName);
+      let itemList = [];
+      let _companies = Object.keys(input.order.item_list);
+      for (let company of _companies) {
+        let _quantities = Object.keys(input.order.item_list[company]);
+        for (let quantity of _quantities) {
+          let _items = Object.values(input.order.item_list[company][quantity]);
+          for (let item of _items) {
+            if (item.quantity == 1) {
+              if (!keyList.includes(item.name)) {
+                itemMissed.push(item.name);
+              }
+            } else {
+              for (let i = 0; i < item.quantity; i++) {
+                let itemName = `${item.name}-${i}`;
+                if (!keyList.includes(itemName)) {
+                  itemMissed.push(itemName);
+                }
+              }
             }
           }
         }
       }
+
+      console.log(itemMissed);
+
       return {
         type: actionTypes.VERIFY_ITEM_LIST,
         input: itemMissed

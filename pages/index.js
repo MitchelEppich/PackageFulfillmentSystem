@@ -12,7 +12,7 @@ import Main from "../components/Main";
 import Screen from "../components/Main/Screen";
 import RegisterUser from "../components/Admin/RegisterUser";
 import Logs from "../components/Admin/Logs";
-import Users from "../components/Admin/Users"
+import Users from "../components/Admin/Users";
 
 import { Subscription } from "react-apollo";
 import gql from "graphql-tag";
@@ -24,15 +24,14 @@ class Index extends Component {
       this.props.toggleLoginScreen();
     });
 
-    // for (let company of this.props.misc.companies) {
-    //   console.log(company);
-    //   this.props.fetchOrderList({
-    //     url: company.url,
-    //     company: company,
-    //     orderCache: this.props.nav.orderCache,
-    //     user: null
-    //   });
-    // }
+    for (let company of this.props.misc.companies) {
+      this.props.fetchOrderList({
+        url: company.url,
+        company: company,
+        orderCache: this.props.order.orderCache,
+        user: null
+      });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -50,7 +49,7 @@ class Index extends Component {
         {/* <Users 
         {...this.props}
         /> */}
-        {console.log(this.props.nav.orderCache)}
+        {console.log(this.props.order.orderCache)}
         {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
@@ -108,6 +107,7 @@ class Index extends Component {
                 this.props.modifyClaims({
                   order: _order,
                   claimedOrders: _claimedOrders,
+                  orderCache: this.props.order.orderCache,
                   append: _shouldAppend
                 });
             }
@@ -152,6 +152,7 @@ const subscription = {
         lastUpdate
         status
         claimed
+        editBy
       }
     }
   `
