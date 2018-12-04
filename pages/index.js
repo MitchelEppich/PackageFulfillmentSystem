@@ -50,7 +50,7 @@ class Index extends Component {
         {...this.props}
         /> */}
         {console.log(this.props.order.orderCache)}
-        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
+        {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}

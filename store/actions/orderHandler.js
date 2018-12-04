@@ -112,6 +112,7 @@ const getActions = uri => {
       let _orderCache = input.orderCache;
       let _order = input.order;
       _order = { ..._order, ...JSON.parse(_order.content) };
+
       let _company = _order.invoice_number.split("-")[2].toLowerCase();
       if (_orderCache[_company] == null) return;
       let index = 0;
