@@ -18,6 +18,7 @@ const initialState = {
   showLoginScreen: true,
   showRegisterScreen: false,
   showLogScreen: false,
+  showUsersScreen: false,
   geneColors: ["purple", "red", "yellow", "white", "blue", "green"],
   companies: [
     // {
@@ -119,6 +120,10 @@ const indexReducer = (state = initialState, action) => {
     case actionTypes.TOGGLE_SHOW_LOG:
       return updateObject(state, {
         showLogScreen: !state.showLogScreen
+      });
+    case actionTypes.TOGGLE_USERS_SCREEN:
+      return updateObject(state, {
+        showUsersScreen: !state.showUsersScreen
       });
 
     default:

@@ -26,13 +26,19 @@ const actionTypes = {
   TOGGLE_SCREEN: "TOGGLE_SCREEN",
   TOGGLE_LOGIN_SCREEN: "TOGGLE_LOGIN_SCREEN",
   TOGGLE_SHOW_REGISTER_SCREEN: "TOGGLE_SHOW_REGISTER_SCREEN",
-  TOGGLE_SHOW_LOG: "TOGGLE_SHOW_LOG"
+  TOGGLE_SHOW_LOG: "TOGGLE_SHOW_LOG",
+  TOGGLE_USERS_SCREEN: "TOGGLE_USERS_SCREEN"
 };
 
 const actions = {
   toggleScreen: () => {
     return {
       type: actionTypes.TOGGLE_SCREEN
+    };
+  },
+  toggleUsersScreen: () => {
+    return {
+      type: actionTypes.TOGGLE_USERS_SCREEN
     };
   },
   toggleLoginScreen: () => {

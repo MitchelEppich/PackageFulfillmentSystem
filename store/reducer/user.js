@@ -3,7 +3,8 @@ import { updateObject } from "../utility";
 
 const initialState = {
   currentUser: null,
-  registerUser: null
+  registerUser: null,
+  registeredUsers: null
 };
 
 export default (state = initialState, action) => {
@@ -12,6 +13,8 @@ export default (state = initialState, action) => {
       return updateObject(state, { currentUser: action.user });
     case actionTypes.FETCH_CREDENTIALS:
       return updateObject(state, { currentUser: action.user });
+    case actionTypes.FETCH_USERS:
+      return updateObject(state, { registeredUsers: action.users });
     case actionTypes.RELEASE_CREDENTIALS:
       return updateObject(state, { currentUser: null });
     case actionTypes.REGISTER_CREDENTIALS:

@@ -11,6 +11,7 @@ import fetch from "node-fetch";
 const actionTypes = {
   VERIFY_CREDENTIALS: "VERIFY_CREDENTIALS",
   FETCH_CREDENTIALS: "FETCH_CREDENTIALS",
+  FETCH_USERS: "FETCH_USERS",
   RELEASE_CREDENTIALS: "RELEASE_CREDENTIALS",
   REGISTER_CREDENTIALS: "REGISTER_CREDENTIALS"
 };
@@ -39,6 +40,26 @@ const getActions = uri => {
               user: user
             });
             return Promise.resolve(user);
+          })
+          .catch(error => console.log(error));
+      };
+    },
+    fetchUsers: () => {
+      return dispatch => {
+        const link = new HttpLink({ uri, fetch: fetch });
+
+        const operation = {
+          query: query.getUsers,          
+        };
+        
+        return makePromise(execute(link, operation))
+          .then(data => {
+            let users = data.data.allUsers;            
+            dispatch({
+              type: actionTypes.FETCH_USERS,             
+              users: users,
+            });
+            return Promise.resolve(users);
           })
           .catch(error => console.log(error));
       };
@@ -97,6 +118,15 @@ const getActions = uri => {
   return { ...objects };
 };
 const query = {
+  getUsers: gql`
+  query {
+    allUsers {
+      username
+      name
+      badge
+      locked
+    }
+  }`,
   getCredentials: gql`
     query($token: String) {
       user(input: { token: $token }) {

@@ -20,7 +20,7 @@ const middleware = [
         // if (true) return result;
 
         let who, task;
-        console.log(action);
+        // console.log(action);
         switch (action.type) {
           case actions.VERIFY_CREDENTIALS:
             if (action.user == null) break;
