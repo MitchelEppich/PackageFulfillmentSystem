@@ -37,7 +37,7 @@ const Login = props => {
             // Verify login credentials
             props.verifyCredentials({ username, badge }).then(res => {
               if (res == null) return;
-              props.toggleLoginScreen();
+              props.setVisibleScreen(null);
             });
           }}
         >

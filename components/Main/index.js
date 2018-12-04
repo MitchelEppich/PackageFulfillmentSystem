@@ -156,7 +156,7 @@ const Main = props => {
               }}
               className={
                 !props.showScreen
-                  ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                  ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
               }
             >
@@ -172,7 +172,7 @@ const Main = props => {
               }}
               className={
                 !props.showScreen
-                  ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 "
+                  ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 "
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
               }
             >
@@ -187,7 +187,7 @@ const Main = props => {
               }}
               className={
                 !props.showScreen
-                  ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                  ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
               }
             >
@@ -203,7 +203,7 @@ const Main = props => {
               }}
               className={
                 !props.showScreen
-                  ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
+                  ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
                   : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
               }
             >
@@ -243,8 +243,8 @@ const Main = props => {
           className="p-2 justify-end w-full text-blue-new hover:text-blue cursor-pointer mb-2"
         >
           <div className="font-bold uppercase w-full text-right mr-1 items-center ">
-            <div className="inline-flex items-center mr-2">
-              {props.nav.focusCompany !== null ? (
+          {props.nav.focusCompany !== null ? (
+              <div className="inline-flex items-center mr-2">              
                 <span className="mr-6 text-sm text-blue-new text-right font-normal">
                   Last Updated:{" "}
                   {moment(
@@ -252,16 +252,15 @@ const Main = props => {
                       props.nav.focusCompany.short.toLowerCase()
                     ].updatedAt
                   ).format("hh:mm:ss - DD/MM/YYYY")}
-                </span>
-              ) : null}
+                </span>             
               <p className="text-lg mr-2">Update</p>
               <FontAwesomeIcon
                 icon={faSyncAlt}
                 className="fa-lg"
                 id="update-icon"
               />
-            </div>
-          </div>
+          </div> ) : null }
+          </div> 
         </div>
         <div
           style={{
