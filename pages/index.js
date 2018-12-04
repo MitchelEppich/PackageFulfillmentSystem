@@ -46,11 +46,7 @@ class Index extends Component {
   render() {
     return (
       <Layout>
-        {/* <Users 
-        {...this.props}
-        /> */}
-        {console.log(this.props.order.orderCache)}
-        {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null}
+        {/* {this.props.misc.showLoginScreen ? <Login {...this.props} /> : null} */}
         <Main
           showScreen={this.props.misc.showScreen}
           toggleScreen={this.props.toggleScreen}
@@ -60,8 +56,12 @@ class Index extends Component {
           toggleRegisterScreen={this.props.toggleRegisterScreen}
           showLogScreen={this.props.misc.showLogScreen}
           toggleShowLog={this.props.toggleShowLog}
+          showUsersScreen={this.props.misc.showUsersScreen}
+          toggleUsersScreen={this.props.toggleUsersScreen}
           {...this.props}
         />
+
+        {this.props.misc.showUsersScreen ? <Users {...this.props} /> : null}
         {this.props.misc.showLogScreen ? (
           <Logs
             showLogScreen={this.props.misc.showLogScreen}
@@ -122,9 +122,11 @@ class Index extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     fetchCredentials: () => dispatch(actions.fetchCredentials()),
+    fetchUsers: input => dispatch(actions.fetchUsers(input)),
     verifyCredentials: input => dispatch(actions.verifyCredentials(input)),
     registerCredentials: input => dispatch(actions.registerCredentials(input)),
     toggleLoginScreen: () => dispatch(actions.toggleLoginScreen()),
+    toggleUsersScreen: () => dispatch(actions.toggleUsersScreen()),
     toggleScreen: () => dispatch(actions.toggleScreen()),
     toggleRegisterScreen: () => dispatch(actions.toggleRegisterScreen()),
     toggleShowLog: () => dispatch(actions.toggleShowLog()),

@@ -129,87 +129,46 @@ const Main = props => {
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
           <div className="w-2/4 mt-6 text-right mr-4">
-            {!props.showScreen ? (
+              <a
+                onClick={() => {
+                  props.toggleUsersScreen();
+                  props.fetchUsers();
+                }}
+                className={!props.showScreen ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2" : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"}
+              >
+                Users
+              </a>
+            
               <a
                 onClick={() => {
                   props.toggleShowLog();
                   props.fetchLogs();
                 }}
-                className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
-              >
-                Users
-              </a>
-            ) : (
-              <a
-                onClick={e => {
-                  e.preventDefault();
-                }}
-                className="opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
-              >
-                Users
-              </a>
-            )}
-            {!props.showScreen ? (
-              <a
-                onClick={() => {
-                  props.toggleShowLog();
-                  props.fetchLogs();
-                }}
-                className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                className={!props.showScreen ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 " : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2" }
               >
                 Logs
-              </a>
-            ) : (
-              <a
-                onClick={e => {
-                  e.preventDefault();
-                }}
-                className="opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
-              >
-                Logs
-              </a>
-            )}
+              </a>            
 
-            {!props.showScreen ? (
+            
               <a
                 onClick={() => {
                   props.toggleRegisterScreen();
                 }}
-                className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                className={!props.showScreen ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2" : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2" }
               >
                 Register New User
-              </a>
-            ) : (
-              <a
-                onClick={e => {
-                  e.preventDefault();
-                }}
-                className="opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
-              >
-                Register New User
-              </a>
-            )}
+              </a>            
 
-            {!props.showScreen ? (
+             
               <a
                 onClick={() => {
                   props.releaseCredentials();
                   props.toggleLoginScreen();
                 }}
-                className="text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
+                className={!props.showScreen ? "text-white p-2 bg-semi-transparent font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue" : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4" }
               >
                 Logout
-              </a>
-            ) : (
-              <a
-                onClick={e => {
-                  e.preventDefault();
-                }}
-                className="opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
-              >
-                Logout
-              </a>
-            )}
+              </a>            
           </div>
         </div>
       </div>

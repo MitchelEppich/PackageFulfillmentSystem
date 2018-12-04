@@ -6,7 +6,28 @@ import moment from "moment";
 
 
 
-const Users = props => {
+const Users = props => {   
+
+    let showUsers = () => {
+        if (props.user.registeredUsers == null) return;
+        let arr = [];
+        for (let user of props.user.registeredUsers) {
+          arr.push(
+            <div className="w-full inline-flex p-2 mt-1 bg-white">
+                <div className="w-1/5 pl-16 uppercase">{arr.length}</div>
+                <div className="w-1/5 pl-3 uppercase">{user.username}</div>
+                <div className="w-1/5 pl-3 uppercase">{user.badge}</div>
+                <div className="w-1/5 ml-4 uppercase">Status</div>
+                <div className="w-1/5 ml-4 uppercase">Actions</div>
+            </div>
+          );
+        }
+    
+        return arr;
+      };
+
+
+
     return (
         <div
         style={{
@@ -21,8 +42,7 @@ const Users = props => {
             <div className="w-full inline-flex flex items-center bg-blue-new relative">
                 <div
                 onClick={() => {
-                    props.toggleShowLog();
-                    props.clearItem();
+                    props.toggleUsersScreen();
                 }}
                 className="w-1/3 h-10 inline-flex"
                 >
@@ -43,7 +63,10 @@ const Users = props => {
                 <div className="w-1/5 ml-4 uppercase">Actions</div>
             </div>
             
+            
+
             <div className="mt-6" />
+            <div className="w-full overflow-y-auto h-650">{showUsers()}</div>
 
         </div>
     )
