@@ -96,7 +96,10 @@ const Main = props => {
           >
             <div className="w-32 pl-8">{index}</div>
             <div className="w-1/4">Order #{order.invoice_number}</div>
-            <div className="w-1/4">{order.date}</div>
+            <div className="w-1/4">
+              {" "}
+              {moment(order.date).format("DD/MM/YYYY")}
+            </div>
             <div className="w-1/4">
               {order.status != null && order.editBy != null
                 ? `${order.status} by ${order.editBy[order.editBy.length - 1]}`
@@ -151,6 +154,24 @@ const Main = props => {
               onClick={() => {
                 props.setVisibleScreen([
                   props.misc.visibleScreen != null &&
+                  props.misc.visibleScreen.includes("reports")
+                    ? null
+                    : "reports"
+                ]);
+                props.fetchUsers();
+              }}
+              className={
+                props.misc.visibleScreen == null
+                  ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase  px-4 mr-2"
+              }
+            >
+              Reports
+            </a>
+            <a
+              onClick={() => {
+                props.setVisibleScreen([
+                  props.misc.visibleScreen != null &&
                   props.misc.visibleScreen.includes("users")
                     ? null
                     : "users"
@@ -160,7 +181,7 @@ const Main = props => {
               className={
                 props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
-                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase  px-4 mr-2"
               }
             >
               Users
@@ -179,7 +200,7 @@ const Main = props => {
               className={
                 props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 "
-                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase px-4 mr-2"
               }
             >
               Logs
@@ -197,7 +218,7 @@ const Main = props => {
               className={
                 props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
-                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4 mr-2"
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase  px-4 mr-2"
               }
             >
               Register New User
@@ -218,7 +239,7 @@ const Main = props => {
               className={
                 props.misc.visibleScreen == null
                   ? "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
-                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase cursor-not-allowed px-4"
+                  : "opacity-25 text-white p-2 unselectable bg-semi-transparent font-bold uppercase px-4"
               }
             >
               Logout

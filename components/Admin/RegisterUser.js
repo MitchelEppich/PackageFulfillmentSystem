@@ -69,7 +69,7 @@ const RegisterUser = props => {
 
   return (
     <div
-      className="bg-blue-new h-full w-full relative overflow-x-hidden overflow-y-hidden"
+      className="bg-white h-full w-full relative overflow-x-hidden overflow-y-hidden"
       style={{
         position: "fixed",
         zIndex: "100"
@@ -79,7 +79,8 @@ const RegisterUser = props => {
         style={{
           borderRadius: "10px",
           background: "whitesmoke",
-          zIndex: "60"
+          zIndex: "60",
+          boxShadow: "0px 0px 10px #cecece"
         }}
         className="w-450 h-450 bg-white mt-32 align-absolute text-center"
       >
