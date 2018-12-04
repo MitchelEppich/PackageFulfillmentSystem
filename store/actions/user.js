@@ -49,15 +49,16 @@ const getActions = uri => {
         const link = new HttpLink({ uri, fetch: fetch });
 
         const operation = {
-          query: query.getUsers,          
+          query: query.getUsers
         };
-        
+
         return makePromise(execute(link, operation))
           .then(data => {
-            let users = data.data.allUsers;            
+            let users = data.data.allUsers;
+            console.log(users);
             dispatch({
-              type: actionTypes.FETCH_USERS,             
-              users: users,
+              type: actionTypes.FETCH_USERS,
+              users: users
             });
             return Promise.resolve(users);
           })
@@ -119,14 +120,17 @@ const getActions = uri => {
 };
 const query = {
   getUsers: gql`
-  query {
-    allUsers {
-      username
-      name
-      badge
-      locked
+    query {
+      allUsers {
+        username
+        name
+        badge
+        locked
+        online
+        lastAction
+      }
     }
-  }`,
+  `,
   getCredentials: gql`
     query($token: String) {
       user(input: { token: $token }) {
@@ -138,6 +142,7 @@ const query = {
         token
         admin
         createdAt
+        online
       }
     }
   `

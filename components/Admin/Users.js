@@ -14,8 +14,12 @@ const Users = props => {
           <div className="w-1/5 pl-16 uppercase">{arr.length}</div>
           <div className="w-1/5 pl-3 uppercase">{user.username}</div>
           <div className="w-1/5 pl-3 uppercase">{user.badge}</div>
-          <div className="w-1/5 ml-4 uppercase">Status</div>
-          <div className="w-1/5 ml-4 uppercase">Actions</div>
+          <div className="w-1/5 ml-4 uppercase">
+            {user.online ? "Online" : "Offline"}
+          </div>
+          <div className="w-1/5 ml-4 uppercase">
+            {user.lastAction || "No actions on record . . ."}
+          </div>
         </div>
       );
     }

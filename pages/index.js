@@ -21,7 +21,7 @@ class Index extends Component {
   componentDidMount() {
     this.props.fetchCredentials().then(res => {
       if (res == null) return;
-      this.props.setVisibleScreen("login");
+      this.props.setVisibleScreen(null);
     });
 
     for (let company of this.props.misc.companies) {
@@ -38,7 +38,7 @@ class Index extends Component {
     if (this.props.user.currentUser == null) {
       this.props.fetchCredentials().then(res => {
         if (res == null) return;
-        this.props.setVisibleScreen("login");
+        this.props.setVisibleScreen(null);
       });
     }
   }
@@ -46,7 +46,9 @@ class Index extends Component {
   render() {
     return (
       <Layout>
-        {/* {this.props.misc.visibleScreen == "login" ? <Login {...this.props} /> : null} */}
+        {this.props.misc.visibleScreen == "login" ? (
+          <Login {...this.props} />
+        ) : null}
         <Main {...this.props} />
 
         {this.props.misc.visibleScreen == "users" ? (

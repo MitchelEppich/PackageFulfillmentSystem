@@ -1,15 +1,31 @@
-const { User } = require("../../models");
+const { User, Log } = require("../../models");
 
 const { userFilters } = require("./functions");
 
 const resolvers = {
   Query: {
-    user: (_, { input }) => {
-      return User.findOne(input);
+    user: async (_, { input }) => {
+      let _user = await User.findOne(input);
+      if (_user == null) return null;
+      if (_user["online"] == null) _user["online"] = true;
+      else _user["online"] = !_user["online"];
+      _user.save();
+      return _user;
     },
-    allUsers: (_, { filter }) => {
+    allUsers: async (_, { filter }) => {
       let query = filter ? { $or: userFilters(filter) } : {};
-      return User.find(query);
+      let users = await User.find(query);
+
+      let _index = 0;
+      for (let user of users) {
+        let _log = await Log.findOne({ who: user.username });
+        if (_log != null) {
+          user.lastAction = _log.task;
+          users[_index] = user;
+        }
+        _index++;
+      }
+      return users;
     }
   },
   User: {},
@@ -23,6 +39,8 @@ const resolvers = {
       if (user.username.toLowerCase() != input.username.toLowerCase()) return;
 
       user.token = user.createToken();
+
+      user.online = true;
 
       user.save();
 

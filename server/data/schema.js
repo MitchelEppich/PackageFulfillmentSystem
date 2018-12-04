@@ -28,7 +28,9 @@ type User {
   locked: Boolean
   token: String
   admin: Boolean
+  online: Boolean
   createdAt: String
+  lastAction: String
 }
 
 input UserInput {
@@ -38,6 +40,7 @@ input UserInput {
   locked: Boolean
   token: String
   admin: Boolean
+  online: Boolean
 }
 
 input LogFilter {

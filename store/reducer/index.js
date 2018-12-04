@@ -15,7 +15,7 @@ import itemReducer from "./itemHandler";
 import orderReducer from "./orderHandler";
 
 const initialState = {
-  visibleScreen: null, // When null show main screen
+  visibleScreen: "login", // When null show main screen
   geneColors: ["purple", "red", "yellow", "white", "blue", "green"],
   companies: [
     // {

@@ -40,6 +40,7 @@ const resolvers = {
           for (let order of _break) {
             let _object = parseXml(order);
             let total_items = 0;
+            if (_object.UniqueID == null) continue;
             invoices.push({
               invoice_id: _object.UniqueID,
               customer_name: `${_object.ShipFirstName} ${_object.ShipLastName}`,
@@ -49,7 +50,6 @@ const resolvers = {
                 _object.item_list != null
                   ? categorizeOrder(
                       _object.item_list.map(a => {
-                        console.log(a.Productname);
                         let _break = a.Productname.split("-");
                         let _company = _object.OrderNumber.split("-")[2].trim();
                         let _prodName = _break[1].trim();
