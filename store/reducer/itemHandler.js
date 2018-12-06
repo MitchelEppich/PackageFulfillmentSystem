@@ -3,7 +3,7 @@ import { updateObject } from "../utility";
 
 const initialState = {
   itemBaseList: [],
-  itemValues: [],
+  itemValues: {},
   expandItems: [],
   missedItems: []
 };
@@ -16,12 +16,12 @@ export default (state = initialState, action) => {
         itemValues: action.itemValues
       });
     case actionTypes.SET_ITEM_VALUE:
-      return updateObject(state, {
-        itemValues: action.itemValues
-      });
+      return updateObject(state, { itemValues: action.itemValues });
+    case actionTypes.MODIFY_ITEM_VALUES:
+      return updateObject(state, { itemValues: action.input });
     case actionTypes.CLEAR_ITEM:
       return updateObject(state, {
-        itemValues: [],
+        itemValues: {},
         itemBaseList: [],
         expandItems: [],
         missedItems: []
@@ -32,17 +32,11 @@ export default (state = initialState, action) => {
         if (key == action.item) return false;
         return true;
       });
-      return updateObject(state, {
-        missedItems: _new
-      });
+      return updateObject(state, { missedItems: _new });
     case actionTypes.EXPAND_ITEM:
-      return updateObject(state, {
-        expandItems: action.input
-      });
+      return updateObject(state, { expandItems: action.input });
     case actionTypes.VERIFY_ITEM_LIST:
-      return updateObject(state, {
-        missedItems: action.input
-      });
+      return updateObject(state, { missedItems: action.input });
     default:
       return state;
   }

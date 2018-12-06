@@ -14,7 +14,8 @@ const actionTypes = {
   CLEAR_ITEM: "CLEAR_ITEM",
   EXPAND_ITEM: "EXPAND_ITEM",
   VERIFY_ITEM_LIST: "VERIFY_ITEM_LIST",
-  REMOVE_ITEM_MISSED: "REMOVE_ITEM_MISSED"
+  REMOVE_ITEM_MISSED: "REMOVE_ITEM_MISSED",
+  MODIFY_ITEM_VALUES: "MODIFY_ITEM_VALUES"
 };
 
 const getActions = uri => {
@@ -66,6 +67,13 @@ const getActions = uri => {
           type: actionTypes.SET_ITEM_VALUE,
           itemValues: input.itemValues
         });
+      };
+    },
+    modifyItemValues: input => {
+      console.log(input);
+      return {
+        type: actionTypes.MODIFY_ITEM_VALUES,
+        input: JSON.parse(input.entryContent)
       };
     },
     expandItem: input => {

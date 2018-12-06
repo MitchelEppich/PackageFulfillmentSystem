@@ -14,6 +14,8 @@ export default (state = initialState, action) => {
       return updateObject(state, { focusCompany: action.input });
     case actionTypes.FETCH_ORDER:
       return updateObject(state, { focusOrder: action.order });
+    case actionTypes.MODIFY_FOCUS_ORDER:
+      return updateObject(state, { focusOrder: action.input });
     case actionTypes.FETCH_LOGS:
       return updateObject(state, { promptLogs: action.logs });
     case actionTypes.MODIFY_LOGS:

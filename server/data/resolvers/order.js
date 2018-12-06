@@ -34,7 +34,9 @@ const resolvers = {
       order.save();
 
       pubsub.publish("orderUpdate", {
-        orderUpdate: { ...order.toObject() }
+        orderUpdate: {
+          ...order.toObject()
+        }
       });
 
       return order.toObject();
@@ -60,7 +62,9 @@ const resolvers = {
         );
 
         pubsub.publish("orderUpdate", {
-          orderUpdate: { ...order.toObject() }
+          orderUpdate: {
+            ...order.toObject()
+          }
         });
 
         return order.toObject();

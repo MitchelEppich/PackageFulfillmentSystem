@@ -17,10 +17,12 @@ const actionTypes = {
   FETCH_USERS: "FETCH_USERS",
   MODIFY_USER: "MODIFY_USER",
   MODIFY_LOGS: "MODIFY_LOGS",
-  DELETE_USER: "DELETE_USER"
+  DELETE_USER: "DELETE_USER",
+  MODIFY_FOCUS_ORDER: "MODIFY_FOCUS_ORDER"
 };
 
 import OrderHandler from "./orderHandler";
+import ItemHandler from "./itemHandler";
 
 const getActions = uri => {
   const objects = {
@@ -128,12 +130,23 @@ const getActions = uri => {
     },
     fetchOrder: input => {
       return dispatch => {
+        if (
+          input.order.entryContent != null &&
+          input.order.entryContent != "{}"
+        ) {
+          let ItemHandlerActions = ItemHandler(uri);
+          dispatch(
+            ItemHandlerActions.modifyItemValues({
+              entryContent: input.order.entryContent
+            })
+          );
+        }
+
         if (input.company.short == "wholesale") {
           const link = new HttpLink({ uri, fetch: fetch });
-
           const operation = {
             query: query.fetchOrder,
-            variables: { invoiceId: input.order.invoice_id }
+            variables: { invoiceId: input.order.invoiceId }
           };
 
           return makePromise(execute(link, operation)).then(data => {
@@ -160,6 +173,12 @@ const getActions = uri => {
             orderCache: input.orderCache
           });
         }
+      };
+    },
+    modifyFocusOrder: input => {
+      return {
+        type: actionTypes.MODIFY_FOCUS_ORDER,
+        input: input.order
       };
     },
     fetchLogs: input => {

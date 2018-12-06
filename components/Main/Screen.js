@@ -12,10 +12,15 @@ import {
   faAngleRight,
   faStickyNote
 } from "@fortawesome/free-solid-svg-icons";
-import { onError } from "../../node_modules/apollo-link-error";
+
+import moment from "moment";
 
 const Screen = props => {
   let generateSingleItem = (item, company) => {
+    let _value =
+      props.item.itemValues[item.name] != null
+        ? props.item.itemValues[item.name].value
+        : undefined;
     return (
       <div
         style={{
@@ -26,12 +31,7 @@ const Screen = props => {
         className={`inline-flex flex items-center pl-12 w-full mx-auto my-2 p-1`}
         key={item.name}
       >
-        <div
-          style={{
-            width: "40%"
-          }}
-          className=""
-        >
+        <div style={{ width: "40%" }} className="">
           <p className="text-lg ml-6">{item.description}</p>
         </div>
         <div
@@ -43,18 +43,11 @@ const Screen = props => {
           }}
           className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}
         />
-        <div
-          style={{
-            width: "15%"
-          }}
-          className=""
-        >
+        <div style={{ width: "15%" }} className="">
           <p className="text-lg ml-12">{item.name}</p>
         </div>
         <div
-          style={{
-            width: "30%"
-          }}
+          style={{ width: "30%" }}
           className="inline-flex ml-4 flex items-center"
         >
           <div style={{ width: "140px" }}>
@@ -75,6 +68,7 @@ const Screen = props => {
                     value: e.target.value
                   });
                 }}
+                value={_value}
                 size="3"
                 name="sttNumber"
                 placeholder="XXXX"
@@ -85,12 +79,7 @@ const Screen = props => {
             </p>
           </div>
         </div>
-        <div
-          style={{
-            width: "9%"
-          }}
-          className=""
-        >
+        <div style={{ width: "9%" }} className="">
           <p className="flex items-center pl-4 float-right">
             {item.quantity} Package
           </p>
@@ -156,9 +145,15 @@ const Screen = props => {
   };
 
   let generateMultiItem = (item, company) => {
+    let _value = props.item.itemBaseList[item.name]
+      ? props.item.itemBaseList[item.name].value
+      : undefined;
     let arr = [];
     for (let i = 0; i < item.quantity; i++) {
-      let valueEntry = props.item.itemValues[`${item.name}-${i}`];
+      let valueEntry =
+        props.item.itemValues[`${item.name}-${i}`] != null
+          ? props.item.itemValues[`${item.name}-${i}`].value
+          : undefined;
       let _sub = generateSubItem(
         item,
         i,
@@ -227,7 +222,7 @@ const Screen = props => {
                 {company}04
                 <input
                   type="number"
-                  value={props.item.itemBaseList[item.name]}
+                  value={_value}
                   onChange={e => {
                     if (e.target.value.toString().length > 4)
                       e.target.value = e.target.value.substr(0, 4);
@@ -343,11 +338,14 @@ const Screen = props => {
               });
             }}
           >
-            {props.item.expandItems.includes(key) ? (
-              <FontAwesomeIcon icon={faAngleDown} className="fa-lg mr-2" />
-            ) : (
-              <FontAwesomeIcon icon={faAngleRight} className="fa-lg mr-2" />
-            )}
+            <FontAwesomeIcon
+              icon={
+                props.item.expandItems.includes(key)
+                  ? faAngleDown
+                  : faAngleRight
+              }
+              className="fa-lg mr-2"
+            />
             {company}
           </div>
           {props.item.expandItems.includes(key) ? quantities : null}
@@ -383,7 +381,9 @@ const Screen = props => {
         <div className="inline-flex w-full p-2 bg-grey-light">
           <div className="w-1/5 text-left pl-6">{_content[0]}</div>
           <div className="w-3/5 text-left">{_content[1]}</div>
-          {/* <div className="w-1/5 text-left pl-6">{_content[2]}</div> */}
+          <div className="w-1/5 text-left pl-6">
+            {moment(_content[2]).format("DD-MM-YYYY hh:mm:ss")}
+          </div>
         </div>
       );
     }
@@ -400,9 +400,9 @@ const Screen = props => {
           <div
             onClick={() => {
               props.updateOrder({
-                content: JSON.stringify(order),
                 status: "awaiting completion",
                 claimed: false,
+                entryContent: JSON.stringify(props.item.itemValues),
                 invoiceNumber: order.invoiceNumber,
                 orderCache: props.order.orderCache
               });
@@ -467,46 +467,60 @@ const Screen = props => {
               <FontAwesomeIcon icon={faStickyNote} />
             </span>
 
-            { props.misc.visibleScreen.includes("noteBy") ? 
-            <div             
-              style={{
-                borderRadius: "10px",                
-                overflow: "hidden",
-                overflow: "hidden",                             
-                zIndex: "100",
-                boxShadow: "rgba(45, 45, 45, 0.19) 0px 2px 5px",
-                marginRight: "5px"
-              }}
-              className="absolute bg-white pin-r pin-t w-550 h-550 mt-12">  
-                  <div className="text-white p-2 text-center uppercase bg-blue-new">
-                    <h3>Notes</h3>
-                  </div>  
-                  <div className="w-full mt-6 py-2 h-300 overflow-y-auto">
-                    <div style={{marginTop: "35px"}} className="inline-flex w-full absolute pin-l pin-t p-1 bg-grey-darker uppercase text-white text-sm">
-                        <div className="w-1/5 pl-8 text-left">User</div>
-                        <div className="w-3/5 text-left">Message</div>                      
-                        <div className="w-1/5 text-center">Date</div>                      
-                    </div>
-                    
-                          <div className="w-full inline-block mt-1">{showNotes()}</div>                   
-                    
+            {props.misc.visibleScreen.includes("noteBy") ? (
+              <div
+                style={{
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  overflow: "hidden",
+                  zIndex: "100",
+                  boxShadow: "rgba(45, 45, 45, 0.19) 0px 2px 5px",
+                  marginRight: "5px"
+                }}
+                className="absolute bg-white pin-r pin-t w-550 h-550 mt-12"
+              >
+                <div className="text-white p-2 text-center uppercase bg-blue-new">
+                  <h3>Notes</h3>
+                </div>
+                <div className="w-full mt-6 py-2 h-300 overflow-y-auto">
+                  <div
+                    style={{ marginTop: "35px" }}
+                    className="inline-flex w-full absolute pin-l pin-t p-1 bg-grey-darker uppercase text-white text-sm"
+                  >
+                    <div className="w-1/5 pl-8 text-left">User</div>
+                    <div className="w-3/5 text-left">Message</div>
+                    <div className="w-1/5 text-center">Date</div>
                   </div>
-                  <div className="w-full h-200 mt-4 p-2">
-                    <div className="w-full px-8">
-                      <textarea style={{border:"2px solid #cecece"}} rows="5" cols="40" className="w-full mr-2" id="noteEntry"/>
-                    </div>
-                          <div className="w-full px-8" onClick={() => {
-                            let _noteEntry = document.querySelector("#noteEntry")
-                              .value;
-                            props.updateOrder({
-                              note: `${
-                                props.user.currentUser.username
-                                }//&${_noteEntry}`,
-                              invoiceNumber: order.invoiceNumber,
-                              orderCache: props.order.orderCache
-                            });
-                          }}>
-                        <div className="bg-blue-new p-2 text-white text-center uppercase">Send</div>
+
+                  <div className="w-full inline-block mt-1">{showNotes()}</div>
+                </div>
+                <div className="w-full h-200 mt-4 p-2">
+                  <div className="w-full px-8">
+                    <textarea
+                      style={{ border: "2px solid #cecece" }}
+                      rows="5"
+                      cols="40"
+                      className="w-full mr-2"
+                      id="noteEntry"
+                    />
+                  </div>
+                  <div
+                    className="w-full px-8"
+                    onClick={() => {
+                      let _noteEntry = document.querySelector("#noteEntry")
+                        .value;
+                      document.querySelector("#noteEntry").value = "";
+                      props.updateOrder({
+                        note: `${
+                          props.user.currentUser.username
+                        }//&${_noteEntry}//&${new Date()}`,
+                        invoiceNumber: order.invoiceNumber,
+                        orderCache: props.order.orderCache
+                      });
+                    }}
+                  >
+                    <div className="bg-blue-new p-2 text-white text-center uppercase">
+                      Send
                     </div>
                   </div>
                 </div>

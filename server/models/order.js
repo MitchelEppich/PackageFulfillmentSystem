@@ -6,6 +6,7 @@ const OrderSchema = Schema({
   invoiceId: String,
   invoiceNumber: String,
   itemContent: String,
+  entryContent: String,
   orderDate: String,
   customerName: String,
   status: String,

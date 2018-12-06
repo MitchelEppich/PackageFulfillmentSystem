@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 import { makePromise, execute } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
 import fetch from "node-fetch";
+import Navigation from "./navigation";
 
 const actionTypes = {
   CACHE_ORDER: "CACHE_ORDER",
@@ -47,11 +48,12 @@ const getActions = uri => {
 
         const operation = {
           query: mutation.cacheOrder,
-          variables: { ...input }
+          variables: { ...input, itemContent: JSON.stringify(input.itemList) }
         };
-
         makePromise(execute(link, operation)).then(data => {
           let _order = data.data.cacheOrder;
+          _order.itemList = input.itemList;
+
           dispatch(
             objects.updateCache({
               orderCache: input.orderCache,
@@ -67,7 +69,7 @@ const getActions = uri => {
     updateOrder: input => {
       return dispatch => {
         const link = new HttpLink({ uri, fetch: fetch });
-
+        console.log(input);
         const operation = {
           query: mutation.updateOrder,
           variables: { ...input }
@@ -87,6 +89,12 @@ const getActions = uri => {
     modifyOrder: input => {
       return dispatch => {
         let _order = input.order;
+        let _focusOrder = input.focusOrder;
+
+        if (_order.invoiceNumber == _focusOrder.invoiceNumber) {
+          let NavActions = Navigation(uri);
+          dispatch(NavActions.modifyFocusOrder({ order: _order }));
+        }
 
         dispatch(
           objects.updateCache({ orderCache: input.orderCache, order: _order })
@@ -137,6 +145,7 @@ const mutation = {
       $invoiceId: String
       $invoiceNumber: String
       $itemContent: String
+      $entryContent: String
       $orderDate: String
       $customerName: String
       $status: String
@@ -149,6 +158,7 @@ const mutation = {
           invoiceId: $invoiceId
           invoiceNumber: $invoiceNumber
           itemContent: $itemContent
+          entryContent: $entryContent
           orderDate: $orderDate
           customerName: $customerName
           status: $status
@@ -160,6 +170,7 @@ const mutation = {
         invoiceId
         invoiceNumber
         itemContent
+        entryContent
         orderDate
         customerName
         lastUpdate
@@ -175,6 +186,7 @@ const mutation = {
       $invoiceId: String
       $invoiceNumber: String
       $itemContent: String
+      $entryContent: String
       $orderDate: String
       $customerName: String
       $status: String
@@ -187,6 +199,7 @@ const mutation = {
           invoiceId: $invoiceId
           invoiceNumber: $invoiceNumber
           itemContent: $itemContent
+          entryContent: $entryContent
           orderDate: $orderDate
           customerName: $customerName
           status: $status
@@ -198,6 +211,7 @@ const mutation = {
         invoiceId
         invoiceNumber
         itemContent
+        entryContent
         orderDate
         customerName
         lastUpdate

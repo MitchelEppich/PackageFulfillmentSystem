@@ -68,7 +68,7 @@ const resolvers = {
                             .padStart(2, "0")}-${_company}`,
                           description: _prodName,
                           quantity: _quantity,
-                          type: inferType(_prodName.split("-")[0]),
+                          type: inferType(_shortId),
                           packageId: a.PackageID
                         };
                       })
@@ -112,6 +112,7 @@ const resolvers = {
               ...invoice,
               status: _order.status,
               lastUpdate: _order.lastUpdate,
+              entryContent: _order.entryContent,
               claimed: _order.claimed,
               editBy: _order.editBy,
               notes: _order.notes
@@ -149,7 +150,6 @@ const resolvers = {
             };
           })
         );
-
         return JSON.stringify({
           itemList: itemList,
           totalItems

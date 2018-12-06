@@ -67,6 +67,7 @@ type Order {
   invoiceId: String
   invoiceNumber: String
   itemContent: String
+  entryContent: String
   orderDate: String
   customerName: String
   lastUpdate: String
@@ -80,6 +81,7 @@ input OrderInput {
   invoiceId: String
   invoiceNumber: String
   itemContent: String
+  entryContent: String
   orderDate: String
   customerName: String
   status: String

@@ -2,7 +2,6 @@ import actionTypes from "../actions";
 import { updateObject } from "../utility";
 
 const initialState = {
-  cachedOrders: [],
   orderCache: {}
 };
 

@@ -52,7 +52,11 @@ const middleware = [
             store.dispatch(
               orderHandlerActions.cacheOrder({
                 ..._order,
-                who: who,
+                who:
+                  _order.editBy != null &&
+                  _order.editBy[_order.editBy.length - 1] == who
+                    ? undefined
+                    : who,
                 orderCache: action.orderCache
               })
             );

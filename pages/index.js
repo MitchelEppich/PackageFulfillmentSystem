@@ -79,10 +79,9 @@ class Index extends Component {
             if (data != null) {
               let _orderCache = this.props.order.orderCache;
               let _order = data.orderUpdate;
+              _order.itemList = JSON.parse(_order.itemContent);
 
               let _focusOrder = this.props.nav.focusOrder;
-
-              console.log(_order);
 
               if (
                 !JSON.stringify(_orderCache).includes(JSON.stringify(_order))
@@ -137,6 +136,7 @@ const subscription = {
         invoiceId
         invoiceNumber
         itemContent
+        entryContent
         orderDate
         customerName
         lastUpdate
