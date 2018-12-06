@@ -18,7 +18,7 @@ const Users = props => {
     let arr = [];
     for (let user of props.nav.promptUsers) {
       arr.push(
-        <div className="w-full inline-flex p-2 mt-1 bg-white flex items-center">
+        <div className="w-full inline-flex p-2 mt-1 bg-white flex items-center" key={arr}>
           <div className="w-24 pl-8 uppercase">{arr.length + 1}</div>
           <div className="w-1/8 pl-3">{user.username}</div>
           <div className="w-1/8 pl-3">{user.badge}</div>
@@ -63,11 +63,7 @@ const Users = props => {
             }}
           >
             <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
-              {user.locked ? (
-                <FontAwesomeIcon icon={faLock} className="fa-lg" />
-              ) : (
-                <FontAwesomeIcon icon={faUnlockAlt} className="fa-lg" />
-              )}
+              <FontAwesomeIcon icon={user.locked ? faLock : faUnlockAlt} className="fa-lg" />               
             </div>
           </div>
           <div
@@ -81,13 +77,10 @@ const Users = props => {
             }}
           >
             <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
-              {user.admin ? (
-                <FontAwesomeIcon icon={faUserAlt} className="fa-lg" />
-              ) : (
-                <FontAwesomeIcon icon={faUserAltSlash} className="fa-lg" />
-              )}
+              <FontAwesomeIcon icon={user.admin ? faUserAlt : faUserAltSlash } className="fa-lg" />              
             </div>
           </div>
+          
 
           <div
             className="w-1/8 capitalize text-center"

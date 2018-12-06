@@ -48,7 +48,7 @@ const Reports = props => {
                     border: "1px solid #e6e6e6",
                     boxShadow: "0px 1px 1px rgba(206, 206, 206, 0.25)"
                 }}
-                class="w-1/2 mx-8 mt-4">
+                className="w-1/2 mx-8 mt-4">
                     <div className="w-full h-10 bg-blue-new text-white text-center p-2 relative">
                         <h3>Packages Done by Employees</h3>
                     </div>
@@ -108,7 +108,7 @@ const Reports = props => {
                     border: "1px solid #e6e6e6",
                     boxShadow: "0px 1px 1px rgba(206, 206, 206, 0.25)"
                 }}
-                class="w-1/2 mx-8 mt-4">
+                className="w-1/2 mx-8 mt-4">
                     <div className="w-full h-10 bg-blue-new text-white text-center p-2 ">
                         <h3>Seeds Sold by Brand</h3>
                     </div>

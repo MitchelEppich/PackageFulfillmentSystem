@@ -223,6 +223,7 @@ const query = {
         locked
         online
         lastAction
+        admin
       }
     }
   `,

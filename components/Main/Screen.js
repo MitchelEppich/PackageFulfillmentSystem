@@ -15,7 +15,7 @@ import {
 
 import moment from "moment";
 
-const Screen = props => {
+const Screen = props => {  
   let generateSingleItem = (item, company) => {
     let _value =
       props.item.itemValues[item.name] != null
@@ -323,7 +323,7 @@ const Screen = props => {
       }
       let key = company;
       companies.push(
-        <div>
+        <div key={key}>
           <div
             className="w-full cursor-pointer mt-2 p-2 pl-6 text-lg mx-0 bg-blue-darker text-white hover:bg-grey-dark"
             onClick={() => {
@@ -428,7 +428,7 @@ const Screen = props => {
                 props.setVisibleScreen(
                   props.misc.visibleScreen.includes("editBy")
                     ? ["itemized"]
-                    : ["editBy", ...props.misc.visibleScreen]
+                    : ["editBy", "itemized"]
                 );
               }}
               style={{
@@ -449,7 +449,7 @@ const Screen = props => {
                 props.setVisibleScreen(
                   props.misc.visibleScreen.includes("noteBy")
                     ? ["itemized"]
-                    : ["noteBy", ...props.misc.visibleScreen]
+                    : ["noteBy", "itemized"]
                 );
               }}
               style={{

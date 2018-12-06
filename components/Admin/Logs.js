@@ -13,7 +13,7 @@ const Logs = props => {
     let arr = [];
     for (let log of props.nav.promptLogs) {
       arr.push(
-        <div className="w-full inline-flex p-2 mt-1 bg-white">
+        <div className="w-full inline-flex p-2 mt-1 bg-white" key={arr}>
           <div className="w-1/5 pl-10">
             <p>{moment(log.createdAt).format("DD/MM/YYYY - hh:mm:ss")}</p>
           </div>
@@ -57,9 +57,12 @@ const Logs = props => {
         <div className="bg-blue-new w-1/3 text-white p-2 text-center uppercase">
           <h3>Logs</h3>
         </div>
-        <div className="bg-blue-new w-1/3 text-white p-2 text-right uppercase">
-          {/* <label>Search for </label><input type="text" name="searchInput" id="searchInput" value="" placeholder="Type here" className="bg-transparent pl-2 p-1 text-white"></input> */}
-         <h3> Search for.. <FontAwesomeIcon icon={faSearch} className="fa-lg mr-4" /></h3>
+        <div className="bg-blue-new w-1/3 flex items-center text-white text-right uppercase inline-flex">            
+          <div className="w-full text-right mr-2 justify-end inline-flex">
+            <input type="text" placeholder="Search here.." className="w-200 mr-2 p-1" />
+            <h3><FontAwesomeIcon icon={faSearch} className="fa-lg mr-4 mt-1 cursor-pointer" /></h3>
+          </div>
+          
         </div>
       </div>
 

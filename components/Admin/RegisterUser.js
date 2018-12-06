@@ -56,12 +56,12 @@ const RegisterUser = props => {
     if (props.user.registerUser == null) return;
     let _new = props.user.registerUser;
     return (
-      <div>
-        <p>Success!</p>
+      <div className="mt-4">
+        <h2 className="uppercase p-2 text-blue-new">Success!</h2>
         <div>
-          <p>{_new.name.toUpperCase()} has been created.</p>
-          <p>Username : {_new.username}</p>
-          <p>Badge : {_new.badge}</p>
+          <p className="uppercase mt-10 p-2 font-bold">{_new.name.toUpperCase()} has been created.</p>
+          <p className="uppercase font-bold mt-6 p-1">Username: <span className="font-normal">{_new.username}</span></p>
+          <p className="uppercase font-bold p-1">Badge: <span className="font-normal">{_new.badge}</span></p>
         </div>
       </div>
     );
