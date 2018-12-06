@@ -37,8 +37,6 @@ const resolvers = {
         orderUpdate: { ...order.toObject() }
       });
 
-      console.log(order);
-
       return order.toObject();
     },
     updateOrder: async (_, { input }) => {
@@ -64,8 +62,6 @@ const resolvers = {
         pubsub.publish("orderUpdate", {
           orderUpdate: { ...order.toObject() }
         });
-
-        console.log(order);
 
         return order.toObject();
       } catch (error) {

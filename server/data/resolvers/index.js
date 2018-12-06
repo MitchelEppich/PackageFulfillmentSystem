@@ -113,7 +113,8 @@ const resolvers = {
               status: _order.status,
               lastUpdate: _order.lastUpdate,
               claimed: _order.claimed,
-              editBy: _order.editBy
+              editBy: _order.editBy,
+              notes: _order.notes
             };
           }
           index++;
