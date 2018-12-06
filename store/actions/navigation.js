@@ -136,7 +136,7 @@ const getActions = uri => {
         ) {
           let ItemHandlerActions = ItemHandler(uri);
           dispatch(
-            ItemHandlerActions.modifyItemValues({
+            ItemHandlerActions.modifyValues({
               entryContent: input.order.entryContent
             })
           );

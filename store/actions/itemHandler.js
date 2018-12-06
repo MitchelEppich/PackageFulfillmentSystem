@@ -15,7 +15,7 @@ const actionTypes = {
   EXPAND_ITEM: "EXPAND_ITEM",
   VERIFY_ITEM_LIST: "VERIFY_ITEM_LIST",
   REMOVE_ITEM_MISSED: "REMOVE_ITEM_MISSED",
-  MODIFY_ITEM_VALUES: "MODIFY_ITEM_VALUES"
+  MODIFY_VALUES: "MODIFY_VALUES"
 };
 
 const getActions = uri => {
@@ -28,7 +28,7 @@ const getActions = uri => {
     setMutliItemBase: input => {
       return dispatch => {
         // Update Base Value
-        input.itemBaseList[input.key] = input.value;
+        input.itemBases[input.key] = input.value;
 
         // Update item values
         if (input.value.toString().length == 4) {
@@ -49,7 +49,7 @@ const getActions = uri => {
 
         dispatch({
           type: actionTypes.SET_MULTI_ITEM_BASE,
-          itemBaseList: input.itemBaseList,
+          itemBases: input.itemBases,
           itemValues: input.itemValues
         });
       };
@@ -69,10 +69,9 @@ const getActions = uri => {
         });
       };
     },
-    modifyItemValues: input => {
-      console.log(input);
+    modifyValues: input => {
       return {
-        type: actionTypes.MODIFY_ITEM_VALUES,
+        type: actionTypes.MODIFY_VALUES,
         input: JSON.parse(input.entryContent)
       };
     },

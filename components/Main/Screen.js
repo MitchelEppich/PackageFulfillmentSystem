@@ -121,8 +121,8 @@ const Screen = props => {
                 onBlur={() => {
                   props.setMultiItemBase({
                     key: name,
-                    value: props.item.itemBaseList[name],
-                    itemBaseList: props.item.itemBaseList,
+                    value: props.item.itemBases[name],
+                    itemBases: props.item.itemBases,
                     itemValues: props.item.itemValues,
                     item: itemRef
                   });
@@ -145,8 +145,8 @@ const Screen = props => {
   };
 
   let generateMultiItem = (item, company) => {
-    let _value = props.item.itemBaseList[item.name]
-      ? props.item.itemBaseList[item.name].value
+    let _value = props.item.itemBases[item.name]
+      ? props.item.itemBases[item.name]
       : undefined;
     let arr = [];
     for (let i = 0; i < item.quantity; i++) {
@@ -154,12 +154,7 @@ const Screen = props => {
         props.item.itemValues[`${item.name}-${i}`] != null
           ? props.item.itemValues[`${item.name}-${i}`].value
           : undefined;
-      let _sub = generateSubItem(
-        item,
-        i,
-        item.name,
-        valueEntry != null ? valueEntry.value : ""
-      );
+      let _sub = generateSubItem(item, i, item.name, valueEntry);
       if (_sub.used) values.shift();
       arr.push(_sub.item);
     }
@@ -230,7 +225,7 @@ const Screen = props => {
                     props.setMultiItemBase({
                       key: item.name,
                       value: e.target.value,
-                      itemBaseList: props.item.itemBaseList,
+                      itemBases: props.item.itemBases,
                       itemValues: props.item.itemValues,
                       item: item
                     });
@@ -402,7 +397,10 @@ const Screen = props => {
               props.updateOrder({
                 status: "awaiting completion",
                 claimed: false,
-                entryContent: JSON.stringify(props.item.itemValues),
+                entryContent: JSON.stringify({
+                  itemValues: props.item.itemValues,
+                  itemBases: props.item.itemBases
+                }),
                 invoiceNumber: order.invoiceNumber,
                 orderCache: props.order.orderCache
               });

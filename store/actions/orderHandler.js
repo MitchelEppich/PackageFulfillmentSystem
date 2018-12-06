@@ -69,7 +69,7 @@ const getActions = uri => {
     updateOrder: input => {
       return dispatch => {
         const link = new HttpLink({ uri, fetch: fetch });
-        console.log(input);
+
         const operation = {
           query: mutation.updateOrder,
           variables: { ...input }
