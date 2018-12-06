@@ -87,16 +87,14 @@ const getActions = uri => {
       };
     },
     verifyItemList: input => {
-      console.log(input);
       let itemMissed = [];
       let keyList = Object.keys(input.itemList);
 
-      let itemList = [];
-      let _companies = Object.keys(input.order.item_list);
+      let _companies = Object.keys(input.order.itemList);
       for (let company of _companies) {
-        let _quantities = Object.keys(input.order.item_list[company]);
+        let _quantities = Object.keys(input.order.itemList[company]);
         for (let quantity of _quantities) {
-          let _items = Object.values(input.order.item_list[company][quantity]);
+          let _items = Object.values(input.order.itemList[company][quantity]);
           for (let item of _items) {
             if (item.quantity == 1) {
               if (!keyList.includes(item.name)) {
@@ -113,8 +111,6 @@ const getActions = uri => {
           }
         }
       }
-
-      console.log(itemMissed);
 
       return {
         type: actionTypes.VERIFY_ITEM_LIST,

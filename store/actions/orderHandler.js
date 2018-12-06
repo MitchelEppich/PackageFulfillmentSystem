@@ -10,7 +10,7 @@ import fetch from "node-fetch";
 
 const actionTypes = {
   CACHE_ORDER: "CACHE_ORDER",
-  MODIFY_CLAIMS: "MODIFY_CLAIMS",
+  MODIFY_ORDER: "MODIFY_ORDER",
   UPDATE_ORDER: "UPDATE_ORDER",
   FETCH_ORDER_LIST: "FETCH_ORDER_LIST",
   UPDATE_CACHE: "UPDATE_CACHE"
@@ -84,40 +84,30 @@ const getActions = uri => {
         });
       };
     },
-    modifyClaims: input => {
+    modifyOrder: input => {
       return dispatch => {
-        let _claimedOrders = input.claimedOrders;
         let _order = input.order;
-
-        if (input.append) {
-          _claimedOrders.push(_order.invoice_number);
-        } else {
-          _claimedOrders = _claimedOrders.filter(a => {
-            if (a == _order.invoice_number) return false;
-            return true;
-          });
-        }
 
         dispatch(
           objects.updateCache({ orderCache: input.orderCache, order: _order })
         );
 
         dispatch({
-          type: actionTypes.MODIFY_CLAIMS,
-          input: _claimedOrders
+          type: actionTypes.MODIFY_ORDER
         });
       };
     },
     updateCache: input => {
       let _orderCache = input.orderCache;
       let _order = input.order;
-      _order = { ..._order, ...JSON.parse(_order.content) };
 
-      let _company = _order.invoice_number.split("-")[2].toLowerCase();
+      let _company = _order.invoiceNumber.split("-")[2];
+      if (_company == null) _company = "wholesale";
+      else _company = _company.toLowerCase();
       if (_orderCache[_company] == null) return;
       let index = 0;
       for (let _o of _orderCache[_company].order) {
-        if (_o.invoice_number == _order.invoice_number) {
+        if (_o.invoiceNumber == _order.invoiceNumber) {
           _orderCache[_company].order[index] = _order;
           break;
         }
@@ -144,53 +134,77 @@ const query = {
 const mutation = {
   cacheOrder: gql`
     mutation(
-      $content: String
+      $invoiceId: String
+      $invoiceNumber: String
+      $itemContent: String
+      $orderDate: String
+      $customerName: String
       $status: String
       $who: String
       $claimed: Boolean
-      $invoiceId: String
+      $notes: [String]
     ) {
       cacheOrder(
         input: {
-          content: $content
+          invoiceId: $invoiceId
+          invoiceNumber: $invoiceNumber
+          itemContent: $itemContent
+          orderDate: $orderDate
+          customerName: $customerName
           status: $status
           who: $who
           claimed: $claimed
-          invoiceId: $invoiceId
+          notes: $notes
         }
       ) {
-        _id
-        content
+        invoiceId
+        invoiceNumber
+        itemContent
+        orderDate
+        customerName
         lastUpdate
         status
         claimed
         editBy
+        notes
       }
     }
   `,
   updateOrder: gql`
     mutation(
-      $content: String
+      $invoiceId: String
+      $invoiceNumber: String
+      $itemContent: String
+      $orderDate: String
+      $customerName: String
       $status: String
       $who: String
       $claimed: Boolean
-      $invoiceId: String
+      $note: String
     ) {
       updateOrder(
         input: {
-          content: $content
+          invoiceId: $invoiceId
+          invoiceNumber: $invoiceNumber
+          itemContent: $itemContent
+          orderDate: $orderDate
+          customerName: $customerName
           status: $status
           who: $who
           claimed: $claimed
-          invoiceId: $invoiceId
+          note: $note
         }
       ) {
-        _id
-        content
+        invoiceId
+        invoiceNumber
+        itemContent
+        orderDate
+        customerName
         lastUpdate
         status
         claimed
         editBy
+        notes
       }
     }
   `

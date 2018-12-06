@@ -94,6 +94,7 @@ const RegisterUser = props => {
           <div
             onClick={() => {
               props.setVisibleScreen(null);
+              props.clearRegisteredUser();
             }}
             className="absolute pin-t pin-r p-2 mt-2 mr-2 cursor-pointer hover:bg-blue hover:text-white"
           >

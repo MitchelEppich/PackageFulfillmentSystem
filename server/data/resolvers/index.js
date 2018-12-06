@@ -10,6 +10,8 @@ const Log = LogResolvers.Log;
 
 const axios = require("axios");
 
+const ignoreOrderNumbers = ["8-001001-SNM"];
+
 const resolvers = {
   Query: {
     ...UserResolvers.Query,
@@ -39,14 +41,15 @@ const resolvers = {
             .split("<br/><br/>");
           for (let order of _break) {
             let _object = parseXml(order);
-            let total_items = 0;
+            let totalItems = 0;
             if (_object.UniqueID == null) continue;
+            if (ignoreOrderNumbers.includes(_object.OrderNumber)) continue;
             invoices.push({
-              invoice_id: _object.UniqueID,
-              customer_name: `${_object.ShipFirstName} ${_object.ShipLastName}`,
-              invoice_number: _object.OrderNumber,
-              date: _object.ApprovedDate,
-              item_list:
+              invoiceId: _object.UniqueID,
+              invoiceNumber: _object.OrderNumber,
+              customerName: `${_object.ShipFirstName} ${_object.ShipLastName}`,
+              orderDate: _object.ApprovedDate,
+              itemList:
                 _object.item_list != null
                   ? categorizeOrder(
                       _object.item_list.map(a => {
@@ -57,19 +60,21 @@ const resolvers = {
                         let _breakId = _break[0].split(/([0-9]+)/);
                         let _shortId = _breakId[0].trim();
                         let _amount = parseInt(_breakId[1]);
-                        total_items += _quantity;
+
+                        totalItems += _quantity;
                         return {
                           name: `${_shortId}-${_amount
                             .toString()
                             .padStart(2, "0")}-${_company}`,
                           description: _prodName,
                           quantity: _quantity,
-                          type: inferType(_prodName.split("-")[0])
+                          type: inferType(_prodName.split("-")[0]),
+                          packageId: a.PackageID
                         };
                       })
                     )
                   : [],
-              total_items
+              totalItems
             });
           }
         } else {
@@ -80,11 +85,18 @@ const resolvers = {
             })
             .map(a => {
               return {
-                invoice_id: a.invoice_id,
-                customer_name: a.customer_name,
-                invoice_number: a.invoice_number,
-                status: a.status,
-                date: a.date
+                companyName: a.company_name, // Store Name
+                customerName: a.customer_name, // Person Name
+                // csr_name : a.salesperson_name, // CSR Name
+                // placement : a.custom_fields[0], // How the order was placed
+                // customer_email : null // Person Email
+                // customer_phone : null // Person Phone
+                // product_list : null // Itemized List
+                invoiceNumber: a.invoice_number,
+                // delivery : "person" || delivery date // How was it delivered
+                // tracking_number : null
+                orderDate: a.date,
+                invoiceId: a.invoice_id
               };
             });
         }
@@ -93,7 +105,7 @@ const resolvers = {
         let index = 0;
         for (let invoice of invoices) {
           let _order = await Order.findOne({
-            invoiceId: invoice.invoice_number
+            invoiceNumber: invoice.invoiceNumber
           });
           if (_order != null) {
             invoices[index] = {
@@ -126,11 +138,12 @@ const resolvers = {
         let itemList = categorizeOrder(
           res.data.invoice.line_items.map(a => {
             totalItems += a.quantity;
-
+            // console.log(a.name, input.invoiceId);
             return {
               name: a.name,
               description: a.description.split("-")[1].trim(),
               quantity: a.quantity,
+              // packageId does not exist
               type: inferType(a.name.split("-")[0])
             };
           })

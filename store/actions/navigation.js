@@ -16,7 +16,8 @@ const actionTypes = {
   FETCH_LOGS: "FETCH_LOGS",
   FETCH_USERS: "FETCH_USERS",
   MODIFY_USER: "MODIFY_USER",
-  MODIFY_LOGS: "MODIFY_LOGS"
+  MODIFY_LOGS: "MODIFY_LOGS",
+  DELETE_USER: "DELETE_USER"
 };
 
 import OrderHandler from "./orderHandler";
@@ -74,7 +75,6 @@ const getActions = uri => {
         return makePromise(execute(link, operation))
           .then(data => {
             let users = data.data.allUsers;
-            console.log(users);
             dispatch({
               type: actionTypes.FETCH_USERS,
               users: users
@@ -102,6 +102,30 @@ const getActions = uri => {
         input: _promptUsers
       };
     },
+    deleteUser: input => {
+      return dispatch => {
+        const link = new HttpLink({ uri, fetch: fetch });
+
+        const operation = {
+          query: mutation.deleteUser,
+          variables: { username: input.username }
+        };
+
+        makePromise(execute(link, operation))
+          .then(data => {
+            let _promptUsers = input.promptUsers.filter(a => {
+              if (a.username == input.username) return false;
+              return true;
+            });
+
+            dispatch({
+              type: actionTypes.DELETE_USER,
+              input: _promptUsers
+            });
+          })
+          .catch(error => console.log(error));
+      };
+    },
     fetchOrder: input => {
       return dispatch => {
         if (input.company.short == "wholesale") {
@@ -118,8 +142,8 @@ const getActions = uri => {
               type: actionTypes.FETCH_ORDER,
               order: {
                 ...input.order,
-                item_list: _new.itemList,
-                total_items: _new.totalItems
+                itemList: _new.itemList,
+                totalItems: _new.totalItems
               },
               user: input.user,
               company: input.company,
@@ -199,7 +223,15 @@ const query = {
   `
 };
 
-const mutation = {};
+const mutation = {
+  deleteUser: gql`
+    mutation($username: String) {
+      deleteUser(input: { username: $username }) {
+        username
+      }
+    }
+  `
+};
 
 export default uri => {
   const actions = getActions(uri);

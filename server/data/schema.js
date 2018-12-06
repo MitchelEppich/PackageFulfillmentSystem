@@ -64,19 +64,29 @@ input LogInput {
 
 type Order {
   _id: String
-  content: String
+  invoiceId: String
+  invoiceNumber: String
+  itemContent: String
+  orderDate: String
+  customerName: String
   lastUpdate: String
   status: String
   editBy: [String]
   claimed: Boolean
+  notes: [String]
 }
 
 input OrderInput {
-  content: String
+  invoiceId: String
+  invoiceNumber: String
+  itemContent: String
+  orderDate: String
+  customerName: String
   status: String
   who: String
   claimed: Boolean
-  invoiceId: String
+  note: String
+  notes: [String]
 }
 
 type Subscription {
@@ -89,6 +99,7 @@ type Mutation {
   verifyCredentials(input: UserInput!): User
   registerCredentials(input: UserInput!): User
   updateUser(input: UserInput!): User
+  deleteUser(input: UserInput!): User
 
   updateOrder(input: OrderInput!): Order
   cacheOrder(input: OrderInput!): Order

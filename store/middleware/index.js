@@ -39,25 +39,20 @@ const middleware = [
             // console.log(action.order);
             if (action.user == null) break;
             if (action.company == null) break;
-            task = `Claimed order #${action.order.invoice_number} in ${
+            task = `Claimed order #${action.order.invoiceNumber} in ${
               action.company.short
             }`;
             who = action.user.username;
 
             let _order = action.order;
-            let _status = "in progress";
-            let _who = action.user.username;
-            let _claimed = true;
-            let _invoiceId = action.order.invoice_number;
+            _order.status = "in progress";
+            _order.claimed = true;
 
             let orderHandlerActions = OrderHandler(uri);
             store.dispatch(
               orderHandlerActions.cacheOrder({
-                content: JSON.stringify(_order),
-                status: _status,
-                who: _who,
-                claimed: _claimed,
-                invoiceId: _invoiceId,
+                ..._order,
+                who: who,
                 orderCache: action.orderCache
               })
             );
@@ -82,7 +77,7 @@ const middleware = [
         // Create Action Record
         if (task != null && who != null) {
           makePromise(execute(link, operation)).then(data => {
-            console.log(data);
+            // console.log(data);
           });
         }
 

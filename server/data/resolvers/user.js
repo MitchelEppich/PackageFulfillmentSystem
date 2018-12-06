@@ -92,6 +92,18 @@ const resolvers = {
 
       return user.toObject();
     },
+    deleteUser: async (_, { input }) => {
+      try {
+        let _user = await User.findOne({ username: input.username });
+
+        _user.remove();
+
+        return _user.toObject();
+      } catch (error) {
+        console.log("No user was found -> ", input);
+        return null;
+      }
+    },
     updateUser: async (_, { input }) => {
       let user;
       try {

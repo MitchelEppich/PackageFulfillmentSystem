@@ -13,11 +13,17 @@ const actionTypes = {
   FETCH_CREDENTIALS: "FETCH_CREDENTIALS",
   RELEASE_CREDENTIALS: "RELEASE_CREDENTIALS",
   REGISTER_CREDENTIALS: "REGISTER_CREDENTIALS",
-  UPDATE_USER: "UPDATE_USER"
+  UPDATE_USER: "UPDATE_USER",
+  CLEAR_REGISTERED_USER: "CLEAR_REGISTERED_USER"
 };
 
 const getActions = uri => {
   const objects = {
+    clearRegisteredUser: () => {
+      return {
+        type: actionTypes.CLEAR_REGISTERED_USER
+      };
+    },
     releaseCredentials: input => {
       return dispatch => {
         sessionStorage.setItem("token", "");
@@ -99,6 +105,7 @@ const getActions = uri => {
       };
     },
     updateUser: input => {
+      if (input.update == null) input.update = true;
       return dispatch => {
         const link = new HttpLink({
           uri,
@@ -118,7 +125,7 @@ const getActions = uri => {
           let user = data.data.updateUser;
           dispatch({
             type: actionTypes.UPDATE_USER,
-            user: user
+            user: input.update ? user : undefined
           });
           return Promise.resolve(user);
         });

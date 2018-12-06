@@ -39,7 +39,7 @@ const Screen = props => {
             width: "80px",
             height: "30px",
             borderRadius: "5px",
-            border: "1px solid rgba(21, 21, 21, 0.32)"         
+            border: "1px solid rgba(21, 21, 21, 0.32)"
           }}
           className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}
         />
@@ -91,7 +91,9 @@ const Screen = props => {
           }}
           className=""
         >
-          <p className="flex items-center pl-4 float-right">{item.quantity} Package</p>
+          <p className="flex items-center pl-4 float-right">
+            {item.quantity} Package
+          </p>
         </div>
       </div>
     );
@@ -198,7 +200,7 @@ const Screen = props => {
               width: "80px",
               height: "30px",
               borderRadius: "5px",
-              border: "1px solid rgba(21, 21, 21, 0.32)"            
+              border: "1px solid rgba(21, 21, 21, 0.32)"
             }}
             className={`bg-${props.misc.geneColors[item.type]} p-2 w-full`}
           />
@@ -297,10 +299,8 @@ const Screen = props => {
         }
         let key = `${company}-${quantity}`;
 
-        let len = Object.keys(
-          props.nav.focusOrder.item_list[company][quantity]
-        );
-        let qty = len.length;   
+        let len = Object.keys(props.nav.focusOrder.itemList[company][quantity]);
+        let qty = len.length;
 
         quantities.push(
           <div>
@@ -359,19 +359,37 @@ const Screen = props => {
   };
 
   let showEditors = () => {
-    console.log(props.nav.focusOrder)
-    let arr = []
-    for (let user of props.nav.focusOrder.editBy) {
+    let arr = [];
+    let _editBy = props.nav.focusOrder.editBy;
+    if (_editBy == null) return null;
+    for (let user of _editBy) {
       arr.push(
         <div className="float-left w-full mt-1 p-2">
-          <p className="text-center">{user}
-          </p>
+          <p className="text-center">{user}</p>
         </div>
-      )
+      );
     }
 
-    return arr
-  }
+    return arr;
+  };
+
+  let showNotes = () => {
+    let arr = [];
+    let _notes = props.nav.focusOrder.notes;
+    if (_notes == null) return null;
+    for (let note of _notes) {
+      let _content = note.split("//&");
+      arr.push(
+        <div className="inline-flex w-full p-2 bg-grey-light">
+          <div className="w-1/5 text-left pl-6">{_content[0]}</div>
+          <div className="w-3/5 text-left">{_content[1]}</div>
+          {/* <div className="w-1/5 text-left pl-6">{_content[2]}</div> */}
+        </div>
+      );
+    }
+
+    return arr;
+  };
 
   let showOrder = () => {
     let order = props.nav.focusOrder;
@@ -385,7 +403,7 @@ const Screen = props => {
                 content: JSON.stringify(order),
                 status: "awaiting completion",
                 claimed: false,
-                invoiceId: order.invoice_number,
+                invoiceNumber: order.invoiceNumber,
                 orderCache: props.order.orderCache
               });
               props.setVisibleScreen(null);
@@ -404,109 +422,131 @@ const Screen = props => {
           <div className="w-1/3 text-right inline-flex relative">
             <div className="text-right w-full">
               <h4 className="p-2 text-white uppercase text-lg">
-                #{order.invoice_number} order
+                #{order.invoiceNumber} order
               </h4>
             </div>
-            <span 
-            onClick={()=>{
-              props.setVisibleScreen(props.misc.visibleScreen.includes("editBy") ? ["itemized"] : ["editBy", ...props.misc.visibleScreen])
-            }}
+            <span
+              onClick={() => {
+                props.setVisibleScreen(
+                  props.misc.visibleScreen.includes("editBy")
+                    ? ["itemized"]
+                    : ["editBy", ...props.misc.visibleScreen]
+                );
+              }}
               style={{
                 borderRadius: "30%",
                 width: "28px",
                 height: "28px",
                 marginTop: "4px",
                 padding: "6px",
-                fontSize: "17px",                
+                fontSize: "17px"
               }}
               className="flex justify-center bg-almost-white mr-4 hover:bg-white cursor-pointer"
             >
               <FontAwesomeIcon icon={faUser} />
             </span>
 
-            <span 
-            onClick={()=>{
-              props.setVisibleScreen(props.misc.visibleScreen.includes("noteBy") ? ["itemized"] : ["noteBy", ...props.misc.visibleScreen])
-            }}
+            <span
+              onClick={() => {
+                props.setVisibleScreen(
+                  props.misc.visibleScreen.includes("noteBy")
+                    ? ["itemized"]
+                    : ["noteBy", ...props.misc.visibleScreen]
+                );
+              }}
               style={{
                 borderRadius: "30%",
                 width: "28px",
                 height: "28px",
                 marginTop: "4px",
                 padding: "6px",
-                fontSize: "17px",                
+                fontSize: "17px"
               }}
               className="flex justify-center bg-almost-white mr-4 hover:bg-white cursor-pointer"
             >
               <FontAwesomeIcon icon={faStickyNote} />
             </span>
-              
 
-            { props.misc.visibleScreen.includes("noteBy") ? 
-            <div             
-              style={{
-                borderRadius: "10px",                
-                overflow: "hidden",
-                overflow: "hidden",                             
-                zIndex: "100",
-                boxShadow: "rgba(45, 45, 45, 0.19) 0px 2px 5px",
-                marginRight: "5px"
-              }}
-              className="absolute bg-white pin-r pin-t w-500 h-550 mt-12">  
-                  <div className="text-white p-2 text-center uppercase bg-blue-new">
-                    <h3>Notes</h3>
-                  </div>  
-                  <div className="float-left w-full mt-6 py-2 h-300 overflow-y-auto">
-                    <div style={{marginTop: "35px"}} className="inline-flex w-full absolute pin-l pin-t p-1 bg-grey-darker uppercase text-white text-sm">
-                        <div className="w-1/5 pl-8 text-left">User</div>
-                        <div className="w-3/5 text-left">Message</div>                      
-                        <div className="w-1/5 text-center">Date</div>                      
-                    </div>
-                    
-                    <div className="w-full inline-block mt-1">
-                        <div className="inline-flex w-full p-2 bg-grey-light">
-                          <div className="w-1/5 text-left pl-6">
-                              mitch
-                          </div>
-                          <div className="w-3/5 text-left">
-                              Please, verify this order.
-                          </div>
-                          <div className="w-1/5 text-left pl-6">
-                              04/12/2018 - 14:02:01
-                          </div>
-                        </div>
-                    </div>                    
-                    
+            {props.misc.visibleScreen.includes("noteBy") ? (
+              <div
+                style={{
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  overflow: "hidden",
+                  zIndex: "100",
+                  boxShadow: "rgba(45, 45, 45, 0.19) 0px 2px 5px",
+                  marginRight: "5px"
+                }}
+                className="absolute bg-white pin-r pin-t w-500 h-550 mt-12"
+              >
+                <div className="text-white p-2 text-center uppercase bg-blue-new">
+                  <h3>Notes</h3>
+                </div>
+                <div className="float-left w-full mt-6 py-2 h-300 overflow-y-auto">
+                  <div
+                    style={{ marginTop: "35px" }}
+                    className="inline-flex w-full absolute pin-l pin-t p-1 bg-grey-darker uppercase text-white text-sm"
+                  >
+                    <div className="w-1/5 pl-8 text-left">User</div>
+                    <div className="w-3/5 text-left">Message</div>
+                    <div className="w-1/5 text-center">Date</div>
                   </div>
-                  <div className="w-full mt-4 p-2 inline-flex">
-                    <div className="w-2/3">
-                      <textarea style={{border:"2px solid #cecece"}} rows="5" cols="40" className="w-full mr-2"/>
-                    </div>
-                    <div className="w-1/3">
-                        <div className="bg-blue-new p-2 text-white text-center uppercase">Send</div>
+
+                  <div className="w-full inline-block mt-1">{showNotes()}</div>
+                </div>
+                <div className="w-full mt-4 p-2 inline-flex">
+                  <div className="w-2/3">
+                    <textarea
+                      style={{ border: "2px solid #cecece" }}
+                      rows="5"
+                      cols="40"
+                      className="w-full mr-2"
+                      id="noteEntry"
+                    />
+                  </div>
+                  <div
+                    className="w-1/3"
+                    onClick={() => {
+                      let _noteEntry = document.querySelector("#noteEntry")
+                        .value;
+                      props.updateOrder({
+                        note: `${
+                          props.user.currentUser.username
+                        }//&${_noteEntry}`,
+                        invoiceNumber: order.invoiceNumber,
+                        orderCache: props.order.orderCache
+                      });
+                    }}
+                  >
+                    <div className="bg-blue-new p-2 text-white text-center uppercase">
+                      Send
                     </div>
                   </div>
-            </div> : null }
-            
-            
-              { props.misc.visibleScreen.includes("editBy") ?
-            <div             
-              style={{
-                borderRadius: "10px",                
-                overflow: "hidden",
-                overflow: "hidden",                             
-                zIndex: "100",
-                boxShadow: "rgba(45, 45, 45, 0.19) 0px 2px 5px",
-                marginRight: "5px"
-              }}
-              className="absolute bg-white pin-r pin-t w-300 h-200 mt-12">  
-                  <div className="text-white p-2 text-center uppercase bg-blue-new">
-                    <h3>Edited by:</h3>
-                  </div>  
-                  <div className="float-left w-full mt-1 p-2 h-200 overflow-y-auto">{showEditors()}</div>
-            </div>: null } 
-          </div> 
-          
+                </div>
+              </div>
+            ) : null}
+
+            {props.misc.visibleScreen.includes("editBy") ? (
+              <div
+                style={{
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  overflow: "hidden",
+                  zIndex: "100",
+                  boxShadow: "rgba(45, 45, 45, 0.19) 0px 2px 5px",
+                  marginRight: "5px"
+                }}
+                className="absolute bg-white pin-r pin-t w-300 h-200 mt-12"
+              >
+                <div className="text-white p-2 text-center uppercase bg-blue-new">
+                  <h3>Edited by:</h3>
+                </div>
+                <div className="float-left w-full mt-1 p-2 h-200 overflow-y-auto">
+                  {showEditors()}
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
           <div className="inline-flex w-full absolute pin-l pin-t p-1 mt-10 bg-grey-darker uppercase text-white text-sm">
@@ -526,7 +566,7 @@ const Screen = props => {
               Quantity
             </div>
           </div>
-          {populateItems(order.item_list)}
+          {populateItems(order.itemList)}
         </div>
       </div>
     );
@@ -562,10 +602,9 @@ const Screen = props => {
         {" "}
         <p>
           Total Packages:{" "}
-          {props.nav.focusOrder != null ? props.nav.focusOrder.total_items : ""}
+          {props.nav.focusOrder != null ? props.nav.focusOrder.totalItems : ""}
         </p>
       </div>{" "}
-      {console.log(props)}
     </div>
   );
 };

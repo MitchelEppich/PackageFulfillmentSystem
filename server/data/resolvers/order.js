@@ -37,21 +37,26 @@ const resolvers = {
         orderUpdate: { ...order.toObject() }
       });
 
+      console.log(order);
+
       return order.toObject();
     },
     updateOrder: async (_, { input }) => {
       let order;
       try {
         let operation = {
-          $set: { ...input }
+          $set: { ...input, lastUpdate: new Date() }
         };
 
         if (input.who != null) {
           operation["$push"] = { editBy: input.who };
         }
 
+        if (input.note != null) {
+          operation["$push"] = { notes: input.note };
+        }
         order = await Order.findOneAndUpdate(
-          { $or: [{ invoiceId: input.invoiceId }] },
+          { $or: [{ invoiceNumber: input.invoiceNumber }] },
           operation,
           { new: true }
         );
@@ -59,6 +64,8 @@ const resolvers = {
         pubsub.publish("orderUpdate", {
           orderUpdate: { ...order.toObject() }
         });
+
+        console.log(order);
 
         return order.toObject();
       } catch (error) {

@@ -13,7 +13,7 @@ import Screen from "../components/Main/Screen";
 import RegisterUser from "../components/Admin/RegisterUser";
 import Logs from "../components/Admin/Logs";
 import Users from "../components/Admin/Users";
-import Reports from "../components/Admin/Reports"
+import Reports from "../components/Admin/Reports";
 
 import { Subscription } from "react-apollo";
 import gql from "graphql-tag";
@@ -77,24 +77,23 @@ class Index extends Component {
         <Subscription subscription={subscription.orderUpdate}>
           {({ data }) => {
             if (data != null) {
-              let _claimedOrders = this.props.order.claimedOrders;
+              let _orderCache = this.props.order.orderCache;
               let _order = data.orderUpdate;
-              _order = { ..._order, ...JSON.parse(_order.content) };
 
-              let _shouldAppend =
-                _order.claimed &&
-                !_claimedOrders.includes(_order.invoice_number);
-              let _shouldRemove =
-                !_order.claimed &&
-                _claimedOrders.includes(_order.invoice_number);
+              let _focusOrder = this.props.nav.focusOrder;
 
-              if (_shouldAppend | _shouldRemove)
-                this.props.modifyClaims({
+              console.log(_order);
+
+              if (
+                !JSON.stringify(_orderCache).includes(JSON.stringify(_order))
+              ) {
+                this.props.modifyOrder({
                   order: _order,
-                  claimedOrders: _claimedOrders,
-                  orderCache: this.props.order.orderCache,
-                  append: _shouldAppend
+                  claimedOrders: this.props.order.claimedOrders,
+                  orderCache: _orderCache,
+                  focusOrder: _focusOrder
                 });
+              }
             }
             return <div />;
           }}
@@ -120,24 +119,31 @@ const mapDispatchToProps = dispatch => {
     verifyItemList: input => dispatch(actions.verifyItemList(input)),
     fetchLogs: input => dispatch(actions.fetchLogs(input)),
     clearItem: () => dispatch(actions.clearItem()),
-    modifyClaims: input => dispatch(actions.modifyClaims(input)),
+    clearRegisteredUser: () => dispatch(actions.clearRegisteredUser()),
+    modifyOrder: input => dispatch(actions.modifyOrder(input)),
     updateOrder: input => dispatch(actions.updateOrder(input)),
+    updateUser: input => dispatch(actions.updateUser(input)),
     modifyUser: input => dispatch(actions.modifyUser(input)),
     modifyLogs: input => dispatch(actions.modifyLogs(input)),
+    deleteUser: input => dispatch(actions.deleteUser(input)),
     setVisibleScreen: input => dispatch(actions.setVisibleScreen(input))
   };
 };
 
 const subscription = {
   orderUpdate: gql`
-    subscription($orderId: String) {
-      orderUpdate(orderId: $orderId) {
-        _id
-        content
+    subscription {
+      orderUpdate {
+        invoiceId
+        invoiceNumber
+        itemContent
+        orderDate
+        customerName
         lastUpdate
         status
         claimed
         editBy
+        notes
       }
     }
   `

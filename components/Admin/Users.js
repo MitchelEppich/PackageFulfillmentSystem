@@ -52,30 +52,52 @@ const Users = props => {
           <div className="w-2/8 pl-4 capitalize">
             {user.lastAction || "No actions on record . . ."}
           </div>
-          <div className="w-1/8 pl-4 capitalize text-center">
-            {user.locked ? (
-              <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
+          <div
+            className="w-1/8 pl-4 capitalize text-center"
+            onClick={() => {
+              props.updateUser({
+                username: user.username,
+                locked: !user.locked,
+                update: false
+              });
+            }}
+          >
+            <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
+              {user.locked ? (
                 <FontAwesomeIcon icon={faLock} className="fa-lg" />
-              </div>
-            ) : (
-              <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
+              ) : (
                 <FontAwesomeIcon icon={faUnlockAlt} className="fa-lg" />
-              </div>
-            )}
+              )}
+            </div>
           </div>
-          <div className="w-1/8 capitalize text-center">
-            {user.admin ? (
-              <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-black hover:text-black">
+          <div
+            className="w-1/8 capitalize text-center"
+            onClick={() => {
+              props.updateUser({
+                username: user.username,
+                admin: !user.admin,
+                update: false
+              });
+            }}
+          >
+            <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
+              {user.admin ? (
                 <FontAwesomeIcon icon={faUserAlt} className="fa-lg" />
-              </div>
-            ) : (
-              <div className="w-10 h-10 p-2 text-center  text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
+              ) : (
                 <FontAwesomeIcon icon={faUserAltSlash} className="fa-lg" />
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
-          <div className="w-1/8 capitalize text-center">
+          <div
+            className="w-1/8 capitalize text-center"
+            onClick={() => {
+              props.deleteUser({
+                username: user.username,
+                promptUsers: props.nav.promptUsers
+              });
+            }}
+          >
             <div className="w-10 h-10 p-2 text-center hover:text-black text-red justify-center mx-auto align-center cursor-pointer hover:bg-grey-light">
               <FontAwesomeIcon icon={faTimes} className="fa-lg text-center" />
             </div>

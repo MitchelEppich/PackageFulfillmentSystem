@@ -92,10 +92,10 @@ const Main = props => {
         arr.push(
           <div
             className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"
-            key={order.invoice_id}
+            key={order.invoiceId}
           >
             <div className="w-32 pl-8">{index}</div>
-            <div className="w-1/4">Order #{order.invoice_number}</div>
+            <div className="w-1/4">Order #{order.invoiceNumber}</div>
             <div className="w-1/4">
               {" "}
               {moment(order.date).format("DD/MM/YYYY")}
