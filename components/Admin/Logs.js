@@ -57,9 +57,9 @@ const Logs = props => {
         <div className="bg-blue-new w-1/3 text-white p-2 text-center uppercase">
           <h3>Logs</h3>
         </div>
-        <div className="bg-blue-new w-1/3 text-white p-2 text-center uppercase">
+        <div className="bg-blue-new w-1/3 text-white p-2 text-right uppercase">
           {/* <label>Search for </label><input type="text" name="searchInput" id="searchInput" value="" placeholder="Type here" className="bg-transparent pl-2 p-1 text-white"></input> */}
-          <FontAwesomeIcon icon={faSearch} className="fa-2x mr-4" />
+         <h3> Search for.. <FontAwesomeIcon icon={faSearch} className="fa-lg mr-4" /></h3>
         </div>
       </div>
 

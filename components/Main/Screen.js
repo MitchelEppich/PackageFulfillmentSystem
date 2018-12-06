@@ -409,7 +409,7 @@ const Screen = props => {
             </div>
             <span 
             onClick={()=>{
-              props.setVisibleScreen(props.misc.visibleScreen.includes("editBy") ? ["itemized"] : ["editBy", ...props.misc.visibleScreen])
+              props.setVisibleScreen(props.misc.visibleScreen.includes("editBy") ? ["itemized"] : ["editBy", "itemized"])
             }}
               style={{
                 borderRadius: "30%",
@@ -426,7 +426,7 @@ const Screen = props => {
 
             <span 
             onClick={()=>{
-              props.setVisibleScreen(props.misc.visibleScreen.includes("noteBy") ? ["itemized"] : ["noteBy", ...props.misc.visibleScreen])
+              props.setVisibleScreen(props.misc.visibleScreen.includes("noteBy") ? ["itemized"] : ["noteBy", "itemized"])
             }}
               style={{
                 borderRadius: "30%",
@@ -452,37 +452,37 @@ const Screen = props => {
                 boxShadow: "rgba(45, 45, 45, 0.19) 0px 2px 5px",
                 marginRight: "5px"
               }}
-              className="absolute bg-white pin-r pin-t w-500 h-550 mt-12">  
+              className="absolute bg-white pin-r pin-t w-550 h-550 mt-12">  
                   <div className="text-white p-2 text-center uppercase bg-blue-new">
                     <h3>Notes</h3>
                   </div>  
-                  <div className="float-left w-full mt-6 py-2 h-300 overflow-y-auto">
+                  <div className="w-full mt-6 py-2 h-300 overflow-y-auto">
                     <div style={{marginTop: "35px"}} className="inline-flex w-full absolute pin-l pin-t p-1 bg-grey-darker uppercase text-white text-sm">
                         <div className="w-1/5 pl-8 text-left">User</div>
                         <div className="w-3/5 text-left">Message</div>                      
                         <div className="w-1/5 text-center">Date</div>                      
                     </div>
                     
-                    <div className="w-full inline-block mt-1">
-                        <div className="inline-flex w-full p-2 bg-grey-light">
+                    <div className="w-full mt-1">
+                        <div className="inline-flex w-full flex py-3 bg-grey-light">
                           <div className="w-1/5 text-left pl-6">
                               mitch
                           </div>
                           <div className="w-3/5 text-left">
                               Please, verify this order.
                           </div>
-                          <div className="w-1/5 text-left pl-6">
-                              04/12/2018 - 14:02:01
+                          <div className="w-1/5 text-left pl-2">
+                              04/12 - 14:02
                           </div>
                         </div>
                     </div>                    
                     
                   </div>
-                  <div className="w-full mt-4 p-2 inline-flex">
-                    <div className="w-2/3">
+                  <div className="w-full h-200 mt-4 p-2">
+                    <div className="w-full px-8">
                       <textarea style={{border:"2px solid #cecece"}} rows="5" cols="40" className="w-full mr-2"/>
                     </div>
-                    <div className="w-1/3">
+                    <div className="w-full px-8">
                         <div className="bg-blue-new p-2 text-white text-center uppercase">Send</div>
                     </div>
                   </div>

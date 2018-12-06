@@ -22,7 +22,7 @@ const Users = props => {
           <div className="w-24 pl-8 uppercase">{arr.length + 1}</div>
           <div className="w-1/8 pl-3">{user.username}</div>
           <div className="w-1/8 pl-3">{user.badge}</div>
-          <div className="w-1/8 pl-4 capitalize">
+          <div className="w-24 pl-4 capitalize">
             {user.online ? (
               <div
                 style={{
@@ -49,7 +49,7 @@ const Users = props => {
               />
             )}
           </div>
-          <div className="w-2/8 pl-4 capitalize">
+          <div className="w-3/8 pl-4 capitalize">
             {user.lastAction || "No actions on record . . ."}
           </div>
           <div className="w-1/8 pl-4 capitalize text-center">
@@ -118,8 +118,8 @@ const Users = props => {
         <div className="w-24 pl-4 uppercase">Number</div>
         <div className="w-1/8 pl-3 uppercase">Username</div>
         <div className="w-1/8 pl-5 uppercase">Badge</div>
-        <div className="w-1/8 pl-4 uppercase">Status</div>
-        <div className="w-2/8 pl-4 uppercase">Last Actions</div>
+        <div className="w-24 pl-4 uppercase">Status</div>
+        <div className="w-3/8 pl-4 uppercase">Last Actions</div>
         <div className="w-1/8 text-center uppercase">Lock User</div>
         <div className="w-1/8 text-center uppercase">Admin</div>
         <div className="w-1/8 text-center  uppercase">Delete User</div>
