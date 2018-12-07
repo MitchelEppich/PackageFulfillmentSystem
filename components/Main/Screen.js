@@ -377,7 +377,7 @@ const Screen = props => {
           <div className="w-1/5 text-left pl-6">{_content[0]}</div>
           <div className="w-3/5 text-left">{_content[1]}</div>
           <div className="w-1/5 text-left pl-6">
-            {moment(_content[2]).format("DD-MM-YYYY hh:mm:ss")}
+            {moment(_content[2]).format("DD/MM - hh:mm")}
           </div>
         </div>
       );
@@ -475,7 +475,7 @@ const Screen = props => {
                   boxShadow: "rgba(45, 45, 45, 0.19) 0px 2px 5px",
                   marginRight: "5px"
                 }}
-                className="absolute bg-white pin-r pin-t w-550 h-550 mt-12"
+                className="absolute bg-white pin-r pin-t w-750 h-550 mt-12"
               >
                 <div className="text-white p-2 text-center uppercase bg-blue-new">
                   <h3>Notes</h3>
@@ -517,7 +517,7 @@ const Screen = props => {
                       });
                     }}
                   >
-                    <div className="bg-blue-new p-2 text-white text-center uppercase">
+                    <div className="bg-blue-new p-2 text-white text-center uppercase cursor-pointer">
                       Send
                     </div>
                   </div>

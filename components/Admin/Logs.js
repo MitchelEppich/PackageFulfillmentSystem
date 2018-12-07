@@ -59,7 +59,18 @@ const Logs = props => {
         </div>
         <div className="bg-blue-new w-1/3 flex items-center text-white text-right uppercase inline-flex">            
           <div className="w-full text-right mr-2 justify-end inline-flex">
-            <input type="text" placeholder="Search here.." className="w-200 mr-2 p-1" />
+            <input 
+              type="text" 
+              placeholder="Search here.." 
+              className="w-200 mr-2 p-1" 
+              name= "search"
+              id= "search"              
+              onChange={e=>{
+                let searched = e.target.value
+                console.log(searched)
+              }}
+
+            />
             <h3><FontAwesomeIcon icon={faSearch} className="fa-lg mr-4 mt-1 cursor-pointer" /></h3>
           </div>
           

@@ -1,6 +1,9 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { ResponsivePie, ResponsivePieCanvas } from '@nivo/pie'
+
+
 
 import moment from "moment";
 
@@ -34,7 +37,7 @@ const Reports = props => {
                 </div>                
             </div>
             <div className="w-full p-2 pl-10 text-center ">
-                <div className="inline-flex items-center w-full">
+                <div className="inline-flex items-center justify-end w-full pr-6">
                     <p className="pr-2">Select the period: </p>
                     <input id="date" type="date"/>
                 </div>
@@ -95,8 +98,89 @@ const Reports = props => {
                             
                             </div>  
                         </div>
-                        <div className="w-full p-2 text-right">
-                            <p>Total: 4500 packages</p>
+                        <div className="w-full p-2 text-right bg-grey-darker">
+                            <p className="text-white">Total: 4127 packages</p>
+                        </div>
+                        <div className="w-full h-300 mt-2 bg-white">
+                        <ResponsivePieCanvas
+                            data={[
+                                {
+                                "id": "karl",
+                                "label": "karl",
+                                "value": 6,
+                                "color": "hsl(47, 110%, 60%)"
+                                },
+                                {
+                                "id": "phil",
+                                "label": "phil",
+                                "value": 50,
+                                "color": "hsl(44, 20%, 80%)"
+                                },
+                                {
+                                "id": "denman",
+                                "label": "denman",
+                                "value": 95,
+                                "color": "hsl(120, 70%, 20%)"
+                                },
+                                {
+                                "id": "jiraya",
+                                "label": "jiraya",
+                                "value": 29,
+                                "color": "hsl(210, 70%, 50%)"
+                                },
+                                {
+                                "id": "mitchelsbacon",
+                                "label": "mitchelsbacon",
+                                "value": 44,
+                                "color": "hsl(134, 24%, 50%)"
+                                },                            
+                                {
+                                "id": "lito",
+                                "label": "lito",
+                                "value": 27,
+                                "color": "hsl(134, 70%, 50%)"
+                                }
+                            ]}
+                            margin={{
+                                "top": 40,
+                                "right": 160,
+                                "bottom": 40,
+                                "left": 80
+                            }}
+                            pixelRatio={1}
+                            innerRadius={0}
+                            padAngle={0}
+                            cornerRadius={1}
+                            colors="paired"
+                            colorBy="id"
+                            borderColor="inherit:darker(0.6)"
+                            radialLabelsSkipAngle={2}
+                            radialLabelsTextXOffset={6}
+                            radialLabelsTextColor="#333333"
+                            radialLabelsLinkOffset={0}
+                            radialLabelsLinkDiagonalLength={16}
+                            radialLabelsLinkHorizontalLength={24}
+                            radialLabelsLinkStrokeWidth={1}
+                            radialLabelsLinkColor="inherit"
+                            slicesLabelsSkipAngle={2}
+                            slicesLabelsTextColor="#333333"
+                            animate={true}
+                            motionStiffness={90}
+                            motionDamping={15}                                                  
+                            legends={[
+                                {
+                                    "anchor": "right",
+                                    "direction": "column",
+                                    "translateX": 120,
+                                    "itemWidth": 60,
+                                    "itemHeight": 14,
+                                    "itemsSpacing": 2,
+                                    "symbolSize": 14,
+                                    "symbolShape": "circle"
+                                }
+                            ]}
+                        />                       
+                       
                         </div>
                 </div>
 
@@ -120,7 +204,7 @@ const Reports = props => {
                     </div>
                     <div className="h-200 bg-white w-full overflow-y-auto mt-6">
                             <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">CKS</div>
+                                <div className="w-1/2 pl-8">CKS</div>{console.log(props)}
                                 <div className="w-1/2 pl-4">02 packages</div>
                             
                             </div>  
@@ -155,9 +239,90 @@ const Reports = props => {
                             
                             </div>  
                         </div>
-                        <div className="w-full p-2 text-right">
-                            <p>Total: 4500 packages</p>
+                        <div className="w-full p-2 text-right bg-grey-darker">
+                            <p className="text-white">Total: 7325 packages</p>
                         </div>
+                        <div className="w-full h-300 mt-2 bg-white">
+                         <ResponsivePieCanvas
+                    data={[
+                        {
+                        "id": "cks",
+                        "label": "cks",
+                        "value": 406,
+                        "color": "hsl(337, 70%, 50%)"
+                        },
+                        {
+                        "id": "snm",
+                        "label": "snm",
+                        "value": 50,
+                        "color": "hsl(74, 70%, 50%)"
+                        },
+                        {
+                        "id": "sunw",
+                        "label": "sunw",
+                        "value": 95,
+                        "color": "hsl(30, 70%, 50%)"
+                        },
+                        {
+                        "id": "wholesale",
+                        "label": "wholesale",
+                        "value": 209,
+                        "color": "hsl(270, 70%, 50%)"
+                        },
+                        {
+                        "id": "bvr",
+                        "label": "bvr",
+                        "value": 44,
+                        "color": "hsl(134, 70%, 50%)"
+                        },
+                        {
+                        "id": "msjc",
+                        "label": "msjc",
+                        "value": 81,
+                        "color": "hsl(104, 20%, 10%)"            
+                        },                            
+                    ]}
+                    margin={{
+                        "top": 40,
+                        "right": 160,
+                        "bottom": 40,
+                        "left": 80
+                    }}
+                    pixelRatio={1}
+                    innerRadius={0}
+                    padAngle={0}
+                    cornerRadius={1}
+                    colors="paired"
+                    colorBy="id"
+                    borderColor="inherit:darker(0.6)"
+                    radialLabelsSkipAngle={10}
+                    radialLabelsTextXOffset={6}
+                    radialLabelsTextColor="#333333"
+                    radialLabelsLinkOffset={0}
+                    radialLabelsLinkDiagonalLength={16}
+                    radialLabelsLinkHorizontalLength={24}
+                    radialLabelsLinkStrokeWidth={1}
+                    radialLabelsLinkColor="inherit"
+                    slicesLabelsSkipAngle={10}
+                    slicesLabelsTextColor="#333333"
+                    animate={true}
+                    motionStiffness={90}
+                    motionDamping={15}                                                  
+                    legends={[
+                        {
+                            "anchor": "right",
+                            "direction": "column",
+                            "translateX": 120,
+                            "itemWidth": 60,
+                            "itemHeight": 14,
+                            "itemsSpacing": 2,
+                            "symbolSize": 14,
+                            "symbolShape": "circle"
+                        }
+                    ]}
+                />    
+                       
+                </div>
                 </div>            
             </div>
 

@@ -219,7 +219,7 @@ const Main = props => {
                 ]);
               }}
               className={
- "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+ "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-1"
 
               }
             >
