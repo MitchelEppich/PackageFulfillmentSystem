@@ -357,7 +357,7 @@ const Screen = props => {
     if (_editBy == null) return null;
     for (let user of _editBy) {
       arr.push(
-        <div className="float-left w-full mt-1 p-2">
+        <div className="float-left w-full mt-1 p-2" key={user}>
           <p className="text-center">{user}</p>
         </div>
       );

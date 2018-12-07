@@ -43,6 +43,149 @@ const Reports = props => {
                 </div>
             </div>
             <div className="inline-flex w-full">
+
+                <div 
+                style={{
+                    borderTopLeftRadius: "10px",
+                    borderTopRightRadius: "10px",
+                    overflow: "hidden",
+                    border: "1px solid #e6e6e6",
+                    boxShadow: "0px 1px 1px rgba(206, 206, 206, 0.25)"
+                }}
+                className="w-1/2 mx-8 mt-4">
+                    <div className="w-full h-10 bg-blue-new text-white text-center p-2 ">
+                        <h3>Seeds Sold by Brand</h3>
+                    </div>
+                    <div className="bg-white w-full relative">  
+                        <div className="bg-grey-darker w-full text-white inline-flex absolute p-1 text-sm uppercase">
+                            <div className="w-1/2 pl-8">Name</div>
+                            <div className="w-1/2 pl-4">Quantity</div>
+                        </div>   
+                    </div>
+                    <div className="h-200 bg-white w-full overflow-y-auto mt-6">
+
+                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                                <div className="w-1/2 pl-8">CKS</div>
+                                <div className="w-1/2 pl-4">744 packages</div>
+                            
+                            </div>  
+                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                                <div className="w-1/2 pl-8">SNM</div>
+                                <div className="w-1/2 pl-4">142 packages</div>
+                            
+                            </div>  
+                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                                <div className="w-1/2 pl-8">BVR</div>
+                                <div className="w-1/2 pl-4">443 packages</div>
+                            
+                            </div>  
+                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                                <div className="w-1/2 pl-8">MSJC</div>
+                                <div className="w-1/2 pl-4">0.5 package</div>
+                            
+                            </div>  
+                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                                <div className="w-1/2 pl-8">SUNW</div>
+                                <div className="w-1/2 pl-4">3432 packages</div>
+                            
+                            </div>  
+                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                                <div className="w-1/2 pl-8">MSJCC</div>
+                                <div className="w-1/2 pl-4">1465 packages</div>
+                            
+                            </div>  
+                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                                <div className="w-1/2 pl-8">WHOLESALE</div>
+                                <div className="w-1/2 pl-4">12 packages</div>
+                            
+                            </div>  
+                        </div>
+                        <div className="w-full p-2 text-right bg-grey-darker">
+                            <p className="text-white">Total: 7325 packages</p>
+                        </div>
+                        <div className="w-full h-300 mt-2 bg-white">
+                         <ResponsivePieCanvas
+                    data={[
+                        {
+                        "id": "cks",
+                        "label": "cks",
+                        "value": 115,
+                        "color": "hsl(337, 70%, 50%)"
+                        },
+                        {
+                        "id": "snm",
+                        "label": "snm",
+                        "value": 27,
+                        "color": "hsl(74, 70%, 50%)"
+                        },
+                        {
+                        "id": "sunw",
+                        "label": "sunw",
+                        "value": 23,
+                        "color": "hsl(30, 70%, 50%)"
+                        },
+                        {
+                        "id": "wholesale",
+                        "label": "wholesale",
+                        "value": 123,
+                        "color": "hsl(270, 70%, 50%)"
+                        },
+                        {
+                        "id": "bvr",
+                        "label": "bvr",
+                        "value": 32,
+                        "color": "hsl(134, 70%, 50%)"
+                        },
+                        {
+                        "id": "msjc",
+                        "label": "msjc",
+                        "value": 12,
+                        "color": "hsl(104, 20%, 10%)"            
+                        },                            
+                    ]}
+                    margin={{
+                        "top": 40,
+                        "right": 160,
+                        "bottom": 40,
+                        "left": 80
+                    }}
+                    pixelRatio={1}
+                    innerRadius={0}
+                    padAngle={0}
+                    cornerRadius={1}
+                    colors="paired"
+                    colorBy="id"
+                    borderColor="inherit:darker(0.6)"
+                    radialLabelsSkipAngle={1}
+                    radialLabelsTextXOffset={6}
+                    radialLabelsTextColor="#333333"
+                    radialLabelsLinkOffset={0}
+                    radialLabelsLinkDiagonalLength={16}
+                    radialLabelsLinkHorizontalLength={24}
+                    radialLabelsLinkStrokeWidth={1}
+                    radialLabelsLinkColor="inherit"
+                    slicesLabelsSkipAngle={1}
+                    slicesLabelsTextColor="#333333"
+                    animate={true}
+                    motionStiffness={90}
+                    motionDamping={15}                                                  
+                    legends={[
+                        {
+                            "anchor": "right",
+                            "direction": "column",
+                            "translateX": 120,
+                            "itemWidth": 60,
+                            "itemHeight": 14,
+                            "itemsSpacing": 2,
+                            "symbolSize": 14,
+                            "symbolShape": "circle"
+                        }
+                    ]}
+                />    
+                       
+                </div>
+                </div>
+                
                 <div 
                 style={{
                     borderTopLeftRadius: "10px",
@@ -100,7 +243,7 @@ const Reports = props => {
                         </div>
                         <div className="w-full p-2 text-right bg-grey-darker">
                             <p className="text-white">Total: 4127 packages</p>
-                        </div>
+                        </div>                         
                         <div className="w-full h-300 mt-2 bg-white">
                         <ResponsivePieCanvas
                             data={[
@@ -184,146 +327,7 @@ const Reports = props => {
                         </div>
                 </div>
 
-                <div 
-                style={{
-                    borderTopLeftRadius: "10px",
-                    borderTopRightRadius: "10px",
-                    overflow: "hidden",
-                    border: "1px solid #e6e6e6",
-                    boxShadow: "0px 1px 1px rgba(206, 206, 206, 0.25)"
-                }}
-                className="w-1/2 mx-8 mt-4">
-                    <div className="w-full h-10 bg-blue-new text-white text-center p-2 ">
-                        <h3>Seeds Sold by Brand</h3>
-                    </div>
-                    <div className="bg-white w-full relative">  
-                        <div className="bg-grey-darker w-full text-white inline-flex absolute p-1 text-sm uppercase">
-                            <div className="w-1/2 pl-8">Name</div>
-                            <div className="w-1/2 pl-4">Quantity</div>
-                        </div>   
-                    </div>
-                    <div className="h-200 bg-white w-full overflow-y-auto mt-6">
-                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">CKS</div>{console.log(props)}
-                                <div className="w-1/2 pl-4">02 packages</div>
                             
-                            </div>  
-                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">SNM</div>
-                                <div className="w-1/2 pl-4">142 packages</div>
-                            
-                            </div>  
-                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">BVR</div>
-                                <div className="w-1/2 pl-4">443 packages</div>
-                            
-                            </div>  
-                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">MSJC</div>
-                                <div className="w-1/2 pl-4">0.5 package</div>
-                            
-                            </div>  
-                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">SUNW</div>
-                                <div className="w-1/2 pl-4">3432 packages</div>
-                            
-                            </div>  
-                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">MSJCC</div>
-                                <div className="w-1/2 pl-4">1465 packages</div>
-                            
-                            </div>  
-                            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">WHOLESALE</div>
-                                <div className="w-1/2 pl-4">12 packages</div>
-                            
-                            </div>  
-                        </div>
-                        <div className="w-full p-2 text-right bg-grey-darker">
-                            <p className="text-white">Total: 7325 packages</p>
-                        </div>
-                        <div className="w-full h-300 mt-2 bg-white">
-                         <ResponsivePieCanvas
-                    data={[
-                        {
-                        "id": "cks",
-                        "label": "cks",
-                        "value": 406,
-                        "color": "hsl(337, 70%, 50%)"
-                        },
-                        {
-                        "id": "snm",
-                        "label": "snm",
-                        "value": 50,
-                        "color": "hsl(74, 70%, 50%)"
-                        },
-                        {
-                        "id": "sunw",
-                        "label": "sunw",
-                        "value": 95,
-                        "color": "hsl(30, 70%, 50%)"
-                        },
-                        {
-                        "id": "wholesale",
-                        "label": "wholesale",
-                        "value": 209,
-                        "color": "hsl(270, 70%, 50%)"
-                        },
-                        {
-                        "id": "bvr",
-                        "label": "bvr",
-                        "value": 44,
-                        "color": "hsl(134, 70%, 50%)"
-                        },
-                        {
-                        "id": "msjc",
-                        "label": "msjc",
-                        "value": 81,
-                        "color": "hsl(104, 20%, 10%)"            
-                        },                            
-                    ]}
-                    margin={{
-                        "top": 40,
-                        "right": 160,
-                        "bottom": 40,
-                        "left": 80
-                    }}
-                    pixelRatio={1}
-                    innerRadius={0}
-                    padAngle={0}
-                    cornerRadius={1}
-                    colors="paired"
-                    colorBy="id"
-                    borderColor="inherit:darker(0.6)"
-                    radialLabelsSkipAngle={10}
-                    radialLabelsTextXOffset={6}
-                    radialLabelsTextColor="#333333"
-                    radialLabelsLinkOffset={0}
-                    radialLabelsLinkDiagonalLength={16}
-                    radialLabelsLinkHorizontalLength={24}
-                    radialLabelsLinkStrokeWidth={1}
-                    radialLabelsLinkColor="inherit"
-                    slicesLabelsSkipAngle={10}
-                    slicesLabelsTextColor="#333333"
-                    animate={true}
-                    motionStiffness={90}
-                    motionDamping={15}                                                  
-                    legends={[
-                        {
-                            "anchor": "right",
-                            "direction": "column",
-                            "translateX": 120,
-                            "itemWidth": 60,
-                            "itemHeight": 14,
-                            "itemsSpacing": 2,
-                            "symbolSize": 14,
-                            "symbolShape": "circle"
-                        }
-                    ]}
-                />    
-                       
-                </div>
-                </div>            
             </div>
 
         </div>
