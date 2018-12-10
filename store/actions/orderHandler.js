@@ -148,10 +148,14 @@ const mutation = {
       $entryContent: String
       $orderDate: String
       $customerName: String
+      $customerEmail: String
+      $customerPhone: String
+      $totalCost: Float
       $status: String
       $who: String
       $claimed: Boolean
       $notes: [String]
+      $totalItems: Int
     ) {
       cacheOrder(
         input: {
@@ -161,10 +165,14 @@ const mutation = {
           entryContent: $entryContent
           orderDate: $orderDate
           customerName: $customerName
+          customerEmail: $customerEmail
+          customerPhone: $customerPhone
+          totalCost: $totalCost
           status: $status
           who: $who
           claimed: $claimed
           notes: $notes
+          totalItems: $totalItems
         }
       ) {
         invoiceId
@@ -173,11 +181,16 @@ const mutation = {
         entryContent
         orderDate
         customerName
+        customerEmail
+        customerPhone
+        totalCost
+        companyName
         lastUpdate
         status
         claimed
         editBy
         notes
+        totalItems
       }
     }
   `,
@@ -189,10 +202,14 @@ const mutation = {
       $entryContent: String
       $orderDate: String
       $customerName: String
+      $customerEmail: String
+      $customerPhone: String
+      $totalCost: Float
       $status: String
       $who: String
       $claimed: Boolean
       $note: String
+      $totalItems: Int
     ) {
       updateOrder(
         input: {
@@ -202,10 +219,14 @@ const mutation = {
           entryContent: $entryContent
           orderDate: $orderDate
           customerName: $customerName
+          customerEmail: $customerEmail
+          customerPhone: $customerPhone
+          totalCost: $totalCost
           status: $status
           who: $who
           claimed: $claimed
           note: $note
+          totalItems: $totalItems
         }
       ) {
         invoiceId
@@ -214,11 +235,16 @@ const mutation = {
         entryContent
         orderDate
         customerName
+        customerEmail
+        customerPhone
+        totalCost
+        companyName
         lastUpdate
         status
         claimed
         editBy
         notes
+        totalItems
       }
     }
   `

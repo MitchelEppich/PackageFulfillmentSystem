@@ -139,11 +139,16 @@ const subscription = {
         entryContent
         orderDate
         customerName
+        customerEmail
+        customerPhone
+        totalCost
+        companyName
         lastUpdate
         status
         claimed
         editBy
         notes
+        totalItems
       }
     }
   `

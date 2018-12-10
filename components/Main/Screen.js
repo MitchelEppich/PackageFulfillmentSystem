@@ -16,7 +16,7 @@ import {
 import moment from "moment";
 
 const Screen = props => {
-  let generateSingleItem = (item, company) => {
+  let generateSingleItem = (item, company, strainId) => {
     let _value =
       props.item.itemValues[item.name] != null
         ? props.item.itemValues[item.name].value
@@ -55,7 +55,8 @@ const Screen = props => {
           </div>
           <div>
             <p className="">
-              {company}04
+              {company}
+              {strainId}
               <input
                 type="number"
                 onChange={e => {
@@ -65,6 +66,8 @@ const Screen = props => {
                   props.setItemValue({
                     itemValues: props.item.itemValues,
                     key: `${item.name}`,
+                    packageId: item.packageId,
+                    prefix: `${company}${strainId}`,
                     value: e.target.value
                   });
                 }}
@@ -88,7 +91,8 @@ const Screen = props => {
     );
   };
 
-  let generateSubItem = (itemRef, number, name, value) => {
+  let generateSubItem = (itemRef, number, name, value, strainId) => {
+    let _company = props.nav.focusCompany.id;
     let _used = false;
     let item = (
       <div
@@ -104,7 +108,8 @@ const Screen = props => {
           </div>
           <div>
             <p className="">
-              {props.nav.focusCompany.id}04
+              {_company}
+              {strainId}
               <input
                 type="number"
                 value={value}
@@ -114,6 +119,8 @@ const Screen = props => {
 
                   props.setItemValue({
                     itemValues: props.item.itemValues,
+                    prefix: `${_company}${strainId}`,
+                    packageId: itemRef.packageId,
                     key: `${name}-${number}`,
                     value: e.target.value
                   });
@@ -121,6 +128,8 @@ const Screen = props => {
                 onBlur={() => {
                   props.setMultiItemBase({
                     key: name,
+                    prefix: `${_company}${strainId}`,
+                    packageId: itemRef.packageId,
                     value: props.item.itemBases[name],
                     itemBases: props.item.itemBases,
                     itemValues: props.item.itemValues,
@@ -144,7 +153,7 @@ const Screen = props => {
     return { item, used: _used };
   };
 
-  let generateMultiItem = (item, company) => {
+  let generateMultiItem = (item, company, strainId) => {
     let _value = props.item.itemBases[item.name]
       ? props.item.itemBases[item.name]
       : undefined;
@@ -154,7 +163,7 @@ const Screen = props => {
         props.item.itemValues[`${item.name}-${i}`] != null
           ? props.item.itemValues[`${item.name}-${i}`].value
           : undefined;
-      let _sub = generateSubItem(item, i, item.name, valueEntry);
+      let _sub = generateSubItem(item, i, item.name, valueEntry, strainId);
       if (_sub.used) values.shift();
       arr.push(_sub.item);
     }
@@ -214,7 +223,8 @@ const Screen = props => {
             </div>
             <div>
               <p className="">
-                {company}04
+                {company}
+                {strainId}
                 <input
                   type="number"
                   value={_value}
@@ -224,7 +234,9 @@ const Screen = props => {
 
                     props.setMultiItemBase({
                       key: item.name,
+                      prefix: `${company}${strainId}`,
                       value: e.target.value,
+                      packageId: item.packageId,
                       itemBases: props.item.itemBases,
                       itemValues: props.item.itemValues,
                       item: item
@@ -279,11 +291,13 @@ const Screen = props => {
       for (let quantity in itemList[company]) {
         let items = [];
         for (let item of Object.values(itemList[company][quantity])) {
+          let _break = item.name.split("-");
+          let _strainId = props.item.strainArchive[_break[2]][_break[0]];
           items.push(
             <div>
               {item.quantity == 1
-                ? generateSingleItem(item, _companyId)
-                : generateMultiItem(item, _companyId)}
+                ? generateSingleItem(item, _companyId, _strainId)
+                : generateMultiItem(item, _companyId, _strainId)}
             </div>
           );
         }
