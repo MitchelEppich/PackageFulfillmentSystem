@@ -9,11 +9,16 @@ const OrderSchema = Schema({
   entryContent: String,
   orderDate: String,
   customerName: String,
+  companyName: String,
   status: String,
   editBy: [String],
   claimed: { type: Boolean, default: false },
   lastUpdate: { type: Date, default: Date.now },
-  notes: [String]
+  notes: [String],
+  totalItems: Number,
+  customerEmail: String,
+  customerPhone: String,
+  totalCost: Number
 });
 
 module.exports = OrderSchema;

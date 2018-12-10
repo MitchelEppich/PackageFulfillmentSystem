@@ -8,6 +8,19 @@ import { ResponsivePie, ResponsivePieCanvas } from '@nivo/pie'
 import moment from "moment";
 
 const Reports = props => {
+
+    const theme = {
+        axis: {
+          textColor: '#eee',
+          fontSize: '22px',
+          tickColor: '#eee',
+        },
+        grid: {
+          stroke: '#888',
+          strokeWidth: 1
+        },
+      };
+
     return (
         <div
             style={{
@@ -150,6 +163,7 @@ const Reports = props => {
                         "left": 80
                     }}
                     pixelRatio={1}
+                    theme={theme}
                     innerRadius={0}
                     padAngle={0}
                     cornerRadius={1}
@@ -290,6 +304,7 @@ const Reports = props => {
                                 "bottom": 40,
                                 "left": 80
                             }}
+                           
                             pixelRatio={1}
                             innerRadius={0}
                             padAngle={0}
@@ -309,13 +324,14 @@ const Reports = props => {
                             slicesLabelsTextColor="#333333"
                             animate={true}
                             motionStiffness={90}
-                            motionDamping={15}                                                  
+                            motionDamping={15}  
+                                                                            
                             legends={[
                                 {
                                     "anchor": "right",
                                     "direction": "column",
-                                    "translateX": 120,
-                                    "itemWidth": 60,
+                                    "translateX": 80, 
+                                    "itemWidth": 90,
                                     "itemHeight": 14,
                                     "itemsSpacing": 2,
                                     "symbolSize": 14,

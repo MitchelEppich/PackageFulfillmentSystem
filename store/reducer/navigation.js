@@ -10,6 +10,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.POST_ORDER:
+      return updateObject(state, {});
     case actionTypes.FOCUS_COMPANY:
       return updateObject(state, { focusCompany: action.input });
     case actionTypes.FETCH_ORDER:

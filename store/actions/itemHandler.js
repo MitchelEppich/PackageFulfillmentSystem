@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 import { makePromise, execute } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
 import fetch from "node-fetch";
+import Navigation from "./navigation";
 
 const actionTypes = {
   SET_MULTI_ITEM_BASE: "SET_MULTI_ITEM_BASE",
@@ -40,6 +41,7 @@ const getActions = uri => {
                 value: (parseInt(input.value) + item - skipped)
                   .toString()
                   .padStart(4, "0"),
+                prefix: input.prefix,
                 user: false
               };
               dispatch(objects.removeItemMissed({ item: key }));
@@ -58,7 +60,8 @@ const getActions = uri => {
       return dispatch => {
         input.itemValues[input.key] = {
           value: input.value,
-          user: input.value != ""
+          user: input.value != "",
+          prefix: input.prefix
         };
 
         dispatch(objects.removeItemMissed({ item: input.key }));
@@ -94,34 +97,46 @@ const getActions = uri => {
       };
     },
     verifyItemList: input => {
-      let itemMissed = [];
-      let keyList = Object.keys(input.itemList);
+      return dispatch => {
+        let itemMissed = [];
+        let keyList = Object.keys(input.itemList);
 
-      let _companies = Object.keys(input.order.itemList);
-      for (let company of _companies) {
-        let _quantities = Object.keys(input.order.itemList[company]);
-        for (let quantity of _quantities) {
-          let _items = Object.values(input.order.itemList[company][quantity]);
-          for (let item of _items) {
-            if (item.quantity == 1) {
-              if (!keyList.includes(item.name)) {
-                itemMissed.push(item.name);
-              }
-            } else {
-              for (let i = 0; i < item.quantity; i++) {
-                let itemName = `${item.name}-${i}`;
-                if (!keyList.includes(itemName)) {
-                  itemMissed.push(itemName);
+        let _companies = Object.keys(input.order.itemList);
+        for (let company of _companies) {
+          let _quantities = Object.keys(input.order.itemList[company]);
+          for (let quantity of _quantities) {
+            let _items = Object.values(input.order.itemList[company][quantity]);
+            for (let item of _items) {
+              if (item.quantity == 1) {
+                if (!keyList.includes(item.name)) {
+                  itemMissed.push(item.name);
+                }
+              } else {
+                for (let i = 0; i < item.quantity; i++) {
+                  let itemName = `${item.name}-${i}`;
+                  if (!keyList.includes(itemName)) {
+                    itemMissed.push(itemName);
+                  }
                 }
               }
             }
           }
         }
-      }
 
-      return {
-        type: actionTypes.VERIFY_ITEM_LIST,
-        input: itemMissed
+        if (itemMissed.length == 0) {
+          let NavActions = Navigation(uri);
+          dispatch(
+            NavActions.postOrder({
+              itemList: input.itemList,
+              focusOrder: input.order
+            })
+          );
+        }
+
+        dispatch({
+          type: actionTypes.VERIFY_ITEM_LIST,
+          input: itemMissed
+        });
       };
     }
   };

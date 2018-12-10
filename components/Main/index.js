@@ -15,14 +15,13 @@ import moment from "moment";
 
 library.add(faPlus, faMinus, faInfo);
 
-const Main = props => {
-  // console.log("FIND", props.user.currentUser.admin)
+const Main = props => { 
   let companies = props.misc.companies;
   let _name =
     props.user.currentUser != null ? props.user.currentUser.name : "NO NAME";
 
   let showCompanies = () => {
-    let arr = [];
+    let arr = [];  
     for (let company of companies) {
       arr.push(
         <div
@@ -34,12 +33,13 @@ const Main = props => {
               user: props.user.currentUser
             });
           }}
+          
           className={`${
             props.nav.focusCompany != null &&
             props.nav.focusCompany.id == company.id
               ? "bg-red hover:bg-red-dark"
               : "hover:bg-semi-transparent"
-          } w-1/8 p-2 justify-center border-semi-transparent h-10 flex items-center border-r-2 font-bold cursor-pointer leading-normal leading-normal uppercase`}
+          } p-2 justify-center border-semi-transparent h-10 flex items-center border-r-2 font-bold cursor-pointer leading-normal leading-normal uppercase`}
         >
           {" "}
           <p className="pr-2">{company.short}</p>{" "}
@@ -256,7 +256,7 @@ const Main = props => {
           marginRight: "auto",
           left: "0",
           right: "0",
-          height: "800px"
+          height: "777px"
         }}
         className="w-newScreen h-halfscreen text-white mt-16"
       >

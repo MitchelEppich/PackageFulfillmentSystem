@@ -70,11 +70,16 @@ type Order {
   entryContent: String
   orderDate: String
   customerName: String
+  customerEmail: String
+  customerPhone:String
+  totalCost:Float
+  companyName: String
   lastUpdate: String
   status: String
   editBy: [String]
   claimed: Boolean
   notes: [String]
+  totalItems: Int
 }
 
 input OrderInput {
@@ -84,11 +89,20 @@ input OrderInput {
   entryContent: String
   orderDate: String
   customerName: String
+  customerEmail: String
+  customerPhone:String
+  totalCost:Float
+  companyName: String
   status: String
   who: String
   claimed: Boolean
   note: String
   notes: [String]
+  totalItems: Int
+}
+
+input SotiInput {
+  content: String
 }
 
 type Subscription {
@@ -98,6 +112,8 @@ type Subscription {
 }
 
 type Mutation {
+  postOrderToSoti(input: SotiInput!): String
+
   verifyCredentials(input: UserInput!): User
   registerCredentials(input: UserInput!): User
   updateUser(input: UserInput!): User

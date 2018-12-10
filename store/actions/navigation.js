@@ -18,7 +18,8 @@ const actionTypes = {
   MODIFY_USER: "MODIFY_USER",
   MODIFY_LOGS: "MODIFY_LOGS",
   DELETE_USER: "DELETE_USER",
-  MODIFY_FOCUS_ORDER: "MODIFY_FOCUS_ORDER"
+  MODIFY_FOCUS_ORDER: "MODIFY_FOCUS_ORDER",
+  POST_ORDER: "POST_ORDER"
 };
 
 import OrderHandler from "./orderHandler";
@@ -127,6 +128,36 @@ const getActions = uri => {
           })
           .catch(error => console.log(error));
       };
+    },
+    postOrder: input => {
+      console.log(input);
+      let _itemList = input.itemList;
+      let _itemStt = _itemList.map(a => {
+        return {
+          packageId: "",
+          sttNumber: `${a.prefix}${a.value}`
+        };
+      });
+      console.log(_itemStt);
+      // return dispatch => {
+      //   // input.focusOrder.itemList = input.itemList;
+      //   // let _content = buildContent(input.focusOrder);
+      //   const link = new HttpLink({ uri, fetch: fetch });
+      //   const operation = {
+      //     query: mutation.postRegularOrder,
+      //     variables: { content: _content }
+      //   };
+
+      //   makePromise(execute(link, operation))
+      //     .then(data => {
+      //       console.log(data.data.postOrder);
+
+      //       dispatch({
+      //         type: actionTypes.POST_ORDER
+      //       });
+      //     })
+      //     .catch(error => console.log(error));
+      // };
     },
     fetchOrder: input => {
       return dispatch => {
@@ -250,7 +281,39 @@ const mutation = {
         username
       }
     }
+  `,
+  postRegularOrder: gql`
+    mutation($content: String) {
+      postOrderToSoti(input: { content: $content })
+    }
   `
+};
+
+let buildContent = order => {
+  console.log(order);
+  let _product = buildProduct(order.itemList);
+
+  return `storename=${order.companyName},personplacingorder=${
+    order.customerName
+  },persontakingorder=Vanessa,orderplaced=email,email=${
+    order.customerEmail
+  },phone=${order.customerPhone},product=,price=${
+    order.totalCost
+  },invoicenumber=${
+    order.invoiceNumber
+  },shipped=,trackingnumber=,currentDate=${moment(order.orderDate).format(
+    "YY-MM-DD HH:mm:ss"
+  )}`;
+};
+
+let buildProduct = items => {
+  let _product = "";
+
+  let _keys = Object.keys(items);
+
+  for (let key of _keys) {
+    _product += `${key}`;
+  }
 };
 
 export default uri => {

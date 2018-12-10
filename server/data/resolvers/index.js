@@ -84,17 +84,21 @@ const resolvers = {
               return false;
             })
             .map(a => {
+              let _contact =
+                a.contact_persons_details != null
+                  ? a.contact_persons_details[0]
+                  : undefined;
               return {
-                companyName: a.company_name, // Store Name
-                customerName: a.customer_name, // Person Name
-                // csr_name : a.salesperson_name, // CSR Name
+                companyName: a.company_name,
+                customerName: a.customer_name,
+                // csr_name : a.salesperson_name, // CSR Name // Store Name // Person Name
                 // placement : a.custom_fields[0], // How the order was placed
-                // customer_email : null // Person Email
-                // customer_phone : null // Person Phone
+                customerEmail: _contact != null ? _contact.email : undefined, // customer_phone : null // Person Phone // Person Email
+                customerPhone: _contact != null ? _contact.phone : undefined, // customer_phone : null // Person Phone // Person Email
                 // product_list : null // Itemized List
-                invoiceNumber: a.invoice_number,
-                // delivery : "person" || delivery date // How was it delivered
+                invoiceNumber: a.invoice_number, // delivery : "person" || delivery date // How was it delivered
                 // tracking_number : null
+                totalCost: a.total,
                 orderDate: a.date,
                 invoiceId: a.invoice_id
               };
@@ -168,9 +172,36 @@ const resolvers = {
   Mutation: {
     ...UserResolvers.Mutation,
     ...LogResolvers.Mutation,
-    ...OrderResolvers.Mutation
+    ...OrderResolvers.Mutation,
+    postOrderToSoti: (_, { input }) => {
+      console.log(input);
+      let body = toUrlEncoded({
+        packageid: input.packageId,
+        sttno: input.sttNo
+      });
+      let config = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
+      return axios
+        .post(
+          `https://www.cksoti.com/postupdatesttnumberperpackage/`,
+          body,
+          config
+        )
+        .then(res => {
+          let _parsed = parseXml(res.data);
+          return _parsed.Message || _parsed.Results;
+        });
+    }
   }
 };
+
+const toUrlEncoded = obj =>
+  Object.keys(obj)
+    .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]))
+    .join("&");
 
 let inferType = input => {
   /*
