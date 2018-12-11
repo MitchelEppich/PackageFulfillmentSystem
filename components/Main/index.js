@@ -33,7 +33,9 @@ const Main = props => {
               user: props.user.currentUser
             });
           }}
-          
+          style={{
+            width: `${1536 / companies.length }px`
+          }}
           className={`${
             props.nav.focusCompany != null &&
             props.nav.focusCompany.id == company.id
@@ -74,6 +76,7 @@ const Main = props => {
     return arr;
   };
 
+  
   let showOrders = () => {
     if (props.nav.focusCompany != null && props.order.orderCache != null) {
       let orders = props.order.orderCache[props.nav.focusCompany.short].order;

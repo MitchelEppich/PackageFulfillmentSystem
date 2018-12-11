@@ -294,7 +294,7 @@ const Screen = props => {
           let _break = item.name.split("-");
           let _strainId = props.item.strainArchive[_break[2]][_break[0]];
           items.push(
-            <div>
+            <div key={items}>
               {item.quantity == 1
                 ? generateSingleItem(item, _companyId, _strainId)
                 : generateMultiItem(item, _companyId, _strainId)}
@@ -307,8 +307,8 @@ const Screen = props => {
         let qty = len.length;
 
         quantities.push(
-          <div>
-            <div
+          <div key={items}>
+            <div 
               className="w-full cursor-pointer mt-2 p-2 pl-10 text-lg mx-0 bg-grey-light hover:bg-grey-lighter"
               onClick={() => {
                 props.expandItem({
@@ -388,10 +388,10 @@ const Screen = props => {
       let _content = note.split("//&");
       arr.push(
         <div className="inline-flex w-full p-2 bg-grey-light">
-          <div className="w-1/5 text-left pl-6">{_content[0]}</div>
-          <div className="w-3/5 text-left">{_content[1]}</div>
-          <div className="w-1/5 text-left pl-6">
-            {moment(_content[2]).format("DD/MM - hh:mm")}
+          <div className="w-1/5 text-left pl-6 uppercase">{_content[0]}</div>
+          <div className="w-3/5 text-left capitalize">{_content[1]}</div>
+          <div className="w-1/5 text-left pl-6 text-sm">
+            {moment(_content[2]).format("DD/MM - hh:mm:ss")}
           </div>
         </div>
       );
