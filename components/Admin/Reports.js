@@ -9,6 +9,8 @@ import moment from "moment";
 
 const Reports = props => {
 
+    console.log(props)
+
     const theme = {
         axis: {
           textColor: '#eee',
@@ -230,7 +232,7 @@ const Reports = props => {
                             
                             </div>  
                             <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">Smigol</div>
+                                <div className="w-1/2 pl-8">Bernie</div>
                                 <div className="w-1/2 pl-4">443 packages</div>
                             
                             </div>  
@@ -240,17 +242,17 @@ const Reports = props => {
                             
                             </div>  
                             <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">Pikachu</div>
+                                <div className="w-1/2 pl-8">Ellie</div>
                                 <div className="w-1/2 pl-4">3432 packages</div>
                             
                             </div>  
                             <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">Test</div>
+                                <div className="w-1/2 pl-8">Andrea</div>
                                 <div className="w-1/2 pl-4">1465 packages</div>
                             
                             </div>  
                             <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-                                <div className="w-1/2 pl-8">Obama</div>
+                                <div className="w-1/2 pl-8">Tester</div>
                                 <div className="w-1/2 pl-4">12 packages</div>
                             
                             </div>  
@@ -280,20 +282,20 @@ const Reports = props => {
                                 "color": "hsl(120, 70%, 20%)"
                                 },
                                 {
-                                "id": "jiraya",
-                                "label": "jiraya",
+                                "id": "ellie",
+                                "label": "ellie",
                                 "value": 29,
                                 "color": "hsl(210, 70%, 50%)"
                                 },
                                 {
-                                "id": "mitchelsbacon",
-                                "label": "mitchelsbacon",
+                                "id": "andrea",
+                                "label": "andrea",
                                 "value": 44,
                                 "color": "hsl(134, 24%, 50%)"
                                 },                            
                                 {
-                                "id": "lito",
-                                "label": "lito",
+                                "id": "bernie",
+                                "label": "bernie",
                                 "value": 27,
                                 "color": "hsl(134, 70%, 50%)"
                                 }

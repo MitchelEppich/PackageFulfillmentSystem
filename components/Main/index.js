@@ -102,7 +102,8 @@ const Main = props => {
             <div className="w-1/4">Order #{order.invoiceNumber}</div>
             <div className="w-1/4">
               {" "}
-              {moment(order.date).format("DD/MM/YYYY")}
+              {moment(order.orderDate).format("DD/MM/YYYY - hh:mm:ss")}
+              {/* {moment(order.date).format("DD/MM/YYYY")} */}
             </div>
             <div className="w-1/4">
               {order.status != null && order.editBy != null
@@ -317,10 +318,10 @@ const Main = props => {
         <div className="inline-block w-full h-650 bg-white text-black overflow-y-auto">
           <div className="inline-flex w-full p-1 bg-grey-darker uppercase text-white text-sm absolute">
             <div className="w-32 pl-4">Number</div>
-            <div className="w-1/4 pl-4">Order Number</div>
-            <div className="w-1/4 pl-8">Date</div>
+            <div className="w-1/4 pl-8">Order Number</div>
+            <div className="w-1/4 pl-16">Date</div>
             <div className="w-1/4 pl-16">Status</div>
-            <div className="w-1/4 pl-32 mr-4">Action</div>
+            <div className="w-1/4 text-center mr-4">Action</div>
           </div>
           <div className="mt-6" />
           {showOrders()}
