@@ -61,45 +61,45 @@ const Reports = props => {
             border: "1px solid #e6e6e6",
             boxShadow: "0px 1px 1px rgba(206, 206, 206, 0.25)"
           }}
-          className="w-1/2 mx-8 mt-4"
+          className="w-1/2 mx-8 mt-4 relative"
         >
           <div className="w-full h-10 bg-blue-new text-white text-center p-2 ">
             <h3>Seeds Sold by Brand</h3>
-          </div>
-          <div className="bg-white w-full relative">
+          </div>         
+          <div className="h-200 bg-white w-full overflow-y-auto">
             <div className="bg-grey-darker w-full text-white inline-flex absolute p-1 text-sm uppercase">
-              <div className="w-1/2 pl-8">Name</div>
-              <div className="w-1/2 pl-4">Quantity</div>
-            </div>
-          </div>
-          <div className="h-200 bg-white w-full overflow-y-auto mt-6">
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">CKS</div>
-              <div className="w-1/2 pl-4">744 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">SNM</div>
-              <div className="w-1/2 pl-4">142 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">BVR</div>
-              <div className="w-1/2 pl-4">443 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">MSJC</div>
-              <div className="w-1/2 pl-4">0.5 package</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">SUNW</div>
-              <div className="w-1/2 pl-4">3432 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">MSJCC</div>
-              <div className="w-1/2 pl-4">1465 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">WHOLESALE</div>
-              <div className="w-1/2 pl-4">12 packages</div>
+                <div className="w-1/2 pl-8">Brand</div>
+                <div className="w-1/2 pl-4">Quantity</div>
+              </div>
+              <div className="mt-6">
+                <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                  <div className="w-1/2 pl-8">CKS</div>
+                  <div className="w-1/2 pl-4">744 packages</div>
+                </div>
+                <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                  <div className="w-1/2 pl-8">SNM</div>
+                  <div className="w-1/2 pl-4">142 packages</div>
+                </div>
+                <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                  <div className="w-1/2 pl-8">BVR</div>
+                  <div className="w-1/2 pl-4">443 packages</div>
+                </div>
+                <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                  <div className="w-1/2 pl-8">MSJC</div>
+                  <div className="w-1/2 pl-4">75 packages</div>
+                </div>
+                <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                  <div className="w-1/2 pl-8">SUNW</div>
+                  <div className="w-1/2 pl-4">3432 packages</div>
+                </div>
+                <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                  <div className="w-1/2 pl-8">MSJCC</div>
+                  <div className="w-1/2 pl-4">1465 packages</div>
+                </div>
+                <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                  <div className="w-1/2 pl-8">WHOLESALE</div>
+                  <div className="w-1/2 pl-4">12 packages</div>
+                </div>
             </div>
           </div>
           <div className="w-full p-2 text-right bg-grey-darker">
@@ -196,45 +196,46 @@ const Reports = props => {
             border: "1px solid #e6e6e6",
             boxShadow: "0px 1px 1px rgba(206, 206, 206, 0.25)"
           }}
-          className="w-1/2 mx-8 mt-4"
+          className="w-1/2 mx-8 mt-4 relative"
         >
           <div className="w-full h-10 bg-blue-new text-white text-center p-2 relative">
             <h3>Packages Done by Employees</h3>
           </div>
-          <div className="bg-white w-full relative">
+           
+          <div className="h-200 bg-white w-full overflow-y-auto">
             <div className="bg-grey-darker w-full text-white inline-flex absolute p-1 text-sm uppercase">
-              <div className="w-1/2 pl-8">Name</div>
-              <div className="w-1/2 pl-4">Quantity</div>
+                <div className="w-1/2 pl-8">Name</div>
+                <div className="w-1/2 pl-4">Quantity</div>
             </div>
-          </div>
-          <div className="h-200 bg-white w-full overflow-y-auto mt-6">
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">Karl</div>
-              <div className="w-1/2 pl-4">02 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">Joseph</div>
-              <div className="w-1/2 pl-4">142 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">Bernie</div>
-              <div className="w-1/2 pl-4">443 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">Mitchel</div>
-              <div className="w-1/2 pl-4">0.5 package</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">Ellie</div>
-              <div className="w-1/2 pl-4">3432 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">Andrea</div>
-              <div className="w-1/2 pl-4">1465 packages</div>
-            </div>
-            <div className="inline-flex bg-grey-light w-full mt-1 p-2">
-              <div className="w-1/2 pl-8">Tester</div>
-              <div className="w-1/2 pl-4">12 packages</div>
+            <div className="mt-6">
+              <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                <div className="w-1/2 pl-8">Karl</div>
+                <div className="w-1/2 pl-4">02 packages</div>
+              </div>
+              <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                <div className="w-1/2 pl-8">Joseph</div>
+                <div className="w-1/2 pl-4">142 packages</div>
+              </div>
+              <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                <div className="w-1/2 pl-8">Bernie</div>
+                <div className="w-1/2 pl-4">443 packages</div>
+              </div>
+              <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                <div className="w-1/2 pl-8">Mitchel</div>
+                <div className="w-1/2 pl-4">0.5 package</div>
+              </div>
+              <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                <div className="w-1/2 pl-8">Ellie</div>
+                <div className="w-1/2 pl-4">3432 packages</div>
+              </div>
+              <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                <div className="w-1/2 pl-8">Andrea</div>
+                <div className="w-1/2 pl-4">1465 packages</div>
+              </div>
+              <div className="inline-flex bg-grey-light w-full mt-1 p-2">
+                <div className="w-1/2 pl-8">Tester</div>
+                <div className="w-1/2 pl-4">12 packages</div>
+              </div>
             </div>
           </div>
           <div className="w-full p-2 text-right bg-grey-darker">

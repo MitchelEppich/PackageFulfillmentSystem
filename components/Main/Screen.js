@@ -434,6 +434,7 @@ const Screen = props => {
               });
               props.setVisibleScreen(null);
               props.clearItem();
+             
             }}
             className="w-1/3 h-10 inline-flex"
           >
@@ -605,7 +606,6 @@ const Screen = props => {
         borderTopLeftRadius: "10px",
         borderTopRightRadius: "10px",
         overflow: "hidden",
-        overflow: "hidden",
         background: "whitesmoke",
         boxShadow: "0px 0px 10px #cecece"
       }}
@@ -621,6 +621,7 @@ const Screen = props => {
             itemBases: props.item.itemBases,
             orderCache: props.order.orderCache
           });
+          props.clearItem();
         }}
       >
         <p className="uppercase p-2 text-center text-white font-bold">
