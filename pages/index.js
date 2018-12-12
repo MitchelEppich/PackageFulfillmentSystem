@@ -149,6 +149,7 @@ const mapDispatchToProps = dispatch => {
     modifyUser: input => dispatch(actions.modifyUser(input)),
     modifyLogs: input => dispatch(actions.modifyLogs(input)),
     deleteUser: input => dispatch(actions.deleteUser(input)),
+    clearCompanyCache: input => dispatch(actions.clearCompanyCache(input)),
     setVisibleScreen: input => dispatch(actions.setVisibleScreen(input))
   };
 };
