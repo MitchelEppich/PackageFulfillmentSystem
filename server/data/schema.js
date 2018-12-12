@@ -9,6 +9,8 @@ type Query {
   allLogs(filter: LogFilter): [Log]!
   fetchOrderList(input: OrderListInput): String
   fetchOrder(input: OrderInput): String
+
+  allSttCaches: [String]
 }
 
 input OrderListInput {

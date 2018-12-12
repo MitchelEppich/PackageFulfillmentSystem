@@ -14,6 +14,9 @@ const ignoreOrderNumbers = ["8-001001-SNM"];
 
 const resolvers = {
   Query: {
+    allSttCaches: async (_, args) => {
+      return (await SttCache.find({}))[0].cachedValues;
+    },
     ...UserResolvers.Query,
     ...LogResolvers.Query,
     ...OrderResolvers.Query,
@@ -177,7 +180,7 @@ const resolvers = {
       console.log(input);
       let _content = JSON.parse(input.content);
 
-      let _sttCache = await SttCache.find({})[0];
+      let _sttCache = (await SttCache.find({}))[0];
       if (_sttCache == null) {
         _sttCache = new SttCache();
       }
