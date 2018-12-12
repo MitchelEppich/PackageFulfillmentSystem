@@ -101,66 +101,91 @@ const getActions = uri => {
     },
     verifyItemList: input => {
       return dispatch => {
-        let itemMissed = [];
-        let keyList = Object.keys(input.itemValues);
+        const link = new HttpLink({ uri, fetch: fetch });
 
-        let _companies = Object.keys(input.order.itemList);
-        for (let company of _companies) {
-          let _quantities = Object.keys(input.order.itemList[company]);
-          for (let quantity of _quantities) {
-            let _items = Object.values(input.order.itemList[company][quantity]);
-            for (let item of _items) {
-              // if (item.quantity == 1) {
-              if (!keyList.includes(item.name)) {
-                itemMissed.push(item.name);
+        const operation = { query: query.getSttCache };
+
+        return makePromise(execute(link, operation))
+          .then(data => {
+            let _cachedValues = data.data.allSttCaches;
+            let itemMissed = [];
+
+            let _companies = Object.keys(input.order.itemList);
+            for (let company of _companies) {
+              let _quantities = Object.keys(input.order.itemList[company]);
+              for (let quantity of _quantities) {
+                let _items = Object.values(
+                  input.order.itemList[company][quantity]
+                );
+                for (let item of _items) {
+                  // if (item.quantity == 1) {
+                  let _itemValue = input.itemValues[item.name];
+                  if (
+                    _itemValue == null ||
+                    _itemValue.value.toString().length != 4
+                  ) {
+                    itemMissed.push({ name: item.name, type: "missed" });
+                  } else {
+                    let _sttNumber = _itemValue.prefix + _itemValue.value;
+                    if (_cachedValues.includes(_sttNumber)) {
+                      itemMissed.push({ name: item.name, type: "used" });
+                    }
+                  }
+                  // } else {
+                  //   for (let i = 0; i < item.quantity; i++) {
+                  //     let itemName = `${item.name}-${i}`;
+                  //     if (!keyList.includes(itemName)) {
+                  //       itemMissed.push(itemName);
+                  //     }
+                  //   }
+                  // }
+                }
               }
-              // } else {
-              //   for (let i = 0; i < item.quantity; i++) {
-              //     let itemName = `${item.name}-${i}`;
-              //     if (!keyList.includes(itemName)) {
-              //       itemMissed.push(itemName);
-              //     }
-              //   }
-              // }
             }
-          }
-        }
+            console.log(itemMissed);
+            if (itemMissed.length == 0) {
+              let NavActions = Navigation(uri);
+              dispatch(
+                NavActions.postOrder({
+                  itemList: input.itemValues,
+                  focusOrder: input.order
+                })
+              );
+              let OrderHandlerActions = OrderHandler(uri);
+              dispatch(
+                OrderHandlerActions.updateOrder({
+                  status: "finalized",
+                  claimed: false,
+                  entryContent: JSON.stringify({
+                    itemValues: input.itemValues,
+                    itemBases: input.itemBases
+                  }),
+                  invoiceNumber: input.order.invoiceNumber,
+                  orderCache: input.orderCache
+                })
+              );
+              dispatch(Index.setVisibleScreen([]));
+            }
 
-        if (itemMissed.length == 0) {
-          let NavActions = Navigation(uri);
-          dispatch(
-            NavActions.postOrder({
-              itemList: input.itemValues,
-              focusOrder: input.order
-            })
-          );
-          let OrderHandlerActions = OrderHandler(uri);
-          dispatch(
-            OrderHandlerActions.updateOrder({
-              status: "finalized",
-              claimed: false,
-              entryContent: JSON.stringify({
-                itemValues: input.itemValues,
-                itemBases: input.itemBases
-              }),
-              invoiceNumber: input.order.invoiceNumber,
-              orderCache: input.orderCache
-            })
-          );
-          dispatch(Index.setVisibleScreen([]));
-        }
-
-        dispatch({
-          type: actionTypes.VERIFY_ITEM_LIST,
-          input: itemMissed
-        });
+            dispatch({
+              type: actionTypes.VERIFY_ITEM_LIST,
+              input: itemMissed
+            });
+          })
+          .catch(error => console.log(error));
       };
     }
   };
 
   return { ...objects };
 };
-const query = {};
+const query = {
+  getSttCache: gql`
+    query {
+      allSttCaches
+    }
+  `
+};
 
 const mutation = {};
 
