@@ -101,6 +101,14 @@ input OrderInput {
   totalItems: Int
 }
 
+type SttCache {
+  cachedValues: [String]
+}
+
+input SttCacheInput {
+  values: [String]
+}
+
 input SotiInput {
   content: String
 }

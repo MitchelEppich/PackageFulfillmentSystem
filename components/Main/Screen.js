@@ -16,7 +16,7 @@ import {
 import moment from "moment";
 
 const Screen = props => {
-  let generateSingleItem = (item, company, strainId) => {
+  let generateSingleItem = (item, company, strainId, editable = true) => {
     let _value =
       props.item.itemValues[item.name] != null
         ? props.item.itemValues[item.name].value
@@ -51,34 +51,40 @@ const Screen = props => {
           className="inline-flex ml-4 flex items-center"
         >
           <div style={{ width: "140px" }}>
-            <label className="mr-2">Complete here:</label>
+            <label className="mr-2">
+              {editable ? "Complete here:" : "Submitted value:"}
+            </label>
           </div>
           <div>
             <p className="">
               {company}
               {strainId}
-              <input
-                type="number"
-                onChange={e => {
-                  if (e.target.value.toString().length > 4)
-                    e.target.value = e.target.value.substr(0, 4);
+              {editable ? (
+                <input
+                  type="number"
+                  onChange={e => {
+                    if (e.target.value.toString().length > 4)
+                      e.target.value = e.target.value.substr(0, 4);
 
-                  props.setItemValue({
-                    itemValues: props.item.itemValues,
-                    key: `${item.name}`,
-                    packageId: item.packageId,
-                    prefix: `${company}${strainId}`,
-                    value: e.target.value
-                  });
-                }}
-                value={_value}
-                size="3"
-                name="sttNumber"
-                placeholder="XXXX"
-                className={`ml-2 p-3 px-1 w-16 ${
-                  props.item.missedItems.includes(item.name) ? "bg-red" : ""
-                }`}
-              />
+                    props.setItemValue({
+                      itemValues: props.item.itemValues,
+                      key: `${item.name}`,
+                      packageId: item.packageId,
+                      prefix: `${company}${strainId}`,
+                      value: e.target.value
+                    });
+                  }}
+                  value={_value}
+                  size="3"
+                  name="sttNumber"
+                  placeholder="XXXX"
+                  className={`ml-2 p-3 px-1 w-16 ${
+                    props.item.missedItems.includes(item.name) ? "bg-red" : ""
+                  }`}
+                />
+              ) : (
+                _value
+              )}
             </p>
           </div>
         </div>
@@ -276,6 +282,9 @@ const Screen = props => {
   };
 
   let populateItems = itemList => {
+    let _editable =
+      props.nav.focusOrder.status != "finalized" &&
+      props.nav.focusOrder.status != "reviewing order";
     let companies = [];
     for (let company in itemList) {
       let quantities = [];
@@ -295,9 +304,11 @@ const Screen = props => {
           let _strainId = props.item.strainArchive[_break[2]][_break[0]];
           items.push(
             <div key={items}>
-              {item.quantity == 1
+              {generateSingleItem(item, _companyId, _strainId, _editable)}
+
+              {/* {item.quantity == 1
                 ? generateSingleItem(item, _companyId, _strainId)
-                : generateMultiItem(item, _companyId, _strainId)}
+                : generateMultiItem(item, _companyId, _strainId)} */}
             </div>
           );
         }
@@ -308,7 +319,7 @@ const Screen = props => {
 
         quantities.push(
           <div key={items}>
-            <div 
+            <div
               className="w-full cursor-pointer mt-2 p-2 pl-10 text-lg mx-0 bg-grey-light hover:bg-grey-lighter"
               onClick={() => {
                 props.expandItem({
@@ -365,7 +376,6 @@ const Screen = props => {
     return companies;
   };
 
-
   let showEditors = () => {
     let arr = [];
     let _editBy = props.nav.focusOrder.editBy;
@@ -410,7 +420,10 @@ const Screen = props => {
           <div
             onClick={() => {
               props.updateOrder({
-                status: "awaiting completion",
+                status:
+                  order.status == "reviewing order"
+                    ? "finalized"
+                    : "awaiting completion",
                 claimed: false,
                 entryContent: JSON.stringify({
                   itemValues: props.item.itemValues,
@@ -603,8 +616,10 @@ const Screen = props => {
         className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-6 mb-3 mt-2 cursor-pointer hover:bg-blue"
         onClick={() => {
           props.verifyItemList({
-            itemList: props.item.itemValues,
-            order: props.nav.focusOrder
+            itemValues: props.item.itemValues,
+            order: props.nav.focusOrder,
+            itemBases: props.item.itemBases,
+            orderCache: props.order.orderCache
           });
         }}
       >

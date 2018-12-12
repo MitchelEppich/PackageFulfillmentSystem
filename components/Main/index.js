@@ -15,13 +15,13 @@ import moment from "moment";
 
 library.add(faPlus, faMinus, faInfo);
 
-const Main = props => { 
+const Main = props => {
   let companies = props.misc.companies;
   let _name =
     props.user.currentUser != null ? props.user.currentUser.name : "NO NAME";
 
   let showCompanies = () => {
-    let arr = [];  
+    let arr = [];
     for (let company of companies) {
       arr.push(
         <div
@@ -34,7 +34,7 @@ const Main = props => {
             });
           }}
           style={{
-            width: `${1536 / companies.length }px`
+            width: `${1536 / companies.length}px`
           }}
           className={`${
             props.nav.focusCompany != null &&
@@ -76,7 +76,6 @@ const Main = props => {
     return arr;
   };
 
-  
   let showOrders = () => {
     if (props.nav.focusCompany != null && props.order.orderCache != null) {
       let orders = props.order.orderCache[props.nav.focusCompany.short].order;
@@ -110,10 +109,10 @@ const Main = props => {
                 ? `${order.status} by ${order.editBy[order.editBy.length - 1]}`
                 : null}
             </div>
-            <div className="w-1/4 pl-2">           
+            <div className="w-1/4 pl-2">
               <div
                 onClick={() => {
-                  if (order.claimed) return
+                  if (order.claimed) return;
                   props.fetchOrder({
                     order: order,
                     user: props.user.currentUser,
@@ -122,10 +121,14 @@ const Main = props => {
                   });
                   props.setVisibleScreen(["itemized"]);
                 }}
-                className={`uppercase bg-blue-new text-white text-center px-3 py-2 ${order.claimed ? "opacity-50 pointer-events-none unselectable" : "cursor-pointer hover:bg-blue"}`}
+                className={`uppercase bg-blue-new text-white text-center px-3 py-2 ${
+                  order.claimed
+                    ? "opacity-50 pointer-events-none unselectable"
+                    : "cursor-pointer hover:bg-blue"
+                }`}
               >
-                Claim
-              </div>   
+                {order.status == "finalized" ? "Review" : "Claim"}
+              </div>
             </div>
           </div>
         );
@@ -155,81 +158,81 @@ const Main = props => {
             </a>
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
-          <div className={`w-2/4 mt-6 text-right mr-4 ${props.misc.visibleScreen != null && props.misc.visibleScreen.includes("itemized") ? "opacity-50 pointer-events-none unselectable" : ""}`}>
-            
-            {props.user.currentUser != null && props.user.currentUser.admin ? 
-            <span>
-            <a
-              onClick={() => {
-                props.setVisibleScreen([
-                  props.misc.visibleScreen != null &&
-                  props.misc.visibleScreen.includes("reports")
-                    ? null
-                    : "reports"
-                ]);
-                props.fetchUsers();
-              }}
-              className={
-"text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
-              }
-            >
-              Reports
-            </a> 
-            
-
-            <a
-              onClick={() => {
-                props.setVisibleScreen([
-                  props.misc.visibleScreen != null &&
-                  props.misc.visibleScreen.includes("users")
-                    ? null
-                    : "users"
-                ]);
-                props.fetchUsers();
-              }}
-              className={
- "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
-
-              }
-            >
-              Users
-            </a> 
-
-            <a
-              onClick={() => {
-                props.setVisibleScreen([
-                  props.misc.visibleScreen != null &&
-                  props.misc.visibleScreen.includes("logs")
-                    ? null
-                    : "logs"
-                ]);
-                props.fetchLogs();
-              }}
-              className={
- "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 "
-
-              }
-            >
-              Logs
-            </a> 
-
-            <a
-              onClick={() => {
-                props.setVisibleScreen([
-                  props.misc.visibleScreen != null &&
-                  props.misc.visibleScreen.includes("register")
-                    ? null
-                    : "register"
-                ]);
-              }}
-              className={
- "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-1"
-
-              }
-            >
-              Register New User
-  </a> </span>
-            : null }
+          <div
+            className={`w-2/4 mt-6 text-right mr-4 ${
+              props.misc.visibleScreen != null &&
+              props.misc.visibleScreen.includes("itemized")
+                ? "opacity-50 pointer-events-none unselectable"
+                : ""
+            }`}
+          >
+            {props.user.currentUser != null && props.user.currentUser.admin ? (
+              <span>
+                <a
+                  onClick={() => {
+                    props.setVisibleScreen([
+                      props.misc.visibleScreen != null &&
+                      props.misc.visibleScreen.includes("reports")
+                        ? null
+                        : "reports"
+                    ]);
+                    props.fetchUsers();
+                  }}
+                  className={
+                    "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                  }
+                >
+                  Reports
+                </a>
+                <a
+                  onClick={() => {
+                    props.setVisibleScreen([
+                      props.misc.visibleScreen != null &&
+                      props.misc.visibleScreen.includes("users")
+                        ? null
+                        : "users"
+                    ]);
+                    props.fetchUsers();
+                  }}
+                  className={
+                    "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2"
+                  }
+                >
+                  Users
+                </a>
+                <a
+                  onClick={() => {
+                    props.setVisibleScreen([
+                      props.misc.visibleScreen != null &&
+                      props.misc.visibleScreen.includes("logs")
+                        ? null
+                        : "logs"
+                    ]);
+                    props.fetchLogs();
+                  }}
+                  className={
+                    "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-2 "
+                  }
+                >
+                  Logs
+                </a>
+                <a
+                  onClick={() => {
+                    props.setVisibleScreen([
+                      props.misc.visibleScreen != null &&
+                      props.misc.visibleScreen.includes("register")
+                        ? null
+                        : "register"
+                    ]);
+                  }}
+                  className={
+                    "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue mr-1"
+                  }
+                >
+                  Register New User
+                </a>{" "}
+              </span>
+            ) : null}
 
             <a
               onClick={() => {
@@ -244,8 +247,7 @@ const Main = props => {
                 ]);
               }}
               className={
- "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
-
+                "text-white p-2 bg-semi-transparent unselectable font-bold uppercase cursor-pointer px-4 hover:bg-white hover:text-blue"
               }
             >
               Logout

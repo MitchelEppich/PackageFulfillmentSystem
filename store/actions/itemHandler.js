@@ -8,6 +8,8 @@ import { makePromise, execute } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
 import fetch from "node-fetch";
 import Navigation from "./navigation";
+import OrderHandler from "./orderHandler";
+import Index from "./index";
 
 const actionTypes = {
   SET_MULTI_ITEM_BASE: "SET_MULTI_ITEM_BASE",
@@ -61,7 +63,8 @@ const getActions = uri => {
         input.itemValues[input.key] = {
           value: input.value,
           user: input.value != "",
-          prefix: input.prefix
+          prefix: input.prefix,
+          packageId: input.packageId
         };
 
         dispatch(objects.removeItemMissed({ item: input.key }));
@@ -99,7 +102,7 @@ const getActions = uri => {
     verifyItemList: input => {
       return dispatch => {
         let itemMissed = [];
-        let keyList = Object.keys(input.itemList);
+        let keyList = Object.keys(input.itemValues);
 
         let _companies = Object.keys(input.order.itemList);
         for (let company of _companies) {
@@ -107,18 +110,18 @@ const getActions = uri => {
           for (let quantity of _quantities) {
             let _items = Object.values(input.order.itemList[company][quantity]);
             for (let item of _items) {
-              if (item.quantity == 1) {
-                if (!keyList.includes(item.name)) {
-                  itemMissed.push(item.name);
-                }
-              } else {
-                for (let i = 0; i < item.quantity; i++) {
-                  let itemName = `${item.name}-${i}`;
-                  if (!keyList.includes(itemName)) {
-                    itemMissed.push(itemName);
-                  }
-                }
+              // if (item.quantity == 1) {
+              if (!keyList.includes(item.name)) {
+                itemMissed.push(item.name);
               }
+              // } else {
+              //   for (let i = 0; i < item.quantity; i++) {
+              //     let itemName = `${item.name}-${i}`;
+              //     if (!keyList.includes(itemName)) {
+              //       itemMissed.push(itemName);
+              //     }
+              //   }
+              // }
             }
           }
         }
@@ -127,10 +130,24 @@ const getActions = uri => {
           let NavActions = Navigation(uri);
           dispatch(
             NavActions.postOrder({
-              itemList: input.itemList,
+              itemList: input.itemValues,
               focusOrder: input.order
             })
           );
+          let OrderHandlerActions = OrderHandler(uri);
+          dispatch(
+            OrderHandlerActions.updateOrder({
+              status: "finalized",
+              claimed: false,
+              entryContent: JSON.stringify({
+                itemValues: input.itemValues,
+                itemBases: input.itemBases
+              }),
+              invoiceNumber: input.order.invoiceNumber,
+              orderCache: input.orderCache
+            })
+          );
+          dispatch(Index.setVisibleScreen([]));
         }
 
         dispatch({

@@ -50,6 +50,13 @@ const getActions = uri => {
             user: input.user
           });
         } else {
+          let OrderHandlerActions = OrderHandler(uri);
+          dispatch(
+            OrderHandlerActions.clearCompanyCache({
+              company: company,
+              orderCache: input.orderCache
+            })
+          );
           dispatch(
             orderHandler.fetchOrderList({
               url: company.url,
@@ -130,34 +137,31 @@ const getActions = uri => {
       };
     },
     postOrder: input => {
-      console.log(input);
-      let _itemList = input.itemList;
-      let _itemStt = _itemList.map(a => {
-        return {
-          packageId: "",
-          sttNumber: `${a.prefix}${a.value}`
+      return dispatch => {
+        let _itemList = Object.values(input.itemList);
+        let _content = JSON.stringify(
+          _itemList.map(a => {
+            return {
+              packageId: a.packageId,
+              sttNumber: `${a.prefix}${a.value}`
+            };
+          })
+        );
+
+        const link = new HttpLink({ uri, fetch: fetch });
+        const operation = {
+          query: mutation.postRegularOrder,
+          variables: { content: _content }
         };
-      });
-      console.log(_itemStt);
-      // return dispatch => {
-      //   // input.focusOrder.itemList = input.itemList;
-      //   // let _content = buildContent(input.focusOrder);
-      //   const link = new HttpLink({ uri, fetch: fetch });
-      //   const operation = {
-      //     query: mutation.postRegularOrder,
-      //     variables: { content: _content }
-      //   };
 
-      //   makePromise(execute(link, operation))
-      //     .then(data => {
-      //       console.log(data.data.postOrder);
+        makePromise(execute(link, operation))
+          .then(data => {
+            console.log(data.data.postOrder);
 
-      //       dispatch({
-      //         type: actionTypes.POST_ORDER
-      //       });
-      //     })
-      //     .catch(error => console.log(error));
-      // };
+            dispatch({ type: actionTypes.POST_ORDER });
+          })
+          .catch(error => console.log(error));
+      };
     },
     fetchOrder: input => {
       return dispatch => {
@@ -290,7 +294,6 @@ const mutation = {
 };
 
 let buildContent = order => {
-  console.log(order);
   let _product = buildProduct(order.itemList);
 
   return `storename=${order.companyName},personplacingorder=${

@@ -1,4 +1,4 @@
-const { Order } = require("../../models");
+const { Order, SttCache } = require("../../models");
 
 const UserResolvers = require("./User");
 const LogResolvers = require("./Log");
@@ -173,27 +173,40 @@ const resolvers = {
     ...UserResolvers.Mutation,
     ...LogResolvers.Mutation,
     ...OrderResolvers.Mutation,
-    postOrderToSoti: (_, { input }) => {
+    postOrderToSoti: async (_, { input }) => {
       console.log(input);
-      let body = toUrlEncoded({
-        packageid: input.packageId,
-        sttno: input.sttNo
-      });
-      let config = {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      };
-      return axios
-        .post(
-          `https://www.cksoti.com/postupdatesttnumberperpackage/`,
-          body,
-          config
-        )
-        .then(res => {
-          let _parsed = parseXml(res.data);
-          return _parsed.Message || _parsed.Results;
+      let _content = JSON.parse(input.content);
+
+      let _sttCache = await SttCache.find({})[0];
+      if (_sttCache == null) {
+        _sttCache = new SttCache();
+      }
+      let arr = [];
+      for (let item of _content) {
+        arr.push(item.sttNumber.toString());
+
+        let body = toUrlEncoded({
+          packageid: item.packageId,
+          sttno: item.sttNumber
         });
+        let config = {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        };
+        axios
+          .post(
+            `https://www.cksoti.com/postupdatesttnumberperpackage/`,
+            body,
+            config
+          )
+          .then(res => {
+            let _parsed = parseXml(res.data);
+            console.log(_parsed.Message || _parsed.Results);
+          });
+      }
+      _sttCache.cachedValues = [..._sttCache.cachedValues, ...arr];
+      _sttCache.save();
     }
   }
 };

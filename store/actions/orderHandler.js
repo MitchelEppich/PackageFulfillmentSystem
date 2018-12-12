@@ -14,11 +14,20 @@ const actionTypes = {
   MODIFY_ORDER: "MODIFY_ORDER",
   UPDATE_ORDER: "UPDATE_ORDER",
   FETCH_ORDER_LIST: "FETCH_ORDER_LIST",
-  UPDATE_CACHE: "UPDATE_CACHE"
+  UPDATE_CACHE: "UPDATE_CACHE",
+  CLEAR_COMPANY_CACHE: "CLEAR_COMPANY_CACHE"
 };
 
 const getActions = uri => {
   const objects = {
+    clearCompanyCache: input => {
+      let _orderCache = input.orderCache;
+      _orderCache[input.company.short] = [];
+      return {
+        type: actionTypes.CLEAR_COMPANY_CACHE,
+        input: _orderCache
+      };
+    },
     fetchOrderList: input => {
       return dispatch => {
         const link = new HttpLink({ uri, fetch: fetch });
@@ -91,7 +100,10 @@ const getActions = uri => {
         let _order = input.order;
         let _focusOrder = input.focusOrder;
 
-        if (_order.invoiceNumber == _focusOrder.invoiceNumber) {
+        if (
+          _focusOrder != null &&
+          _order.invoiceNumber == _focusOrder.invoiceNumber
+        ) {
           let NavActions = Navigation(uri);
           dispatch(NavActions.modifyFocusOrder({ order: _order }));
         }

@@ -45,7 +45,8 @@ const middleware = [
             who = action.user.username;
 
             let _order = action.order;
-            _order.status = "in progress";
+            _order.status =
+              _order.status == "finalized" ? "reviewing order" : "in progress";
             _order.claimed = true;
 
             let orderHandlerActions = OrderHandler(uri);

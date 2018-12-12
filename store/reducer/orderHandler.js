@@ -11,6 +11,8 @@ export default (state = initialState, action) => {
       return updateObject(state, {});
     case actionTypes.FETCH_ORDER_LIST:
       return updateObject(state, { orderCache: action.input });
+    case actionTypes.CLEAR_COMPANY_CACHE:
+      return updateObject(state, { orderCache: action.input });
     case actionTypes.UPDATE_CACHE:
       return updateObject(state, { orderCache: action.input });
     case actionTypes.UPDATE_ORDER:

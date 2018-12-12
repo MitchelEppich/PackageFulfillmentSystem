@@ -20,6 +20,30 @@ import gql from "graphql-tag";
 
 class Index extends Component {
   componentDidMount() {
+    window.onbeforeunload = function() {
+      let _order = this.props.nav.focusOrder;
+      if (_order != null) {
+        this.props.updateOrder({
+          status:
+            _order.status == "reviewing order"
+              ? "finalized"
+              : "awaiting completion",
+          claimed: false,
+          entryContent: JSON.stringify({
+            itemValues: this.props.item.itemValues,
+            itemBases: this.props.item.itemBases
+          }),
+          invoiceNumber: _order.invoiceNumber,
+          orderCache: this.props.order.orderCache
+        });
+        this.props.releaseCredentials({
+          username: this.props.user.currentUser.username
+        });
+        this.props.setVisibleScreen(["login"]);
+      }
+      return "";
+    }.bind(this);
+
     this.props.fetchCredentials().then(res => {
       if (res == null) return;
       this.props.setVisibleScreen(null);
