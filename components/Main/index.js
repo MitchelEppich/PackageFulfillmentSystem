@@ -290,8 +290,7 @@ const Main = props => {
               .then(res => {
                 updateIcon.classList.remove("loader-icon");
               });
-
-              updateIcon.classList.add("loader-icon");   
+             
 
           }}
           className="p-2 justify-end w-full text-blue-new hover:text-blue cursor-pointer mb-2"

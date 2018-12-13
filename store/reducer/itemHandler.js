@@ -70,7 +70,7 @@ const initialState = {
       SCF: "13",
       STA: "46"
     },
-    SON: {
+    SNM: {
       AGF: "01",
       AKF: "02",
       BDA: "40",

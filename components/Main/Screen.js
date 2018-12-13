@@ -281,10 +281,14 @@ const Screen = props => {
     );
   };
 
+
   let populateItems = itemList => {
     let _editable =
-      props.nav.focusOrder.status != "finalized" &&
-      props.nav.focusOrder.status != "reviewing order";
+       props.user.currentUser.admin == false ? props.nav.focusOrder.status != "finalized" && props.nav.focusOrder.status != "reviewing order" : props.nav.focusOrder.status != "finalized"
+      // &&
+      // props.nav.focusOrder.status == "finalized" 
+      // ||
+      // props.nav.focusOrder.status != "reviewing order";
     let companies = [];
     for (let company in itemList) {
       let quantities = [];
@@ -301,6 +305,7 @@ const Screen = props => {
         let items = [];
         for (let item of Object.values(itemList[company][quantity])) {
           let _break = item.name.split("-");
+          // console.log(_break)
           let _strainId = props.item.strainArchive[_break[2]][_break[0]];
           items.push(
             <div key={items}>
@@ -612,22 +617,34 @@ const Screen = props => {
       className="w-newScreen h-newScreen bg-white z-50 mt-16 align-absolute"
     >
       {showOrder()}
-      <div
-        className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-6 mb-3 mt-2 cursor-pointer hover:bg-blue"
-        onClick={() => {
-          props.verifyItemList({
-            itemValues: props.item.itemValues,
-            order: props.nav.focusOrder,
-            itemBases: props.item.itemBases,
-            orderCache: props.order.orderCache
-          });
-          props.clearItem();
-        }}
-      >
-        <p className="uppercase p-2 text-center text-white font-bold">
-          Finalize
-        </p>
-      </div>
+
+      {console.log(props)}
+
+      {/* {props.nav.focusOrder.status == "finalized" &&  */}
+      {props.nav.focusOrder.status == "reviewing order" && 
+        props.user.currentUser.admin == false ? 
+        (
+        <div/>
+        ) 
+        : 
+        ( <div
+          className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-6 mb-3 mt-2 cursor-pointer hover:bg-blue"
+          onClick={() => {
+            props.verifyItemList({
+              itemValues: props.item.itemValues,
+              order: props.nav.focusOrder,
+              itemBases: props.item.itemBases,
+              orderCache: props.order.orderCache
+            });
+            props.clearItem();
+          }}
+        >
+          <p className="uppercase p-2 text-center text-white font-bold">          
+            {props.nav.focusOrder.status == "reviewing order" ? "Update" : "Finalize" }
+            {/* WHY?? {props.nav.focusOrder.status == "finalized" ? "Update" : "Finalize" } */}
+          </p>
+        </div> 
+        )}
       <div className="p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4">
         {" "}
         <p>

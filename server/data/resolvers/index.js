@@ -15,7 +15,9 @@ const ignoreOrderNumbers = ["8-001001-SNM"];
 const resolvers = {
   Query: {
     allSttCaches: async (_, args) => {
-      return (await SttCache.find({}))[0].cachedValues;
+      let _sttCache = (await SttCache.find({}))[0];
+      if (_sttCache == null) return [];
+      return _sttCache.cachedValues;
     },
     ...UserResolvers.Query,
     ...LogResolvers.Query,
