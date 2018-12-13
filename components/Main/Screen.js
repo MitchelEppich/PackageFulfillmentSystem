@@ -434,7 +434,6 @@ const Screen = props => {
               });
               props.setVisibleScreen(null);
               props.clearItem();
-             
             }}
             className="w-1/3 h-10 inline-flex"
           >
@@ -619,6 +618,7 @@ const Screen = props => {
             itemValues: props.item.itemValues,
             order: props.nav.focusOrder,
             itemBases: props.item.itemBases,
+            focusCompany: props.nav.focusCompany,
             orderCache: props.order.orderCache
           });
           props.clearItem();

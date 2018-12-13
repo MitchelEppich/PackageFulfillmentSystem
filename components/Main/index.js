@@ -42,9 +42,12 @@ const Main = props => {
               ? "bg-red hover:bg-red-dark"
               : "hover:bg-semi-transparent"
           } p-2 justify-center border-semi-transparent h-10 flex items-center border-r-2 font-bold cursor-pointer leading-normal leading-normal uppercase 
-          ${props.order.orderCache[company.short.toLowerCase()] != null &&
-            props.order.orderCache[company.short.toLowerCase()].order !=
-              null ? "" : "bganimation" }
+          ${
+            props.order.orderCache[company.short.toLowerCase()] != null &&
+            props.order.orderCache[company.short.toLowerCase()].order != null
+              ? ""
+              : "bganimation"
+          }
               `}
         >
           {" "}
@@ -96,6 +99,7 @@ const Main = props => {
         );
 
       for (let order of orders) {
+        if (order.shipCountry != "Canada") continue;
         arr.push(
           <div
             className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"
@@ -110,7 +114,11 @@ const Main = props => {
             </div>
             <div className="w-1/4">
               {order.status != null && order.editBy != null
-                ? `${order.status} by ${order.status == "finalized" ? order.editBy[order.editBy.length - 1] : order.editBy[order.editBy.length - 1]}`
+                ? `${order.status} by ${
+                    order.status == "finalized"
+                      ? order.editBy[order.editBy.length - 1]
+                      : order.editBy[order.editBy.length - 1]
+                  }`
                 : null}
             </div>
             <div className="w-1/4 pl-2">
@@ -125,10 +133,16 @@ const Main = props => {
                   });
                   props.setVisibleScreen(["itemized"]);
                 }}
-                className={`uppercase ${order.status == "finalized" ? "bg-green-dark" : "bg-blue-new"} text-white text-center px-3 py-2 ${
+                className={`uppercase ${
+                  order.status == "finalized" ? "bg-green-dark" : "bg-blue-new"
+                } text-white text-center px-3 py-2 ${
                   order.claimed
                     ? "opacity-50 pointer-events-none unselectable"
-                    : `cursor-pointer ${order.status == "finalized" ? "hover:bg-green" : "hover:bg-blue"}`
+                    : `cursor-pointer ${
+                        order.status == "finalized"
+                          ? "hover:bg-green"
+                          : "hover:bg-blue"
+                      }`
                 }`}
               >
                 {order.status == "finalized" ? "Review" : "Claim"}
@@ -275,24 +289,23 @@ const Main = props => {
             let company = props.nav.focusCompany;
             if (company == null) return;
             let updateIcon = document.querySelector("#update-icon");
-            updateIcon.classList.add("loader-icon");            
+            updateIcon.classList.add("loader-icon");
             props.clearCompanyCache({
               company: company,
               orderCache: props.order.orderCache
-            })
+            });
             props
               .fetchOrderList({
                 url: company.url,
                 company: company,
                 orderCache: props.order.orderCache,
                 user: null
-              })              
+              })
               .then(res => {
                 updateIcon.classList.remove("loader-icon");
               });
 
-              updateIcon.classList.add("loader-icon");   
-
+            updateIcon.classList.add("loader-icon");
           }}
           className="p-2 justify-end w-full text-blue-new hover:text-blue cursor-pointer mb-2"
         >

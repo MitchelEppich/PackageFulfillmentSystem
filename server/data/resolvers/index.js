@@ -15,7 +15,9 @@ const ignoreOrderNumbers = ["8-001001-SNM"];
 const resolvers = {
   Query: {
     allSttCaches: async (_, args) => {
-      return (await SttCache.find({}))[0].cachedValues;
+      let _sttCache = (await SttCache.find({}))[0];
+      if (_sttCache == null) return [];
+      return _sttCache.cachedValues;
     },
     ...UserResolvers.Query,
     ...LogResolvers.Query,
@@ -52,28 +54,35 @@ const resolvers = {
               invoiceNumber: _object.OrderNumber,
               customerName: `${_object.ShipFirstName} ${_object.ShipLastName}`,
               orderDate: _object.ApprovedDate,
+              shipCountry: _object.ShipCountry,
               itemList:
                 _object.item_list != null
                   ? categorizeOrder(
                       _object.item_list.map(a => {
-                        let _break = a.Productname.split("-");
-                        let _company = _object.OrderNumber.split("-")[2].trim();
-                        let _prodName = _break[1].trim();
-                        let _quantity = parseInt(a.ProductQty.replace("QTY"));
-                        let _breakId = _break[0].split(/([0-9]+)/);
-                        let _shortId = _breakId[0].trim();
-                        let _amount = parseInt(_breakId[1]);
+                        try {
+                          let _break = a.Productname.split("-");
+                          let _company = _object.OrderNumber.split(
+                            "-"
+                          )[2].trim();
+                          let _prodName = _break[1].trim();
+                          let _quantity = parseInt(a.ProductQty.replace("QTY"));
+                          let _breakId = _break[0].split(/([0-9]+)/);
+                          let _shortId = _breakId[0].trim();
+                          let _amount = parseInt(_breakId[1]);
 
-                        totalItems += _quantity;
-                        return {
-                          name: `${_shortId}-${_amount
-                            .toString()
-                            .padStart(2, "0")}-${_company}`,
-                          description: _prodName,
-                          quantity: _quantity,
-                          type: inferType(_shortId),
-                          packageId: a.PackageID
-                        };
+                          totalItems += _quantity;
+                          return {
+                            name: `${_shortId}-${_amount
+                              .toString()
+                              .padStart(2, "0")}-${_company}`,
+                            description: _prodName,
+                            quantity: _quantity,
+                            type: inferType(_shortId),
+                            packageId: a.PackageID
+                          };
+                        } catch (e) {
+                          return { error };
+                        }
                       })
                     )
                   : [],
@@ -177,29 +186,46 @@ const resolvers = {
     ...LogResolvers.Mutation,
     ...OrderResolvers.Mutation,
     postOrderToSoti: async (_, { input }) => {
-      console.log(input);
-      let _content = JSON.parse(input.content);
-
+      let arr = [];
       let _sttCache = (await SttCache.find({}))[0];
       if (_sttCache == null) {
         _sttCache = new SttCache();
       }
-      let arr = [];
-      for (let item of _content) {
-        arr.push(item.sttNumber.toString());
 
-        let body = toUrlEncoded({
-          packageid: item.packageId,
-          sttno: item.sttNumber
-        });
-        let config = {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        };
+      let config = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
+
+      let _content = JSON.parse(input.content);
+
+      if (_content.product == null) {
+        for (let item of _content) {
+          arr.push(item.sttNumber.toString());
+
+          let body = toUrlEncoded({
+            packageid: item.packageId,
+            sttno: item.sttNumber
+          });
+          axios
+            .post(
+              `https://www.cksoti.com/postupdatesttnumberperpackage/`,
+              body,
+              config
+            )
+            .then(res => {
+              let _parsed = parseXml(res.data);
+              console.log(_parsed.Message || _parsed.Results);
+            });
+        }
+      } else {
+        arr = _content.sttCache;
+        delete _content.sttCache;
+        let body = toUrlEncoded(_content);
         axios
           .post(
-            `https://www.cksoti.com/postupdatesttnumberperpackage/`,
+            `http://www.cksoti.com/postwholesaleorderdetails/`,
             body,
             config
           )
@@ -208,6 +234,7 @@ const resolvers = {
             console.log(_parsed.Message || _parsed.Results);
           });
       }
+
       _sttCache.cachedValues = [..._sttCache.cachedValues, ...arr];
       _sttCache.save();
     }

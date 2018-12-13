@@ -139,14 +139,18 @@ const getActions = uri => {
     postOrder: input => {
       return dispatch => {
         let _itemList = Object.values(input.itemList);
-        let _content = JSON.stringify(
-          _itemList.map(a => {
-            return {
-              packageId: a.packageId,
-              sttNumber: `${a.prefix}${a.value}`
-            };
-          })
-        );
+        let _company = input.focusCompany.short;
+        let _content =
+          _company == "wholesale"
+            ? buildContent(input.focusOrder, input.itemList)
+            : JSON.stringify(
+                _itemList.map(a => {
+                  return {
+                    packageId: a.packageId,
+                    sttNumber: `${a.prefix}${a.value}`
+                  };
+                })
+              );
 
         const link = new HttpLink({ uri, fetch: fetch });
         const operation = {
@@ -293,30 +297,55 @@ const mutation = {
   `
 };
 
-let buildContent = order => {
-  let _product = buildProduct(order.itemList);
+let buildContent = (order, itemValues) => {
+  let _product = buildProduct(order.itemList, itemValues);
 
-  return `storename=${order.companyName},personplacingorder=${
-    order.customerName
-  },persontakingorder=Vanessa,orderplaced=email,email=${
-    order.customerEmail
-  },phone=${order.customerPhone},product=,price=${
-    order.totalCost
-  },invoicenumber=${
-    order.invoiceNumber
-  },shipped=,trackingnumber=,currentDate=${moment(order.orderDate).format(
-    "YY-MM-DD HH:mm:ss"
-  )}`;
+  return JSON.stringify({
+    storename: order.companyName || order.customerName || "ADD STORE NAME",
+    personplacingorder: order.customerName || "ADD CUSTOMER NAME",
+    persontakingorder: "(default) Vanessa",
+    orderplaced: `${moment(order.orderDate).format(
+      "DD-MMM-YY"
+    )} SELECT( phone , email )`,
+    email: order.customerPhone || "",
+    phone: order.customerEmail || "",
+    product: _product.product,
+    sttCache: _product.sttNumbers,
+    price: `${order.totalCost.toFixed(2)} CAD`,
+    invoicenumber: order.invoiceNumber,
+    shipped: moment().format("YY-MM-DD HH:mm:ss"),
+    trackingnumber: "",
+    currentDate: moment(order.orderDate).format("YY-MM-DD HH:mm:ss")
+  });
 };
 
-let buildProduct = items => {
+let buildProduct = (items, values) => {
   let _product = "";
+  let _sttNumbers = [];
 
-  let _keys = Object.keys(items);
+  let _company = Object.keys(items);
 
-  for (let key of _keys) {
-    _product += `${key}`;
+  for (let company of _company) {
+    // DECLARE WHICH COMPANY
+    // _product += `COMPANY->${company}::>>`;
+    let _quantity = Object.keys(items[company]);
+    // Add products to the company
+    for (let quantity of _quantity) {
+      for (let item of Object.values(items[company][quantity])) {
+        let _value = values[item.name];
+        let _sttNumber;
+        if (_value != null) {
+          _sttNumber = _value.prefix + _value.value;
+          _sttNumbers.push(_sttNumber);
+        }
+        _product += `(ID=${item.name})-(QTY=${
+          item.quantity
+        })-(STT=${_sttNumber})//`;
+      }
+    }
   }
+
+  return { product: _product, sttNumbers: _sttNumbers };
 };
 
 export default uri => {

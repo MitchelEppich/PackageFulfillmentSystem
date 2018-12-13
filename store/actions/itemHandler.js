@@ -142,11 +142,11 @@ const getActions = uri => {
                 }
               }
             }
-            console.log(itemMissed);
             if (itemMissed.length == 0) {
               let NavActions = Navigation(uri);
               dispatch(
                 NavActions.postOrder({
+                  focusCompany: input.focusCompany,
                   itemList: input.itemValues,
                   focusOrder: input.order
                 })
