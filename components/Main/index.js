@@ -7,6 +7,7 @@ import {
   faMinus,
   faInfo,
   faInfoCircle,
+  faSlidersH,
   faSyncAlt,
   faDownload
 } from "@fortawesome/free-solid-svg-icons";
@@ -270,50 +271,98 @@ const Main = props => {
         }}
         className="w-newScreen h-halfscreen text-white mt-16"
       >
-        <div
-          onClick={() => {
-            let company = props.nav.focusCompany;
-            if (company == null) return;
-            let updateIcon = document.querySelector("#update-icon");
-            updateIcon.classList.add("loader-icon");            
-            props.clearCompanyCache({
-              company: company,
-              orderCache: props.order.orderCache
-            })
-            props
-              .fetchOrderList({
-                url: company.url,
-                company: company,
-                orderCache: props.order.orderCache,
-                user: null
-              })              
-              .then(res => {
-                updateIcon.classList.remove("loader-icon");
-              });
-             
-
-          }}
-          className="p-2 justify-end w-full text-blue-new hover:text-blue cursor-pointer mb-2"
-        >
-          <div className="font-bold uppercase w-full text-right mr-1 items-center ">
-            {props.nav.focusCompany !== null ? (
-              <div className="inline-flex items-center mr-2">
-                <span className="mr-6 text-sm text-blue-new text-right font-normal">
-                  Last Updated:{" "}
-                  {moment(
-                    props.order.orderCache[
-                      props.nav.focusCompany.short.toLowerCase()
-                    ].updatedAt
-                  ).format("hh:mm:ss - DD/MM/YYYY")}
-                </span>
-                <p className="text-lg mr-2">Update</p>
-                <FontAwesomeIcon
-                  icon={faSyncAlt}
-                  className="fa-lg"
-                  id="update-icon"
-                />
+      <div className="w-full inline-flex relative">
+          <div onClick={() => {
+                    props.setVisibleScreen([
+                      props.misc.visibleScreen != null &&
+                      props.misc.visibleScreen.includes("filterBy")
+                        ? null
+                        : "filterBy"
+                    ]);
+                  }}
+             className="w-1/2 p-2 uppercase">
+                <p className="p-2 w-200 cursor-pointer text-blue-new hover:text-blue text-lg font-bold">
+                    Filter by <FontAwesomeIcon icon={faSlidersH} className="fa-lg ml-1" />
+                </p>
+          </div>          
+        
+          {props.misc.visibleScreen == "filterBy" ?  
+                 
+          <div style={{
+            zIndex: "9999",
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
+            overflow: "hidden",
+            marginTop: "42px",
+            height: "180px",
+            background: "whitesmoke",
+            boxShadow: "rgba(14, 14, 14, 0.34) 0px 0px 6px",
+            }} 
+            className="w-200 h-250 absolute pin-l pin-t mt-12 ml-2 text-blue-new">
+            <div className="p-2 w-full bg-blue-new text-white uppercase">
+               <h4 className="text-center">Select an option:</h4>
+            </div>
+            <div className="w-full inline-flex bg-grey-darker uppercase mb-2">
+              <div className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-grey-light hover:text-grey"><p>All</p></div>
+              <div className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-grey-light hover:text-grey"><p>Clear</p></div>
+            </div>
+            <div className="w-full inline-flex p-1 bg-white mt-1 hover:bg-grey-lightest hover:text-blue cursor-pointer">
+                <p className="uppercase p-1 pl-6">Canada</p>
               </div>
-            ) : null}
+            <div className="w-full inline-flex p-1 bg-white mt-1 hover:bg-grey-lightest hover:text-blue cursor-pointer">
+                <p className="uppercase p-1 pl-6">US</p>
+              </div>
+            <div className="w-full inline-flex p-1 bg-white mt-1 hover:bg-grey-lightest hover:text-blue cursor-pointer">
+                <p className="uppercase p-1 pl-6">Worldwide</p>
+              </div>
+
+          </div>
+           : null }  
+          <div
+            onClick={() => {
+              let company = props.nav.focusCompany;
+              if (company == null) return;
+              let updateIcon = document.querySelector("#update-icon");
+              updateIcon.classList.add("loader-icon");            
+              props.clearCompanyCache({
+                company: company,
+                orderCache: props.order.orderCache
+              })
+              props
+                .fetchOrderList({
+                  url: company.url,
+                  company: company,
+                  orderCache: props.order.orderCache,
+                  user: null
+                })              
+                .then(res => {
+                  updateIcon.classList.remove("loader-icon");
+                });
+              
+
+            }}
+            className="p-2 justify-end w-1/2 flex items-center text-blue-new hover:text-blue cursor-pointer mb-2"
+          >
+            <div className="font-bold uppercase w-full text-right mr-1 items-center ">
+              {props.nav.focusCompany !== null ? (
+                <div className="inline-flex items-center mr-2">
+                  <span className="mr-6 text-sm text-blue-new text-right font-normal">
+                    Last Updated:{" "}
+                    {moment(
+                      props.order.orderCache[
+                        props.nav.focusCompany.short.toLowerCase()
+                      ].updatedAt
+                    ).format("hh:mm:ss - DD/MM/YYYY")}
+                  </span>
+                  <p className="text-lg mr-2">Update</p>
+                  <FontAwesomeIcon
+                    icon={faSyncAlt}
+                    className="fa-lg"
+                    id="update-icon"
+                  />
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
         <div

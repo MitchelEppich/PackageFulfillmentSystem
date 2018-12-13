@@ -5,7 +5,7 @@ const initialState = {
   itemBases: {},
   itemValues: {},
   expandItems: [],
-  missedItems: [],
+  missedItems: {},
   strainArchive: {
     CKS: {
       AFM: "54",
@@ -139,13 +139,11 @@ export default (state = initialState, action) => {
         itemValues: {},
         itemBases: {},
         expandItems: [],
-        missedItems: []
+        missedItems: {}
       });
     case actionTypes.REMOVE_ITEM_MISSED:
-      let _new = state.missedItems.filter(key => {
-        if (key == action.item) return false;
-        return true;
-      });
+      let _new = state.missedItems
+      delete _new[action.item]
       return updateObject(state, { missedItems: _new });
     case actionTypes.EXPAND_ITEM:
       return updateObject(state, { expandItems: action.input });
