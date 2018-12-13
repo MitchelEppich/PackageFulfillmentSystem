@@ -5,6 +5,8 @@ import {
   faPlus,
   faMinus,
   faInfo,
+  faCheck,
+  faTimes,
   faAngleLeft,
   faAngleDown,
   faUser,
@@ -52,7 +54,7 @@ const Screen = props => {
         >
           <div style={{ width: "140px" }}>
             <label className="mr-2">
-              {editable ? "Complete here:" : "Submitted value:"}
+              {editable ? "Complete here:" : "Submitted Value:"}
             </label>
           </div>
           <div>
@@ -78,13 +80,18 @@ const Screen = props => {
                   size="3"
                   name="sttNumber"
                   placeholder="XXXX"
-                  className={`ml-2 p-3 px-1 w-16 ${
-                    props.item.missedItems.includes(item.name) ? "bg-red" : ""
-                  }`}
+                  className="ml-2 p-3 px-1 w-16"
                 />
               ) : (
                 _value
               )}
+              {props.item.missedItems[item.name] == "missed" ? (
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  className="fa-lg text-red ml-2"
+                />
+              ) : null}
+              {props.item.missedItems[item.name] == "used" ? <p>USED</p> : null}
             </p>
           </div>
         </div>
@@ -96,6 +103,10 @@ const Screen = props => {
       </div>
     );
   };
+
+  {
+    console.log(props.item);
+  }
 
   let generateSubItem = (itemRef, number, name, value, strainId) => {
     let _company = props.nav.focusCompany.id;
@@ -146,7 +157,7 @@ const Screen = props => {
                 name="sttNumber"
                 placeholder="XXXX"
                 className={`ml-2 p-3 px-1 w-16 ${
-                  props.item.missedItems.includes(`${name}-${number}`)
+                  props.item.missedItems[`${name}-${number}`] == "missed"
                     ? "bg-red"
                     : ""
                 }`}
@@ -253,7 +264,7 @@ const Screen = props => {
                   placeholder="XXXX"
                   maxLength="4"
                   className={`p-3 ml-2 px-1 mr-5  w-16 ${
-                    props.item.missedItems.includes(`${item.name}-0`)
+                    props.item.missedItems[`${item.name}-0`] == "missed"
                       ? "bg-orange"
                       : ""
                   }`}
@@ -283,8 +294,14 @@ const Screen = props => {
 
   let populateItems = itemList => {
     let _editable =
-      props.nav.focusOrder.status != "finalized" &&
-      props.nav.focusOrder.status != "reviewing order";
+      props.user.currentUser.admin == false
+        ? props.nav.focusOrder.status != "finalized" &&
+          props.nav.focusOrder.status != "reviewing order"
+        : props.nav.focusOrder.status != "finalized";
+    // &&
+    // props.nav.focusOrder.status == "finalized"
+    // ||
+    // props.nav.focusOrder.status != "reviewing order";
     let companies = [];
     for (let company in itemList) {
       let quantities = [];
@@ -301,6 +318,7 @@ const Screen = props => {
         let items = [];
         for (let item of Object.values(itemList[company][quantity])) {
           let _break = item.name.split("-");
+          // console.log(_break)
           let _strainId = props.item.strainArchive[_break[2]][_break[0]];
           items.push(
             <div key={items}>
@@ -611,23 +629,31 @@ const Screen = props => {
       className="w-newScreen h-newScreen bg-white z-50 mt-16 align-absolute"
     >
       {showOrder()}
-      <div
-        className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-6 mb-3 mt-2 cursor-pointer hover:bg-blue"
-        onClick={() => {
-          props.verifyItemList({
-            itemValues: props.item.itemValues,
-            order: props.nav.focusOrder,
-            itemBases: props.item.itemBases,
-            focusCompany: props.nav.focusCompany,
-            orderCache: props.order.orderCache
-          });
-          props.clearItem();
-        }}
-      >
-        <p className="uppercase p-2 text-center text-white font-bold">
-          Finalize
-        </p>
-      </div>
+      {/* {props.nav.focusOrder.status == "finalized" &&  */}
+      {props.nav.focusOrder.status == "reviewing order" &&
+      props.user.currentUser.admin == false ? (
+        <div />
+      ) : (
+        <div
+          className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-6 mb-3 mt-2 cursor-pointer hover:bg-blue"
+          onClick={() => {
+            props.verifyItemList({
+              itemValues: props.item.itemValues,
+              order: props.nav.focusOrder,
+              itemBases: props.item.itemBases,
+              orderCache: props.order.orderCache,
+              focusCompany: props.nav.focusCompany
+            });
+          }}
+        >
+          <p className="uppercase p-2 text-center text-white font-bold">
+            {props.nav.focusOrder.status == "reviewing order"
+              ? "Update"
+              : "Finalize"}
+            {/* WHY?? {props.nav.focusOrder.status == "finalized" ? "Update" : "Finalize" } */}
+          </p>
+        </div>
+      )}
       <div className="p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4">
         {" "}
         <p>

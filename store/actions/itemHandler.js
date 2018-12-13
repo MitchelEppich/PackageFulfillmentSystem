@@ -108,7 +108,7 @@ const getActions = uri => {
         return makePromise(execute(link, operation))
           .then(data => {
             let _cachedValues = data.data.allSttCaches;
-            let itemMissed = [];
+            let itemMissed = {};
 
             let _companies = Object.keys(input.order.itemList);
             for (let company of _companies) {
@@ -124,11 +124,11 @@ const getActions = uri => {
                     _itemValue == null ||
                     _itemValue.value.toString().length != 4
                   ) {
-                    itemMissed.push({ name: item.name, type: "missed" });
+                    itemMissed[item.name] = "missed";
                   } else {
                     let _sttNumber = _itemValue.prefix + _itemValue.value;
                     if (_cachedValues.includes(_sttNumber)) {
-                      itemMissed.push({ name: item.name, type: "used" });
+                      itemMissed[item.name] = "used";
                     }
                   }
                   // } else {
@@ -142,7 +142,8 @@ const getActions = uri => {
                 }
               }
             }
-            if (itemMissed.length == 0) {
+
+            if (Object.keys(itemMissed).length == 0) {
               let NavActions = Navigation(uri);
               dispatch(
                 NavActions.postOrder({
