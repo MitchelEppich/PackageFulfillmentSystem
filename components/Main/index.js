@@ -84,6 +84,28 @@ const Main = props => {
     return arr;
   };
 
+  let showFilters = () => {
+    let arr = [];
+    let _orderFilter = props.nav.orderFilter;
+    for (let key of props.nav.orderFilterKeys) {
+      arr.push(
+        <div
+          key={key}
+          onClick={e => {
+            props.setOrderFilter({ value: key, filter: _orderFilter });
+          }}
+          className="w-full inline-flex p-1 bg-white mt-1 hover:bg-grey-lightest hover:text-blue cursor-pointer"
+        >
+          <p className="uppercase p-1 pl-6">
+            {key}
+            {_orderFilter.includes(key) ? "YES" : "NO"}
+          </p>
+        </div>
+      );
+    }
+    return arr;
+  };
+
   let showOrders = () => {
     if (props.nav.focusCompany != null && props.order.orderCache != null) {
       let orders = props.order.orderCache[props.nav.focusCompany.short].order;
@@ -102,9 +124,8 @@ const Main = props => {
       for (let order of orders) {
         if (
           order.shipCountry != null &&
-          !["usa", "canada", "ireland"].includes(
-            order.shipCountry.toLowerCase()
-          )
+          props.nav.orderFilter != null &&
+          !props.nav.orderFilter.includes(order.shipCountry.toLowerCase())
         )
           continue;
         arr.push(
@@ -117,7 +138,6 @@ const Main = props => {
             <div className="w-1/4">
               {" "}
               {moment(order.orderDate).format("DD/MM/YYYY - hh:mm:ss")}
-              {/* {moment(order.date).format("DD/MM/YYYY")} */}
             </div>
             <div className="w-1/4">
               {order.status != null && order.editBy != null
@@ -327,22 +347,28 @@ const Main = props => {
                 <h4 className="text-center">Select an option:</h4>
               </div>
               <div className="w-full inline-flex bg-grey-darker uppercase mb-2">
-                <div className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-grey-light hover:text-grey">
+                <div
+                  className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-grey-light hover:text-grey"
+                  onClick={() => {
+                    props.setOrderFilter({
+                      value: "all",
+                      filterKeys: props.nav.orderFilterKeys
+                    });
+                  }}
+                >
                   <p>All</p>
                 </div>
-                <div className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-grey-light hover:text-grey">
+                <div
+                  className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-grey-light hover:text-grey"
+                  onClick={() => {
+                    props.setOrderFilter({ value: "none" });
+                  }}
+                >
                   <p>Clear</p>
                 </div>
               </div>
-              <div className="w-full inline-flex p-1 bg-white mt-1 hover:bg-grey-lightest hover:text-blue cursor-pointer">
-                <p className="uppercase p-1 pl-6">Canada</p>
-              </div>
-              <div className="w-full inline-flex p-1 bg-white mt-1 hover:bg-grey-lightest hover:text-blue cursor-pointer">
-                <p className="uppercase p-1 pl-6">US</p>
-              </div>
-              <div className="w-full inline-flex p-1 bg-white mt-1 hover:bg-grey-lightest hover:text-blue cursor-pointer">
-                <p className="uppercase p-1 pl-6">Worldwide</p>
-              </div>
+              {/* {console.log(props)} */}
+              {showFilters()}
             </div>
           ) : null}
           <div

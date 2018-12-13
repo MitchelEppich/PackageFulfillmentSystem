@@ -5,13 +5,17 @@ const initialState = {
   focusCompany: null,
   focusOrder: null,
   promptLogs: null,
-  promptUsers: null
+  promptUsers: null,
+  orderFilter: [],
+  orderFilterKeys: ["usa", "canada", "world"]
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.POST_ORDER:
       return updateObject(state, {});
+    case actionTypes.SET_ORDER_FILTER:
+      return updateObject(state, { orderFilter: action.input });
     case actionTypes.FOCUS_COMPANY:
       return updateObject(state, { focusCompany: action.input });
     case actionTypes.FETCH_ORDER:
