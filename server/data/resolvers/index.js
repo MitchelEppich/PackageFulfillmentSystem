@@ -10,7 +10,7 @@ const Log = LogResolvers.Log;
 
 const axios = require("axios");
 
-const ignoreOrderNumbers = ["8-001001-SNM"];
+const ignoreOrderNumbers = ["8-001001-SNM", "5-006583-SWG"];
 
 const resolvers = {
   Query: {
@@ -49,43 +49,45 @@ const resolvers = {
             let totalItems = 0;
             if (_object.UniqueID == null) continue;
             if (ignoreOrderNumbers.includes(_object.OrderNumber)) continue;
+
+            let _itemList;
+            try {
+              _itemList =
+                _object.item_list != null
+                  ? categorizeOrder(
+                      _object.item_list.map(a => {
+                        let _break = a.Productname.split("-");
+                        let _company = _object.OrderNumber.split("-")[2].trim();
+                        let _prodName = _break[1].trim();
+                        let _quantity = parseInt(a.ProductQty.replace("QTY"));
+                        let _breakId = _break[0].split(/([0-9]+)/);
+                        let _shortId = _breakId[0].trim();
+                        let _amount = parseInt(_breakId[1]);
+
+                        totalItems += _quantity;
+                        return {
+                          name: `${_shortId}-${_amount
+                            .toString()
+                            .padStart(2, "0")}-${_company}`,
+                          description: _prodName,
+                          quantity: _quantity,
+                          type: inferType(_shortId),
+                          packageId: a.PackageID
+                        };
+                      })
+                    )
+                  : [];
+            } catch (e) {
+              _itemList = ["error"];
+            }
+
             invoices.push({
               invoiceId: _object.UniqueID,
               invoiceNumber: _object.OrderNumber,
               customerName: `${_object.ShipFirstName} ${_object.ShipLastName}`,
               orderDate: _object.ApprovedDate,
               shipCountry: _object.ShipCountry,
-              itemList:
-                _object.item_list != null
-                  ? categorizeOrder(
-                      _object.item_list.map(a => {
-                        try {
-                          let _break = a.Productname.split("-");
-                          let _company = _object.OrderNumber.split(
-                            "-"
-                          )[2].trim();
-                          let _prodName = _break[1].trim();
-                          let _quantity = parseInt(a.ProductQty.replace("QTY"));
-                          let _breakId = _break[0].split(/([0-9]+)/);
-                          let _shortId = _breakId[0].trim();
-                          let _amount = parseInt(_breakId[1]);
-
-                          totalItems += _quantity;
-                          return {
-                            name: `${_shortId}-${_amount
-                              .toString()
-                              .padStart(2, "0")}-${_company}`,
-                            description: _prodName,
-                            quantity: _quantity,
-                            type: inferType(_shortId),
-                            packageId: a.PackageID
-                          };
-                        } catch (e) {
-                          return { error };
-                        }
-                      })
-                    )
-                  : [],
+              itemList: _itemList,
               totalItems
             });
           }

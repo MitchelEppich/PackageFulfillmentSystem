@@ -18,6 +18,7 @@ import {
 import moment from "moment";
 
 const Screen = props => {
+  let _updateSession = props.nav.focusOrder.status == "reviewing order";
   let generateSingleItem = (item, company, strainId, editable = true) => {
     let _value =
       props.item.itemValues[item.name] != null
@@ -293,6 +294,14 @@ const Screen = props => {
   };
 
   let populateItems = itemList => {
+    if (itemList[0] == "error")
+      return (
+        <div className="inline-flex w-full p-2 text-center bg-grey-lighter mt-2">
+          <h3 className="text-center w-full text-almost-transparent">
+            Sorry this order has an error . . . Contact admin.
+          </h3>
+        </div>
+      );
     let _editable =
       props.user.currentUser.admin == false
         ? props.nav.focusOrder.status != "finalized" &&
@@ -451,6 +460,7 @@ const Screen = props => {
                 orderCache: props.order.orderCache
               });
               props.setVisibleScreen(null);
+              props.modifyFocusOrder({ order: null });
               props.clearItem();
             }}
             className="w-1/3 h-10 inline-flex"
@@ -629,31 +639,33 @@ const Screen = props => {
       className="w-newScreen h-newScreen bg-white z-50 mt-16 align-absolute"
     >
       {showOrder()}
-      {/* {props.nav.focusOrder.status == "finalized" &&  */}
-      {props.nav.focusOrder.status == "reviewing order" &&
-      props.user.currentUser.admin == false ? (
-        <div />
-      ) : (
+      {(_updateSession && props.user.currentUser.admin) ||
+      props.nav.focusOrder.status != "reviewing order" ? (
         <div
           className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-6 mb-3 mt-2 cursor-pointer hover:bg-blue"
           onClick={() => {
-            props.verifyItemList({
-              itemValues: props.item.itemValues,
-              order: props.nav.focusOrder,
-              itemBases: props.item.itemBases,
-              orderCache: props.order.orderCache,
-              focusCompany: props.nav.focusCompany
-            });
+            props
+              .verifyItemList({
+                itemValues: props.item.itemValues,
+                order: props.nav.focusOrder,
+                itemBases: props.item.itemBases,
+                orderCache: props.order.orderCache,
+                focusCompany: props.nav.focusCompany
+              })
+              .then(res => {
+                if (res != null) {
+                  props.setVisibleScreen(null);
+                  props.modifyFocusOrder({ order: null });
+                  props.clearItem();
+                }
+              });
           }}
         >
           <p className="uppercase p-2 text-center text-white font-bold">
-            {props.nav.focusOrder.status == "reviewing order"
-              ? "Update"
-              : "Finalize"}
-            {/* WHY?? {props.nav.focusOrder.status == "finalized" ? "Update" : "Finalize" } */}
+            {_updateSession ? "Update" : "Finalize"}
           </p>
         </div>
-      )}
+      ) : null}
       <div className="p-1 pin-b pin-l ml-4 text-black absolute mr-8 mb-4">
         {" "}
         <p>

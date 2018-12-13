@@ -101,6 +101,7 @@ const getActions = uri => {
     },
     verifyItemList: input => {
       return dispatch => {
+        let _res;
         const link = new HttpLink({ uri, fetch: fetch });
 
         const operation = { query: query.getSttCache };
@@ -165,13 +166,14 @@ const getActions = uri => {
                   orderCache: input.orderCache
                 })
               );
-              dispatch(Index.setVisibleScreen([]));
+              _res = "finalized";
             }
 
             dispatch({
               type: actionTypes.VERIFY_ITEM_LIST,
               input: itemMissed
             });
+            return _res;
           })
           .catch(error => console.log(error));
       };

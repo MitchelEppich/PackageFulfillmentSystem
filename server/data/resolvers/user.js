@@ -47,7 +47,8 @@ const resolvers = {
   Mutation: {
     verifyCredentials: async (_, { input }) => {
       let user = await User.findOne({
-        badge: input.badge
+        badge: input.badge,
+        locked: false
       });
 
       if (user == null) return;

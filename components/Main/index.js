@@ -94,13 +94,19 @@ const Main = props => {
         return (
           <div className="inline-flex w-full p-2 text-center bg-grey-lighter mt-2">
             <h3 className="text-center w-full text-almost-transparent">
-              Error loading orders . . .
+              Loading orders . . .
             </h3>
           </div>
         );
 
       for (let order of orders) {
-        if (order.shipCountry != "Canada") continue;
+        if (
+          order.shipCountry != null &&
+          !["usa", "canada", "ireland"].includes(
+            order.shipCountry.toLowerCase()
+          )
+        )
+          continue;
         arr.push(
           <div
             className="inline-flex w-full p-2 items-center bg-grey-lighter mt-1"
