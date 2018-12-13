@@ -18,6 +18,7 @@ const actionTypes = {
   MODIFY_USER: "MODIFY_USER",
   MODIFY_LOGS: "MODIFY_LOGS",
   DELETE_USER: "DELETE_USER",
+  SET_ORDER_FILTER: "SET_ORDER_FILTER",
   MODIFY_FOCUS_ORDER: "MODIFY_FOCUS_ORDER",
   POST_ORDER: "POST_ORDER"
 };
@@ -27,6 +28,27 @@ import ItemHandler from "./itemHandler";
 
 const getActions = uri => {
   const objects = {
+    setOrderFilter: input => {     
+      let _value = input.value
+      let _orderFilter = input.filter
+      if (_value == "all") {
+        _orderFilter=input.filterKeys
+      } else if (_value == "none") {
+        _orderFilter=[]
+      } else {
+
+        if (_orderFilter.includes(_value)) {
+          _orderFilter = _orderFilter.filter(a => {
+            if (a == _value) return false;
+            return true;
+          })
+        } else _orderFilter.push(_value)
+      }
+      return {
+        type: actionTypes.SET_ORDER_FILTER,
+        input: _orderFilter
+      };
+    },
     focusCompany: (input, orders) => {
       return dispatch => {
         let company = input.company;

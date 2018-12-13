@@ -150,7 +150,8 @@ const mapDispatchToProps = dispatch => {
     modifyLogs: input => dispatch(actions.modifyLogs(input)),
     deleteUser: input => dispatch(actions.deleteUser(input)),
     clearCompanyCache: input => dispatch(actions.clearCompanyCache(input)),
-    setVisibleScreen: input => dispatch(actions.setVisibleScreen(input))
+    setVisibleScreen: input => dispatch(actions.setVisibleScreen(input)),
+    setOrderFilter: input => dispatch(actions.setOrderFilter(input))
   };
 };
 

@@ -10,7 +10,7 @@ const Log = LogResolvers.Log;
 
 const axios = require("axios");
 
-const ignoreOrderNumbers = ["8-001001-SNM"];
+const ignoreOrderNumbers = ["8-001001-SNM", "5-006583-SWG"];
 
 const resolvers = {
   Query: {
