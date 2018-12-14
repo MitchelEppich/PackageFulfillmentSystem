@@ -58,7 +58,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server",
     "build": "next build",
-    "start": "node server",
+    "start": "SET NODE_ENV=production && node server",
     "analyze": "cross-env ANALYZE=1 next build"
   },
   "author": "",

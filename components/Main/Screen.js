@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
   faMinus,
-  faInfo,
+  faExclamationCircle,
   faCheck,
   faTimes,
   faAngleLeft,
@@ -18,7 +18,6 @@ import {
 import moment from "moment";
 
 const Screen = props => {
-  console.log(props.nav.focusOrder);
   let _updateSession =
     props.nav.focusOrder != null &&
     props.nav.focusOrder.status == "reviewing order";
@@ -90,12 +89,23 @@ const Screen = props => {
                 _value
               )}
               {props.item.missedItems[item.name] == "missed" ? (
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  className="fa-lg text-red ml-2"
-                />
+                <span className="ml-2 text-red uppercase text-sm">
+                  <FontAwesomeIcon
+                    icon={faExclamationCircle}
+                    className="fa-lg text-red mr-1"
+                  />
+                  Incomplete
+                </span>
               ) : null}
-              {props.item.missedItems[item.name] == "used" ? <p>USED</p> : null}
+              {props.item.missedItems[item.name] == "used" ? (
+                <span className="ml-2 text-red uppercase text-sm">
+                  <FontAwesomeIcon
+                    icon={faExclamationCircle}
+                    className="fa-lg text-red mr-1"
+                  />
+                  In Use
+                </span>
+              ) : null}
             </p>
           </div>
         </div>
@@ -107,10 +117,6 @@ const Screen = props => {
       </div>
     );
   };
-
-  {
-    console.log(props.item);
-  }
 
   let generateSubItem = (itemRef, number, name, value, strainId) => {
     let _company = props.nav.focusCompany.id;
@@ -432,7 +438,7 @@ const Screen = props => {
     for (let note of _notes) {
       let _content = note.split("//&");
       arr.push(
-        <div className="inline-flex w-full p-2 bg-grey-light">
+        <div key={note} className="inline-flex w-full p-2 bg-grey-light">
           <div className="w-1/5 text-left pl-6 uppercase">{_content[0]}</div>
           <div className="w-3/5 text-left capitalize">{_content[1]}</div>
           <div className="w-1/5 text-left pl-6 text-sm">
@@ -516,16 +522,24 @@ const Screen = props => {
                 );
               }}
               style={{
-                borderRadius: "30%",
-                width: "28px",
+                borderRadius: "20%",
                 height: "28px",
                 marginTop: "4px",
-                padding: "6px",
-                fontSize: "17px"
+                padding: "6px"
               }}
-              className="flex justify-center bg-almost-white mr-4 hover:bg-white cursor-pointer"
+              className={`flex justify-center bg-almost-white hover:bg-white cursor-pointer ${
+                props.nav.focusOrder.notes == 0
+                  ? "text-grey text-center w-8 mr-2"
+                  : " w-12 text-white bg-blue font-bold px-2 hover:bg-semi-transparent hover:text-grey items-center flex mr-4 text-sm"
+              }`}
             >
-              <FontAwesomeIcon icon={faStickyNote} />
+              <FontAwesomeIcon icon={faStickyNote} className="fa-lg" />{" "}
+              {props.nav.focusOrder.notes == null ||
+              props.nav.focusOrder.notes == 0 ? null : (
+                <span className="pl-1">
+                  {props.nav.focusOrder.notes.length}
+                </span>
+              )}
             </span>
 
             {props.misc.visibleScreen.includes("noteBy") ? (
