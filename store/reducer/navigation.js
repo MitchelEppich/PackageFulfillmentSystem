@@ -6,7 +6,7 @@ const initialState = {
   focusOrder: null,
   promptLogs: null,
   promptUsers: null,
-  orderFilter: [],
+  orderFilter: ["usa", "canada", "world"],
   orderFilterKeys: ["usa", "canada", "world"]
 };
 

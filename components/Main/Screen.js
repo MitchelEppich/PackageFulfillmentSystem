@@ -18,7 +18,7 @@ import {
 import moment from "moment";
 
 const Screen = props => {
-  let _updateSession = props.nav.focusOrder.status == "reviewing order";
+  let _updateSession = props.nav.focusOrder.status != null ? props.nav.focusOrder.status == "reviewing order" : null;
   let generateSingleItem = (item, company, strainId, editable = true) => {
     let _value =
       props.item.itemValues[item.name] != null
@@ -432,7 +432,7 @@ const Screen = props => {
     for (let note of _notes) {
       let _content = note.split("//&");
       arr.push(
-        <div className="inline-flex w-full p-2 bg-grey-light">
+        <div key={note} className="inline-flex w-full p-2 bg-grey-light">
           <div className="w-1/5 text-left pl-6 uppercase">{_content[0]}</div>
           <div className="w-3/5 text-left capitalize">{_content[1]}</div>
           <div className="w-1/5 text-left pl-6 text-sm">
@@ -519,12 +519,11 @@ const Screen = props => {
                 borderRadius: "20%",                
                 height: "28px",
                 marginTop: "4px",
-                padding: "6px",
-                fontSize: "17px"
+                padding: "6px",                
               }}
-              className={`flex justify-center bg-almost-white mr-4 hover:bg-white cursor-pointer ${props.nav.focusOrder.notes == 0 ? "text-grey w-10" : " w-12 text-white bg-blue font-bold px-2 hover:bg-semi-transparent hover:text-grey items-center flex"}`}
+              className={`flex justify-center bg-almost-white hover:bg-white cursor-pointer ${props.nav.focusOrder.notes == 0 ? "text-grey text-center w-8 mr-2" : " w-12 text-white bg-blue font-bold px-2 hover:bg-semi-transparent hover:text-grey items-center flex mr-4 text-sm"}`}
             >
-              <FontAwesomeIcon icon={faStickyNote} className="mr-1"/> {props.nav.focusOrder.notes == 0 ? null : props.nav.focusOrder.notes.length }
+              <FontAwesomeIcon icon={faStickyNote} className="fa-lg"/> {props.nav.focusOrder.notes == null || props.nav.focusOrder.notes == 0 ? null : <span className="pl-1">{props.nav.focusOrder.notes.length}</span>}
             </span>
 
             {props.misc.visibleScreen.includes("noteBy") ? (
