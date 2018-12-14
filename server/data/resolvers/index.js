@@ -256,12 +256,14 @@ let inferType = input => {
     3 - CBD
     4 - Low
     5 - ERROR
+    6 - Mix
   */
   input = input.toUpperCase();
   if (input == "DWA" || input == "DLF") return 4;
   if (input.slice(-1) == "A" || input == "AFM") return 0;
   if (input.slice(-1) == "F" || input == "FMM") return 1;
   if (input.slice(-1) == "R") return 2;
+  if (input.slice(-1) == "M") return 6;
   if (input.slice(0, 2) == "CB") return 3;
   return 5;
 };

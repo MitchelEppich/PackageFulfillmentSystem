@@ -128,7 +128,7 @@ const getActions = uri => {
                     itemMissed[item.name] = "missed";
                   } else {
                     let _sttNumber = _itemValue.prefix + _itemValue.value;
-                    if (_cachedValues.includes(_sttNumber)) {
+                    if (_cachedValues.includes(_sttNumber) && !input.update) {
                       itemMissed[item.name] = "used";
                     }
                   }

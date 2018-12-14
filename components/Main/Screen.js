@@ -18,7 +18,10 @@ import {
 import moment from "moment";
 
 const Screen = props => {
-  let _updateSession = props.nav.focusOrder.status == "reviewing order";
+  console.log(props.nav.focusOrder);
+  let _updateSession =
+    props.nav.focusOrder != null &&
+    props.nav.focusOrder.status == "reviewing order";
   let generateSingleItem = (item, company, strainId, editable = true) => {
     let _value =
       props.item.itemValues[item.name] != null
@@ -328,7 +331,11 @@ const Screen = props => {
         for (let item of Object.values(itemList[company][quantity])) {
           let _break = item.name.split("-");
           // console.log(_break)
-          let _strainId = props.item.strainArchive[_break[2]][_break[0]];
+          let _cmpShort = _break[2] == "SON" ? "SNM" : _break[2];
+          let _strainId =
+            props.item.strainArchive[_cmpShort] != null
+              ? props.item.strainArchive[_cmpShort][_break[0]]
+              : "ERROR";
           items.push(
             <div key={items}>
               {generateSingleItem(item, _companyId, _strainId, _editable)}
@@ -639,8 +646,7 @@ const Screen = props => {
       className="w-newScreen h-newScreen bg-white z-50 mt-16 align-absolute"
     >
       {showOrder()}
-      {(_updateSession && props.user.currentUser.admin) ||
-      props.nav.focusOrder.status != "reviewing order" ? (
+      {(_updateSession && props.user.currentUser.admin) || !_updateSession ? (
         <div
           className="w-40 p-1 pin-b pin-r bg-blue-new absolute mr-6 mb-3 mt-2 cursor-pointer hover:bg-blue"
           onClick={() => {
@@ -650,7 +656,8 @@ const Screen = props => {
                 order: props.nav.focusOrder,
                 itemBases: props.item.itemBases,
                 orderCache: props.order.orderCache,
-                focusCompany: props.nav.focusCompany
+                focusCompany: props.nav.focusCompany,
+                update: _updateSession
               })
               .then(res => {
                 if (res != null) {

@@ -24,6 +24,7 @@ const initialState = {
       DAF: "43",
       DPF: "06",
       DWA: "44",
+      DLF: "44",
       EMA: "45",
       FMM: "17",
       GCF: "07",
@@ -142,8 +143,8 @@ export default (state = initialState, action) => {
         missedItems: {}
       });
     case actionTypes.REMOVE_ITEM_MISSED:
-      let _new = state.missedItems
-      delete _new[action.item]
+      let _new = state.missedItems;
+      delete _new[action.item];
       return updateObject(state, { missedItems: _new });
     case actionTypes.EXPAND_ITEM:
       return updateObject(state, { expandItems: action.input });
