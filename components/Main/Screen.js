@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
   faMinus,
-  faInfo,
+  faExclamationCircle,
   faCheck,
   faTimes,
   faAngleLeft,
@@ -87,12 +87,23 @@ const Screen = props => {
                 _value
               )}
               {props.item.missedItems[item.name] == "missed" ? (
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  className="fa-lg text-red ml-2"
-                />
+                <span className="ml-2 text-red uppercase text-sm">
+                    <FontAwesomeIcon
+                      icon={faExclamationCircle}
+                      className="fa-lg text-red mr-1"
+                      /> 
+                      Incomplete
+               </span>
               ) : null}
-              {props.item.missedItems[item.name] == "used" ? <p>USED</p> : null}
+              {props.item.missedItems[item.name] == "used" ? (
+                  <span className="ml-2 text-red uppercase text-sm">
+                      <FontAwesomeIcon
+                        icon={faExclamationCircle}
+                        className="fa-lg text-red mr-1"
+                      /> 
+                      In Use
+                  </span>
+           ) : null}
             </p>
           </div>
         </div>
@@ -103,13 +114,9 @@ const Screen = props => {
         </div>
       </div>
     );
-  };
+  }; 
 
-  {
-    console.log(props.item);
-  }
-
-  let generateSubItem = (itemRef, number, name, value, strainId) => {
+    let generateSubItem = (itemRef, number, name, value, strainId) => {
     let _company = props.nav.focusCompany.id;
     let _used = false;
     let item = (
@@ -509,16 +516,15 @@ const Screen = props => {
                 );
               }}
               style={{
-                borderRadius: "30%",
-                width: "28px",
+                borderRadius: "20%",                
                 height: "28px",
                 marginTop: "4px",
                 padding: "6px",
                 fontSize: "17px"
               }}
-              className="flex justify-center bg-almost-white mr-4 hover:bg-white cursor-pointer"
+              className={`flex justify-center bg-almost-white mr-4 hover:bg-white cursor-pointer ${props.nav.focusOrder.notes == 0 ? "text-grey w-10" : " w-12 text-white bg-blue font-bold px-2 hover:bg-semi-transparent hover:text-grey items-center flex"}`}
             >
-              <FontAwesomeIcon icon={faStickyNote} />
+              <FontAwesomeIcon icon={faStickyNote} className="mr-1"/> {props.nav.focusOrder.notes == 0 ? null : props.nav.focusOrder.notes.length }
             </span>
 
             {props.misc.visibleScreen.includes("noteBy") ? (

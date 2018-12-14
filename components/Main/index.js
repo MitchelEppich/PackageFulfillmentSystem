@@ -94,11 +94,11 @@ const Main = props => {
           onClick={e => {
             props.setOrderFilter({ value: key, filter: _orderFilter });
           }}
-          className="w-full inline-flex p-1 bg-white mt-1 hover:bg-grey-lightest hover:text-blue cursor-pointer"
+          className={`w-full inline-flex p-1 mt-1 hover:bg-blue hover:text-white cursor-pointer  ${_orderFilter.includes(key) ? "bg-blue text-white" : "bg-white text-blue-new" }`}
         >
           <p className="uppercase p-1 pl-6">
             {key}
-            {_orderFilter.includes(key) ? "YES" : "NO"}
+           
           </p>
         </div>
       );
@@ -348,7 +348,7 @@ const Main = props => {
               </div>
               <div className="w-full inline-flex bg-grey-darker uppercase mb-2">
                 <div
-                  className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-grey-light hover:text-grey"
+                  className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-blue hover:text-white"
                   onClick={() => {
                     props.setOrderFilter({
                       value: "all",
@@ -359,7 +359,7 @@ const Main = props => {
                   <p>All</p>
                 </div>
                 <div
-                  className="w-1/2 text-center text-white p-1 cursor-pointer hover text-sm hover:bg-grey-light hover:text-grey"
+                  className="w-1/2 text-center text-white p-1 cursor-pointer text-sm hover:bg-blue hover:text-white"
                   onClick={() => {
                     props.setOrderFilter({ value: "none" });
                   }}
