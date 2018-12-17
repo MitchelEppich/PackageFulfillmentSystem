@@ -15,7 +15,7 @@ import Nav from "./navigation";
 import Item from "./itemHandler";
 import Order from "./orderHandler";
 
-const uri = "http://localhost:3000/graphql";
+const uri = "http://localhost:3001/graphql";
 
 const imports = {
   ...User(uri),

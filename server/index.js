@@ -8,6 +8,8 @@ const { execute, subscribe } = require("graphql");
 const { createServer } = require("http");
 const { SubscriptionServer } = require("subscriptions-transport-ws");
 
+const routers = require("./routes/");
+
 require("dotenv").config();
 
 // our packages
@@ -43,6 +45,10 @@ app
         credentials: true
       })
     );
+
+    server.use(bodyParser.json()); // support json encoded bodies
+    server.use(bodyParser.urlencoded({ extended: true }));
+    server.use("/", routers);
 
     // server.get("/watch/:_id", (req, res) => {
     //   app.render(req, res, "/", {});
@@ -80,15 +86,8 @@ app
       console.log(`Apollo Server is now running on https://${url}:${port}`);
       // Set up the WebSocket for handling GraphQL subscriptions
       new SubscriptionServer(
-        {
-          execute,
-          subscribe,
-          schema
-        },
-        {
-          server: ws,
-          path: "/subscriptions"
-        }
+        { execute, subscribe, schema },
+        { server: ws, path: "/subscriptions" }
       );
     });
   })

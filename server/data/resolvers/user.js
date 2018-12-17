@@ -6,6 +6,8 @@ const { PubSub, withFilter } = require("graphql-subscriptions");
 
 const pubsub = new PubSub();
 
+const axios = require("axios");
+
 const resolvers = {
   Query: {
     user: async (_, { input }) => {
@@ -17,19 +19,20 @@ const resolvers = {
       return _user;
     },
     allUsers: async (_, { filter }) => {
-      let query = filter ? { $or: userFilters(filter) } : {};
-      let users = await User.find(query);
+      let config = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
 
-      // let _index = 0;
-      // for (let user of users) {
-      //   let _log = await Log.findOne({ who: user.username });
-      //   if (_log != null) {
-      //     user.lastAction = _log.task;
-      //     users[_index] = user;
-      //   }
-      //   _index++;
-      // }
-      return users;
+      let body = toUrlEncoded({ CLIENT_ACR: "PFS" });
+
+      return axios
+        .post("http://localhost:3000/api/user/", body, config)
+        .then(res => {
+          let _users = res.data;
+          return _users;
+        });
     }
   },
   User: {},
@@ -38,7 +41,7 @@ const resolvers = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("userUpdate"),
         (payload, variables) => {
-          // console.log(payload, variables);
+          console.log(payload, variables);
           return true;
         }
       )
@@ -46,26 +49,20 @@ const resolvers = {
   },
   Mutation: {
     verifyCredentials: async (_, { input }) => {
-      let user = await User.findOne({
-        badge: input.badge,
-        locked: false
-      });
+      let config = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
 
-      if (user == null) return;
-      if (user.username.toLowerCase() != input.username.toLowerCase()) return;
+      let body = toUrlEncoded({ ...input, CLIENT_ACR: "PFS" });
 
-      user.token = user.createToken();
-
-      user.online = true;
-      // user.lastAction = await Log.findOne({ who: user.username });
-
-      pubsub.publish("userUpdate", {
-        userUpdate: { ...user.toObject() }
-      });
-
-      user.save();
-
-      return user.toObject();
+      return axios
+        .post("http://localhost:3000/api/user/verify/", body, config)
+        .then(res => {
+          let _user = res.data;
+          return _user;
+        });
     },
     registerCredentials: async (_, { input }) => {
       let name = input.name;
@@ -106,29 +103,31 @@ const resolvers = {
       }
     },
     updateUser: async (_, { input }) => {
-      let user;
-      try {
-        let operation = {
-          $set: { ...input }
-        };
+      console.log(input);
+      let config = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
 
-        user = await User.findOneAndUpdate(
-          { $or: [{ username: input.username }] },
-          operation,
-          { new: true }
-        );
+      let body = toUrlEncoded({
+        ...input,
+        CLIENT_ACR: "PFS"
+      });
 
-        pubsub.publish("userUpdate", {
-          userUpdate: { ...user.toObject() }
+      return axios
+        .post("http://localhost:3000/api/user/update/", body, config)
+        .then(res => {
+          let _user = res.data;
+          return _user;
         });
-
-        return user.toObject();
-      } catch (error) {
-        console.log("No user was found -> ", input);
-        return null;
-      }
     }
   }
 };
+
+const toUrlEncoded = obj =>
+  Object.keys(obj)
+    .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]))
+    .join("&");
 
 module.exports = resolvers;

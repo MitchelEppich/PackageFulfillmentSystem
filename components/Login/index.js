@@ -34,7 +34,7 @@ const Login = props => {
 
             // Verify login credentials
             props.verifyCredentials({ username, badge }).then(res => {
-              if (res == null) {
+              if (res == null || res.token == null) {
                 let message = document.querySelector("#errorMessage");
                 message.classList.remove("hidden");
               } else {
