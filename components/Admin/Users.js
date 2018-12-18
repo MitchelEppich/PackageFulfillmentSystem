@@ -21,7 +21,10 @@ const Users = props => {
       return true })           
       for (let user of userFilters) { 
       arr.push(
-        <div className="w-full inline-flex p-2 mt-1 bg-white flex items-center" key={arr}>
+        <div
+          className="w-full inline-flex p-2 mt-1 bg-white flex items-center"
+          key={arr}
+        >
           <div className="w-24 pl-8 uppercase">{arr.length + 1}</div>
           <div className="w-1/8 pl-3">{user.username}</div>
           <div className="w-1/8 pl-3">{user.badge}</div>
@@ -66,7 +69,10 @@ const Users = props => {
             }}
           >
             <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
-              <FontAwesomeIcon icon={user.locked ? faLock : faUnlockAlt} className="fa-lg" />               
+              <FontAwesomeIcon
+                icon={user.locked ? faLock : faUnlockAlt}
+                className="fa-lg"
+              />
             </div>
           </div>
           <div
@@ -80,10 +86,12 @@ const Users = props => {
             }}
           >
             <div className="w-10 h-10 p-2 text-center text-grey justify-center mx-auto align-center cursor-pointer hover:bg-grey-light hover:text-black">
-              <FontAwesomeIcon icon={user.admin ? faUserAlt : faUserAltSlash } className="fa-lg" />              
+              <FontAwesomeIcon
+                icon={user.admin ? faUserAlt : faUserAltSlash}
+                className="fa-lg"
+              />
             </div>
           </div>
-          
 
           {/* <div
             className="w-1/8 capitalize text-center"

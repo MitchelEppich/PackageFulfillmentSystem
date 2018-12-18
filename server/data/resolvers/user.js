@@ -25,14 +25,13 @@ const resolvers = {
         }
       };
 
-      let body = toUrlEncoded({ CLIENT_ACR: "PFS" });
-
-      return axios
-        .post("http://localhost:3000/api/user/", body, config)
-        .then(res => {
-          let _users = res.data;
-          return _users;
+      return axios.get("http://localhost:3000/api/user/", config).then(res => {
+        let _users = res.data;
+        _users = _users.map(user => {
+          return inferPermissions(user, "PFS");
         });
+        return _users;
+      });
     }
   },
   User: {},
@@ -41,7 +40,7 @@ const resolvers = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("userUpdate"),
         (payload, variables) => {
-          console.log(payload, variables);
+          // console.log(payload, variables);
           return true;
         }
       )
@@ -61,6 +60,7 @@ const resolvers = {
         .post("http://localhost:3000/api/user/verify/", body, config)
         .then(res => {
           let _user = res.data;
+          _user = inferPermissions(_user, "PFS");
           return _user;
         });
     },
@@ -103,7 +103,6 @@ const resolvers = {
       }
     },
     updateUser: async (_, { input }) => {
-      console.log(input);
       let config = {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -119,8 +118,16 @@ const resolvers = {
         .post("http://localhost:3000/api/user/update/", body, config)
         .then(res => {
           let _user = res.data;
+          _user = inferPermissions(_user, "PFS");
           return _user;
         });
+    }
+  },
+  Custom: {
+    publishUserUpdate: (_, { input }) => {
+      let _user = input.userUpdate;
+      _user = inferPermissions(_user, "PFS");
+      pubsub.publish("userUpdate", { userUpdate: input.userUpdate });
     }
   }
 };
@@ -129,5 +136,22 @@ const toUrlEncoded = obj =>
   Object.keys(obj)
     .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]))
     .join("&");
+
+function inferPermissions(user, CLIENT_ACR) {
+  let _new = user;
+
+  let _permissions =
+    _new.permissions != null && _new.permissions.length != 0
+      ? _new.permissions
+          .filter(a => {
+            if (a.includes(CLIENT_ACR)) return true;
+            return false;
+          })[0]
+          .split(":")
+      : [CLIENT_ACR, 0, 0];
+  _new.admin = _permissions[1] == "1";
+  _new.locked = _permissions[2] == "1";
+  return _new;
+}
 
 module.exports = resolvers;

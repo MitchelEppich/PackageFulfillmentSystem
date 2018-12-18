@@ -135,6 +135,10 @@ type Mutation {
   createActionLog(input: LogInput!): Log
 }
 
+type Custom {
+  publishUserUpdate(input: UserInput!): User
+}
+
 `;
 
 const schema = makeExecutableSchema({
