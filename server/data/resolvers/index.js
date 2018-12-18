@@ -13,6 +13,9 @@ const axios = require("axios");
 const ignoreOrderNumbers = ["8-001001-SNM", "5-006583-SWG"];
 
 const resolvers = {
+  Custom: {
+    ...UserResolvers.Custom
+  },
   Query: {
     allSttCaches: async (_, args) => {
       let _sttCache = (await SttCache.find({}))[0];
