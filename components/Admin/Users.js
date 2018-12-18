@@ -22,7 +22,7 @@ const Users = props => {
       for (let user of userFilters) { 
       arr.push(
         <div
-          className="w-full inline-flex p-2 mt-1 bg-white flex items-center"
+          className="w-full inline-flex p-1 mt-1 bg-grey-lighter flex items-center"
           key={arr}
         >
           <div className="w-24 pl-8 uppercase">{arr.length + 1}</div>
@@ -114,61 +114,74 @@ const Users = props => {
   };
 
   return (
-    <div
-      style={{
-        borderTopLeftRadius: "10px",
-        borderTopRightRadius: "10px",
-        overflow: "hidden",
-        background: "whitesmoke",
-        boxShadow: "0px 0px 10px #cecece"
-      }}
-      className="w-newScreen h-newScreen bg-white z-60 mt-16 align-absolute"
-    >
-      <div className="w-full inline-flex flex items-center bg-blue-new relative">
+    <div style={{
+      position: "absolute",
+      height: "820px",
+       width: "99vw",
+    }} >
+      <div 
+      style={{     
+        zIndex: "99999",
+        background: "white" 
+        }} 
+      className="w-full h-full absolute justify-end">
         <div
-          onClick={() => {
-            props.setVisibleScreen(null);
+          style={{
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
+            overflow: "hidden",
+            background: "white",
+            // boxShadow: "0px 0px 10px #cecece"
           }}
-          className="w-1/3 h-10 inline-flex"
+          className="w-newScreen bg-white z-60 mt-16 align-absolute"
         >
-          <h4 className="p-2 text-white uppercase text-lg bg-red flex items-center hover:bg-semi-transparent cursor-pointer">
-            <FontAwesomeIcon icon={faAngleLeft} className="fa-2x mr-4" />
-            Back
-          </h4>
-        </div>
-        <div className="bg-blue-new w-1/3 text-white p-2 text-center uppercase">
-          <h3>Manage Users</h3>
+          <div className="w-full inline-flex flex items-center bg-blue-new relative">
+            <div
+              onClick={() => {
+                props.setVisibleScreen(null);
+              }}
+              className="w-1/3 h-10 inline-flex"
+            >
+              <h4 className="p-2 text-white uppercase text-lg bg-red flex items-center hover:bg-semi-transparent cursor-pointer">
+                <FontAwesomeIcon icon={faAngleLeft} className="fa-2x mr-4" />
+                Back
+              </h4>
+            </div>
+            <div className="bg-blue-new w-1/3 text-white p-2 text-center uppercase">
+              <h3>Manage Users</h3>
+            </div>
+          </div>
+          <div className="inline-flex w-full p-1 bg-grey-darker uppercase text-white text-sm absolute mt-10 pin-t pin-l">
+            <div className="w-24 pl-4 uppercase">Number</div>
+            <div className="w-1/8 pl-3 uppercase">Username</div>
+            <div className="w-1/8 pl-5 uppercase">Badge</div>
+            <div className="w-24 pl-4 uppercase">Status</div>
+            <div className="w-3/8 pl-4 uppercase">Last Actions</div>
+            <div className="w-1/8 text-center uppercase">Lock User</div>
+            <div className="w-1/8 text-center uppercase">Admin</div>
+            {/* <div className="w-1/8 text-center  uppercase">Delete User</div> */}
+          </div>
+
+          <div className="mt-6" />
+          <div className="w-full overflow-y-auto h-650">{showUsers()}</div>
+
+          <Subscription subscription={subscription.userUpdate}>
+            {({ data }) => {
+              if (data != null) {
+                let _user = data.userUpdate;
+                let _promptUsers = props.nav.promptUsers;
+                if (!JSON.stringify(_promptUsers).includes(JSON.stringify(_user))) {
+                  props.modifyUser({
+                    user: _user,
+                    promptUsers: _promptUsers
+                  });
+                }
+              }
+              return <div />;
+            }}
+          </Subscription>
         </div>
       </div>
-      <div className="inline-flex w-full p-1 bg-grey-darker uppercase text-white text-sm absolute mt-10 pin-t pin-l">
-        <div className="w-24 pl-4 uppercase">Number</div>
-        <div className="w-1/8 pl-3 uppercase">Username</div>
-        <div className="w-1/8 pl-5 uppercase">Badge</div>
-        <div className="w-24 pl-4 uppercase">Status</div>
-        <div className="w-3/8 pl-4 uppercase">Last Actions</div>
-        <div className="w-1/8 text-center uppercase">Lock User</div>
-        <div className="w-1/8 text-center uppercase">Admin</div>
-        {/* <div className="w-1/8 text-center  uppercase">Delete User</div> */}
-      </div>
-
-      <div className="mt-6" />
-      <div className="w-full overflow-y-auto h-650">{showUsers()}</div>
-
-      <Subscription subscription={subscription.userUpdate}>
-        {({ data }) => {
-          if (data != null) {
-            let _user = data.userUpdate;
-            let _promptUsers = props.nav.promptUsers;
-            if (!JSON.stringify(_promptUsers).includes(JSON.stringify(_user))) {
-              props.modifyUser({
-                user: _user,
-                promptUsers: _promptUsers
-              });
-            }
-          }
-          return <div />;
-        }}
-      </Subscription>
     </div>
   );
 };

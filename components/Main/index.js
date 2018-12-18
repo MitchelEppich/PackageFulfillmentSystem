@@ -197,9 +197,9 @@ const Main = props => {
         <div className="w-newScreen inline-flex ml-6 mt-4 flex justify-between mb-2">
           <div className="w-2/4 mt-2 pin-l text-left">
             <a href="./">
-              <h2 className="text-white uppercase p-2">
+              <h1 className="text-white uppercase p-2">
                 Package Fulfillment System
-              </h2>
+              </h1>
             </a>
             <p className="p-3 ">Welcome {_name}, please select an option:</p>
           </div>
