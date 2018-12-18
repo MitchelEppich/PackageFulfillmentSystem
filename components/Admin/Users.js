@@ -12,11 +12,14 @@ import {
 import { Subscription } from "react-apollo";
 import gql from "graphql-tag";
 
-const Users = props => {
+const Users = props => {  
   let showUsers = () => {
     if (props.nav.promptUsers == null) return;
-    let arr = [];
-    for (let user of props.nav.promptUsers) {
+    let arr = [];  
+    let userFilters = props.nav.promptUsers.filter(username => {
+    if (username.username == props.user.currentUser.username) return false;       
+      return true })           
+      for (let user of userFilters) { 
       arr.push(
         <div className="w-full inline-flex p-2 mt-1 bg-white flex items-center" key={arr}>
           <div className="w-24 pl-8 uppercase">{arr.length + 1}</div>
@@ -82,7 +85,7 @@ const Users = props => {
           </div>
           
 
-          <div
+          {/* <div
             className="w-1/8 capitalize text-center"
             onClick={() => {
               props.deleteUser({
@@ -94,7 +97,7 @@ const Users = props => {
             <div className="w-10 h-10 p-2 text-center hover:text-black text-red justify-center mx-auto align-center cursor-pointer hover:bg-grey-light">
               <FontAwesomeIcon icon={faTimes} className="fa-lg text-center" />
             </div>
-          </div>
+          </div> */}
         </div>
       );
     }
@@ -137,7 +140,7 @@ const Users = props => {
         <div className="w-3/8 pl-4 uppercase">Last Actions</div>
         <div className="w-1/8 text-center uppercase">Lock User</div>
         <div className="w-1/8 text-center uppercase">Admin</div>
-        <div className="w-1/8 text-center  uppercase">Delete User</div>
+        {/* <div className="w-1/8 text-center  uppercase">Delete User</div> */}
       </div>
 
       <div className="mt-6" />
