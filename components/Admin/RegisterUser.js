@@ -80,7 +80,7 @@ const RegisterUser = props => {
           borderRadius: "10px",
           background: "whitesmoke",
           zIndex: "60",
-          boxShadow: "rgb(206, 206, 206) 0px 2px 5px"
+          // boxShadow: "rgb(206, 206, 206) 0px 2px 5px"
         }}
         className="w-450 h-450 bg-white mt-32 align-absolute text-center"
       >

@@ -19,15 +19,27 @@ const Reports = props => {
   };
 
   return (
+    <div style={{
+      position: "absolute",
+      height: "820px",
+       width: "99vw",
+    }} >
+      <div 
+      style={{     
+        zIndex: "99999",
+        background: "white" 
+        }} 
+      className="w-full h-full absolute justify-end">
     <div
       style={{
         borderTopLeftRadius: "10px",
         borderTopRightRadius: "10px",
         overflow: "hidden",
         background: "whitesmoke",
-        boxShadow: "0px 0px 10px #cecece"
+        height: "690px",
+        // boxShadow: "0px 0px 10px #cecece"
       }}
-      className="w-newScreen h-newScreen bg-white z-60 mt-16 align-absolute"
+      className="w-newScreen bg-white z-60 mt-16 align-absolute"
     >
       <div className="w-full inline-flex flex items-center bg-blue-new relative">
         <div
@@ -324,6 +336,8 @@ const Reports = props => {
         </div>
       </div>
     </div>
+     </div>
+     </div>
   );
 };
 
