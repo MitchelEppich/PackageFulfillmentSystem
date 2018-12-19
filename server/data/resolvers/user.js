@@ -11,12 +11,21 @@ const axios = require("axios");
 const resolvers = {
   Query: {
     user: async (_, { input }) => {
-      let _user = await User.findOne(input);
-      if (_user == null) return null;
-      if (_user["online"] == null) _user["online"] = true;
-      else _user["online"] = !_user["online"];
-      _user.save();
-      return _user;
+      let config = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
+
+      let body = toUrlEncoded({ ...input, CLIENT_ACR: "PFS" });
+
+      return axios
+        .post("http://localhost:3000/api/user/", body, config)
+        .then(res => {
+          let _user = res.data;
+          _user = inferPermissions(_user, "PFS");
+          return _user;
+        });
     },
     allUsers: async (_, { filter }) => {
       let config = {

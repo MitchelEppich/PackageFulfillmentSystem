@@ -61,13 +61,13 @@ const initialState = {
       orders: [],
       url: "https://www.cksoti.com/getalldispatchorderdetail/cropkingseeds.com"
     },
-    {
-      short: "bs",
-      name: "Beaver Seeds",
-      id: 7,
-      orders: [],
-      url: "https://www.cksoti.com/getalldispatchorderdetail/beaverseeds.ca"
-    },
+    // {
+    //   short: "bvr",
+    //   name: "Beaver Seeds",
+    //   id: 7,
+    //   orders: [],
+    //   url: "https://www.cksoti.com/getalldispatchorderdetail/beaverseeds.ca"
+    // },
     {
       short: "son",
       name: "Sonoma Seeds",
