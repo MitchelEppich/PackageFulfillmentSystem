@@ -45,7 +45,7 @@ class Index extends Component {
     }.bind(this);
 
     this.props.fetchCredentials().then(res => {
-      if (res == null) return;
+      if (res.username == null) return;
       this.props.setVisibleScreen(null);
     });
 
@@ -62,7 +62,7 @@ class Index extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.user.currentUser == null) {
       this.props.fetchCredentials().then(res => {
-        if (res == null) return;
+        if (res.username == null) return;
         this.props.setVisibleScreen(null);
       });
     }

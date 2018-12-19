@@ -26,7 +26,9 @@ const getActions = uri => {
     },
     releaseCredentials: input => {
       return dispatch => {
+        console.log("loggin out")
         sessionStorage.setItem("token", "");
+        console.log(sessionStorage)
         dispatch(
           objects.updateUser({ username: input.username, online: false })
         );
@@ -37,6 +39,7 @@ const getActions = uri => {
       return dispatch => {
         const link = new HttpLink({ uri, fetch: fetch });
         const token = sessionStorage.getItem("token");
+        console.log(sessionStorage)
         const operation = {
           query: query.getCredentials,
           variables: { token: token }
