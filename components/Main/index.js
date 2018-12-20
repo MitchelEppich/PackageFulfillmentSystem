@@ -312,21 +312,24 @@ const Main = props => {
         className="w-newScreen h-halfscreen text-white mt-16"
       >
         <div className="w-full inline-flex relative">
-          <div
-            onClick={() => {
-              props.setVisibleScreen([
-                props.misc.visibleScreen != null &&
-                props.misc.visibleScreen.includes("filterBy")
-                  ? null
-                  : "filterBy"
-              ]);
-            }}
+          <div            
             className="w-1/2 p-2 uppercase"
-          >
-            <p className="p-2 w-200 cursor-pointer text-blue-new hover:text-blue text-lg font-bold">
-              Filter by{" "}
-              <FontAwesomeIcon icon={faSlidersH} className="fa-lg ml-1" />
-            </p>
+          ><div 
+          onClick={() => {
+            props.setVisibleScreen([
+              props.misc.visibleScreen != null &&
+              props.misc.visibleScreen.includes("filterBy")
+                ? null
+                : "filterBy"
+            ]);
+          }}
+          style={{width: "140px"}}
+          className="">
+              <p className="p-2 w-full cursor-pointer text-blue-new hover:text-blue text-lg font-bold">
+                Filter by{" "}
+                <FontAwesomeIcon icon={faSlidersH} className="fa-lg ml-1" />
+              </p>
+            </div>
           </div>
 
           {props.misc.visibleScreen == "filterBy" ? (
